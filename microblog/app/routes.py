@@ -48,6 +48,8 @@ def upload_file():
     if file.filename == '':
         return 'No selected file'
     if file:        
+        
+        file.save(file.filename)
         # Read the Excel file into a DataFrame
         df = pd.read_excel(file.filename)
         

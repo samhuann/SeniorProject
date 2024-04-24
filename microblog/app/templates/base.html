@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload</title>
+<head>
+        {% if title %}
+        <title>{{ title }} - microblog</title>
+        {% else %}
+        <title>microblog</title>
+        {% endif %}
 </head>
 <body>
-    <h1>Upload a File</h1>
-    <form method="POST" action="/parse">
-    <h2>Describe Yourself:</h2>
-    <input type="text" id="dsc" name="description" value="Huang">
-    <h2>Choose your gender:</h2>
-    <input type="radio" id="male" name="gender" value="male">
-
-    <label for="male">Male</label><br>
-
-    <input type="radio" id="female" name="gender" value="female">
-    <label for="female">Female</label><br>
-
-    <input type="radio" id="other" name="gender" value="other">
-    <label for="other">Other</label><br>
-    <button type="submit">Submit</button>
-</form>
+    <div>
+        Microblog:
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
 </body>
- -->
 <body>
     <h1>Upload Excel File</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">

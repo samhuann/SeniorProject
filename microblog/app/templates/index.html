@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-hello
 <!DOCTYPE html>
 
 <html lang="en">
@@ -8,11 +7,18 @@ hello
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Excel File</title>
 </head>
-<body>
-    <h1>Upload Excel File</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".xlsx, .xls">
-        <button type="submit">Upload</button>
-    </form>
-</body>
 </html>
+
+{% block content %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% for post in posts %}
+    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+    {% endfor %}
+    <body>
+        <h1>Upload Excel File</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".xlsx, .xls">
+            <button type="submit">Upload</button>
+        </form>
+    </body>
+{% endblock %}

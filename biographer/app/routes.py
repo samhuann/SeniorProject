@@ -120,7 +120,13 @@ def upload_file():
         file.save(file.filename)
         # Read the Excel file into a DataFrame
         df = pd.read_excel(file.filename)
-        
+        regression_type = request.form['regression_type']
+        if regression_type == 'linear':
+            print('linear')
+            pass
+        elif regression_type == 'logistic':
+            print('logistic')
+            pass
         # Now you can use the DataFrame 'df' to work with the uploaded Excel data
         # For example, print the first few rows of the DataFrame
         print(df.head())

@@ -4,8 +4,14 @@
     <body>
         <h1>Upload Excel File</h1>
         <form action="/index" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".xlsx, .xls">
-            <button type="submit">Upload</button>
+            <input type="file" name="file" accept=".xlsx, .xls"><br><br>
+            <label for="regression_type">Choose a regression test:</label>
+            <select name="regression_type" id="regression_type">
+                <option value="linear">Linear Regression</option>
+                <option value="logistic">Logistic Regression</option>
+                <!-- Add more options as needed -->
+            </select><br><br>
+            <button type="submit">Upload and Analyze</button>
         </form>
     </body>
     </html>

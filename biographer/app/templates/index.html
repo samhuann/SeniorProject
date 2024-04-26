@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    <body>
+        <h1>Upload Excel File</h1>
+        <form action="/index" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".xlsx, .xls">
+            <button type="submit">Upload</button>
+        </form>
+    </body>
+    </html>
+    File Uploaded: {{filename}}
+    {% for table in tables %}
+                {{ table|safe }}
+    {% endfor %}
+{% endblock %}

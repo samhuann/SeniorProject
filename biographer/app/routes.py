@@ -8,6 +8,11 @@ from app.models import User
 import pandas as pd
 from datetime import datetime, timezone
 from app.email import send_password_reset_email
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import linregress 
+from scipy.optimize import curve_fit
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -119,18 +124,61 @@ def upload_file():
     if file:        
         file.save(file.filename)
         # Read the Excel file into a DataFrame
-        df = pd.read_excel(file.filename)
+        data = pd.read_excel(file.filename)
         regression_type = request.form['regression_type']
         if regression_type == 'linear':
-            print('linear')
-            pass
+            X = data['X']
+            Y = data['Y']
+            # Perform simple linear regression
+            slope, intercept, r_value, p_value, std_err = linregress(X, Y)
+            # Print regression parameters
+            print("Slope:", slope)
+            print("Intercept:", intercept)
+            print("R-squared:", r_value**2)
+            print("P-value:", p_value)
+            print("Standard error:", std_err)
+            # Plot the data and regression line
+            plt.figure(figsize=(10, 6))
+            sns.scatterplot(x=X, y=Y, label='Data')
+            sns.lineplot(x=X, y=slope*X + intercept, color='red', label='Linear Regression')
+            plt.xlabel("X")
+            plt.ylabel("Y")
+            plt.title("Simple Linear Regression")
+            plt.legend()
+            plt.show()            
         elif regression_type == 'logistic':
-            print('logistic')
-            pass
-        # Now you can use the DataFrame 'df' to work with the uploaded Excel data
-        # For example, print the first few rows of the DataFrame
-        print(df.head())
-        return render_template('index.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values)
+            # Logistic function
+            def logistic_function(x, L, k, x0):
+                return L / (1 + np.exp(-k * (x - x0)))
+            X = data['X']
+            Y = data['Y']
+
+            # Perform logistic regression
+            popt, pcov = curve_fit(logistic_function, X, Y)
+
+            # Extract parameters
+            L, k, x0 = popt
+
+            # Print regression parameters
+            print("L (Maximum Value):", L)
+            print("k (Steepness):", k)
+            print("x0 (Midpoint):", x0)
+
+            # Generate logistic regression curve
+            X_curve = np.linspace(min(X), max(X), 100)
+            Y_curve = logistic_function(X_curve, *popt)
+
+            # Plot the data and logistic regression curve
+            plt.figure(figsize=(10, 6))
+            sns.scatterplot(x=X, y=Y, label='Data')
+            plt.plot(X_curve, Y_curve, color='red', label='Logistic Regression')
+            plt.xlabel("X")
+            plt.ylabel("Y")
+            plt.title("Simple Logistic Regression")
+            plt.legend()
+            plt.show()
+        print(data.head())
+        return render_template('index.html', filename=file.filename, tables=[data.to_html(classes='data')], titles=data.columns.values)
     
 @app.route('/user/<username>')
 @login_required

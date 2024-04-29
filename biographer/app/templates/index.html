@@ -7,6 +7,7 @@
             <input type="file" name="file" accept=".xlsx, .xls"><br><br>
             <label for="regression_type">Choose a regression test:</label>
             <select name="regression_type" id="regression_type">
+                <option value="null"></option>
                 <option value="linear">Linear Regression</option>
                 <option value="logistic">Logistic Regression</option>
                 <!-- Add more options as needed -->
@@ -19,4 +20,5 @@
     {% for table in tables %}
                 {{ table|safe }}
     {% endfor %}
+
 {% endblock %}

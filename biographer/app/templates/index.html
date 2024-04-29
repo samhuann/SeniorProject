@@ -20,5 +20,8 @@
     {% for table in tables %}
                 {{ table|safe }}
     {% endfor %}
+    {% if figname %}
+        <img src= "{{ url_for('static', filename='/'+figname) }} "/>
+    {% endif %}
 
 {% endblock %}

@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import linregress 
 from scipy.optimize import curve_fit
+import os
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -144,8 +145,9 @@ def upload_file():
             plt.xlabel("X")
             plt.ylabel("Y")
             plt.title("Simple Linear Regression")
+            figname=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_linr'+'.png'
             plt.legend()
-            plt.show()            
+            plt.savefig(os.path.join(app.root_path, 'static/'+ figname))          
         elif regression_type == 'logistic':
             # Logistic function
             def logistic_function(x, L, k, x0):
@@ -175,10 +177,11 @@ def upload_file():
             plt.xlabel("X")
             plt.ylabel("Y")
             plt.title("Simple Logistic Regression")
+            figname=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'.png'
             plt.legend()
-            plt.show()
+            plt.savefig(os.path.join(app.root_path, 'static/'+ figname))
         print(data.head())
-        return render_template('index.html', filename=file.filename, tables=[data.to_html(classes='data')], titles=data.columns.values)
+        return render_template('index.html', filename=file.filename, figname=figname, tables=[data.to_html(classes='data')], titles=data.columns.values)
     
 @app.route('/user/<username>')
 @login_required

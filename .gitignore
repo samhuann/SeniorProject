@@ -1,3 +1,4 @@
-
 biographer/.env
-biographer/.env
+biorgrapher/venv2
+biographer/app.db
+biographer/logs

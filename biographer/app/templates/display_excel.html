@@ -1,10 +1,14 @@
-{% extends "base.html" %}
+{% extends "upload_form.html" %}
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
     <body>
-        <h1>Upload Excel File</h1>
-        <form action="/index" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".xlsx, .xls"><br><br>
+        <h1>Excel Data</h1>
+        File Uploaded: {{filename}}
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+    
+        <h2>Select an Option</h2>
+        <form action="/process_option" method="post" enctype="multipart/form-data">
             <label for="regression_type">Choose a regression test:</label>
             <select name="regression_type" id="regression_type">
                 <option value="null"></option>
@@ -12,14 +16,10 @@
                 <option value="logistic">Logistic Regression</option>
                 <!-- Add more options as needed -->
             </select><br><br>
-            <button type="submit">Upload and Analyze</button>
+            <button type="submit">Graph</button>
         </form>
     </body>
-    </html>
-    File Uploaded: {{filename}}
-    {% for table in tables %}
-                {{ table|safe }}
-    {% endfor %}
+
     {% if figname %}
         <img src= "{{ url_for('static', filename='/'+figname) }} "/>
     {% endif %}

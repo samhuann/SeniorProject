@@ -39,7 +39,8 @@ def upload_file():
     global file
     file = request.files['file']
     if file.filename == '':
-        return 'No selected file'
+        flash(('No file selected!'))
+        return redirect(url_for('main.upload_form'))
     if file:
         # Save the file to a temporary location
         file_path = os.path.join(current_app.root_path, 'uploads/'+ file.filename)
@@ -77,28 +78,17 @@ def process_option():
         plt.legend()
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ figname))
     elif regression_type == 'logistic':
-        # Logistic function
         def logistic_function(x, L, k, x0):
             return L / (1 + np.exp(-k * (x - x0)))
         X = df['X']
         Y = df['Y']
-
-            # Perform logistic regression
         popt, pcov = curve_fit(logistic_function, X, Y)
-
-            # Extract parameters
         L, k, x0 = popt
-
-            # Print regression parameters
         print("L (Maximum Value):", L)
         print("k (Steepness):", k)
         print("x0 (Midpoint):", x0)
-
-            # Generate logistic regression curve
         X_curve = np.linspace(min(X), max(X), 100)
         Y_curve = logistic_function(X_curve, *popt)
-
-            # Plot the data and logistic regression curve
         plt.figure(figsize=(10, 6))
         sns.scatterplot(x=X, y=Y, label='Data')
         plt.plot(X_curve, Y_curve, color='red', label='Logistic Regression')
@@ -136,4 +126,8 @@ def user(username):
     user = db.first_or_404(sa.select(User).where(User.username == username))
     return render_template('user.html', user=user)
 
+@bp.route('/tool-list')
+@login_required
+def tool_list():
+    return render_template('tool_list.html')
 

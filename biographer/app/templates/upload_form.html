@@ -8,10 +8,25 @@
 </head>
 <body>
     <h1>Upload Excel File</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file">
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <input type="file" id="fileInput" name="file" accept=".xlsx, .xls">
         <input type="submit" value="Upload">
     </form>
-</body>
 
+    <script>
+        function validateForm() {
+            var fileInput = document.getElementById('fileInput');
+            var filePath = fileInput.value;
+            var allowedExtensions = 
+                /(\.xlsx|\.xls)$/i; 
+            if (!allowedExtensions.test(filePath)) {
+                alert('Please upload file having extensions .xlsx or .xls only.');
+                fileInput.value = '';
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+</body>
 {% endblock %}

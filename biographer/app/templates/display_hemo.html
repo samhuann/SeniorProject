@@ -1,0 +1,18 @@
+{% extends "hemocytometer.html" %}
+{% block content %}
+{{super()}}
+<body>
+    Image Uploaded: {{imgname}}
+    <img src= "{{  url_for('main.get_upload', filename=imgname)  }}"/>
+    <form action="/count" method="post">
+        <input type="hidden" name="imgname" value="{{ imgname }}">
+        <button type="submit">Count</button>
+    </form>
+</body>
+ 
+{% if countname %}
+    <img src= "{{ url_for('static', filename='/'+countname) }}"/>
+{% endif %}
+
+
+{% endblock %}

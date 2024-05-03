@@ -1,6 +1,7 @@
+from __future__ import division, unicode_literals, print_function  # for compatibility with Python 2 and 3
 from datetime import datetime, timezone
 from flask import render_template, flash, redirect, url_for, request, g, \
-    current_app
+    current_app, send_from_directory
 from flask_login import current_user, login_required
 import sqlalchemy as sa
 from app import db
@@ -15,7 +16,11 @@ import pandas as pd
 from scipy.optimize import curve_fit
 from wtforms.validators import ValidationError
 import os
-
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from pandas import DataFrame, Series  # for convenience
+import pims
+import trackpy as tp
 
 @bp.before_app_request
 def before_request():
@@ -130,4 +135,55 @@ def user(username):
 @login_required
 def tool_list():
     return render_template('tool_list.html')
+
+@bp.route('/hemocytometer', methods=['GET','POST'])
+@login_required
+def hemocytometer():
+    return render_template('hemocytometer.html', title='Hemocytometer')
+
+@bp.route('/uploads/<path:filename>')
+def get_upload(filename):
+    return send_from_directory('uploads', filename)
+
+@bp.route('/hemocytometer-upload', methods=['GET','POST'])
+@login_required
+def hemocytometer_upload():
+    if 'img' not in request.files:
+        return ('No file part')
+    global img
+    img = request.files['img']
+    if img.filename == '':
+        flash(('No image selected!'))
+        return redirect(url_for('main.hemocytometer-upload'))
+    if img:
+        # Save the file to a temporary location
+        global img_path
+        img_path = os.path.join(current_app.root_path, 'uploads/'+ img.filename)
+        img.save(img_path)
+    return render_template('display_hemo.html', imgname=img.filename)
+
+@bp.route('/count', methods=['POST'])
+def count():
+
+    mpl.rc('figure',  figsize=(10, 5))
+    mpl.rc('image', cmap='gray')
+    @pims.pipeline
+    def gray(image):
+        return image[:, :, 1]  # Take just the green channel
+    frames = gray(pims.open(img_path))
+    micron_per_pixel = 0.15192872980868
+    feature_diameter = 2.12 # um
+    radius = int(np.round(feature_diameter/2.0/micron_per_pixel))
+    if radius % 2 == 0:
+        radius += 1
+    print('Using a radius of {:d} px'.format(radius))
+    frames
+    f_bf = tp.locate_brightfield_ring(frames[0], 2.0*radius+1)
+    plt.figure()
+    tp.annotate(f_bf, frames[0], plot_style={'markersize': radius*2}, ax=plt.gca())
+    plt.xlabel('Number of cells: ' + str(len(f_bf)))
+    countname=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'count'+ '.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ countname))
+    return render_template('display_hemo.html', imgname=img.filename, countname=countname)
+
 

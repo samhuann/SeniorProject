@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-
-
-
-
-
-
-
-
-
-
-
+<head>
+    <title>Tools</title>
+</head>
+<body>
+    <h1>Tools</h1>
+    <ul>
+        <li><a href="{{ url_for('main.hemocytometer') }}">Hemocytometer (Cell Counter)</a></li>
+        <li><a href="https://www.example.com/tool2">Tool 2</a></li>
+        <li><a href="https://www.example.com/tool3">Tool 3</a></li>
+    </ul>
+</body>
 
 {% endblock %}

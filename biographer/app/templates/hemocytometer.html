@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+{{super()}}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemocytometer</title>
+</head>
+<body>
+    <h1>Upload Image of Cells</h1>
+    <form id="uploadImg" action="/hemocytometer-upload" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
+        <input type="file" id="imgInput" name="img" accept=".png, .jpg">
+        <input type="submit" value="Upload">
+    </form>
+
+    <script>
+        function validateForm() {
+            var imgInput = document.getElementById('imgInput');
+            var imgPath = imgInput.value;
+            var allowedExtensions = 
+                /(\.png|\.jpg)$/i; 
+            if (!allowedExtensions.test(imgPath)) {
+                alert('Please upload file having extensions .png or .jpg only.');
+                imgInput.value = '';
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+</body>
+
+
+{% endblock %}

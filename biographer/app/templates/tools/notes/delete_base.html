@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+    <script src="{{ url_for('static',filename='js/script.js') }}"></script>
+
+    <title>Notes | Delete</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/notes-home">
+            <h1>Notes</h1>
+        </a>
+    </nav>
+    <div class="card">
+        {%block form%}
+        {%endblock%}
+    </div>
+</body>
+{% endblock %}

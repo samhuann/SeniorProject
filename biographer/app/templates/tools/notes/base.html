@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+    <script src="{{ url_for('static',filename='js/script.js') }}"></script>
+
+    {% block title%}{% endblock %}
+    {% block script%}{% endblock %}
+</head>
+
+<body>
+    <nav>
+        <a href="/notes-home">
+            <h1>Biographer Notebooks</h1>
+        </a>
+    </nav>
+    <div class="row" id="row">
+        <div class="sidebar">
+            {% block side %}
+            {% endblock %}
+        </div>
+        <div class="main">
+            {% block main %}
+            {% endblock %}
+        </div>
+    </div>
+
+</body>
+
+{% endblock %}

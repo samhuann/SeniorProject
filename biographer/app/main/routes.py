@@ -14,7 +14,6 @@ import numpy as np
 from scipy.stats import linregress 
 import pandas as pd
 from scipy.optimize import curve_fit
-from wtforms.validators import ValidationError
 import os
 import matplotlib as mpl
 import matplotlib.pyplot as plt

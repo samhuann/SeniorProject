@@ -134,12 +134,12 @@ def user(username):
 @bp.route('/tool-list')
 @login_required
 def tool_list():
-    return render_template('tool_list.html')
+    return render_template('tools/tool_list.html')
 
 @bp.route('/hemocytometer', methods=['GET','POST'])
 @login_required
 def hemocytometer():
-    return render_template('hemocytometer.html', title='Hemocytometer')
+    return render_template('tools/hemocytometer/hemocytometer.html', title='Hemocytometer')
 
 @bp.route('/uploads/<path:filename>')
 def get_upload(filename):
@@ -160,7 +160,7 @@ def hemocytometer_upload():
         global img_path
         img_path = os.path.join(current_app.root_path, 'uploads/'+ img.filename)
         img.save(img_path)
-    return render_template('display_hemo.html', imgname=img.filename)
+    return render_template('tools/hemocytometer/display_hemo.html', imgname=img.filename)
 
 @bp.route('/count', methods=['POST'])
 def count():
@@ -184,6 +184,6 @@ def count():
     plt.xlabel('Number of cells: ' + str(len(f_bf)))
     countname=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'count'+ '.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ countname))
-    return render_template('display_hemo.html', imgname=img.filename, countname=countname)
+    return render_template('tools/hemocytometer/display_hemo.html', imgname=img.filename, countname=countname)
 
 

@@ -56,55 +56,97 @@ def upload_file():
         # Render the template with the Excel data
        
         return render_template('display_excel.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values)
-    
-@bp.route('/process_option', methods=['POST'])
-def process_option():
-    regression_type = request.form['regression_type']
-    if regression_type == 'linear':
-        X = df['X']
-        Y = df['Y']
-        # Perform simple linear regression
-        slope, intercept, r_value, p_value, std_err = linregress(X, Y)
-        # Print regression parameters
-        print("Slope:", slope)
-        print("Intercept:", intercept)
-        print("R-squared:", r_value**2)
-        print("P-value:", p_value)
-        print("Standard error:", std_err)
-        # Plot the data and regression line
-        plt.figure(figsize=(10, 6))
-        sns.scatterplot(x=X, y=Y, label='Data')
-        sns.lineplot(x=X, y=slope*X + intercept, color='red', label='Linear Regression')
-        plt.xlabel("X")
-        plt.ylabel("Y")
-        plt.title("Simple Linear Regression")
-        figname=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_linr'+'.png'
-        plt.legend()
-        plt.savefig(os.path.join(current_app.root_path, 'static/'+ figname))
-    elif regression_type == 'logistic':
-        def logistic_function(x, L, k, x0):
-            return L / (1 + np.exp(-k * (x - x0)))
-        X = df['X']
-        Y = df['Y']
-        popt, pcov = curve_fit(logistic_function, X, Y)
-        L, k, x0 = popt
-        print("L (Maximum Value):", L)
-        print("k (Steepness):", k)
-        print("x0 (Midpoint):", x0)
-        X_curve = np.linspace(min(X), max(X), 100)
-        Y_curve = logistic_function(X_curve, *popt)
-        plt.figure(figsize=(10, 6))
-        sns.scatterplot(x=X, y=Y, label='Data')
-        plt.plot(X_curve, Y_curve, color='red', label='Logistic Regression')
-        plt.xlabel("X")
-        plt.ylabel("Y")
-        plt.title("Simple Logistic Regression")
-        figname=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'.png'
-        plt.legend()
-        plt.savefig(os.path.join(current_app.root_path, 'static/'+ figname))
-    print(df.head())
-    return render_template('display_excel.html', filename=file.filename, figname=figname, tables=[df.to_html(classes='data')], titles=df.columns.values)
-         
+
+
+@bp.route('/analyze', methods=['POST'])
+def analyze_excel():
+    file_path = request.form['file_path']
+    transformation = request.form['transformation']
+    test_nominal = request.form['test_nominal']
+    test_one_measurement = request.form['test_one_measurement']
+    test_multiple_measurement = request.form['test_multiple_measurement']
+
+    # Perform transformation or statistical tests
+    df = pd.read_excel(file_path)
+    transformed_df = None
+
+    # Perform transformation based on selected option
+    if transformation == 'normalization':
+        # Apply normalization
+        transformed_df = normalize_data(df)
+    elif transformation == 'transformation':
+        # Apply transformation
+        transformed_df = transform_data(df)
+    elif transformation == 'pruning':
+        # Apply pruning
+        transformed_df = prune_data(df)
+
+    # Perform statistical tests based on selected options
+    test_results = {}
+    if test_nominal == 'chi_square':
+        test_results['chi_square'] = perform_chi_square_test(transformed_df)
+    elif test_nominal == 'fisher_exact':
+        test_results['fisher_exact'] = perform_fishers_exact_test(transformed_df)
+
+    if test_one_measurement == 't_test':
+        test_results['t_test'] = perform_t_test(transformed_df)
+    elif test_one_measurement == 'anova':
+        test_results['anova'] = perform_anova(transformed_df)
+
+    if test_multiple_measurement == 'correlation':
+        test_results['correlation'] = perform_correlation_test(transformed_df)
+    elif test_multiple_measurement == 'regression':
+        test_results['regression'] = perform_regression_test(transformed_df)
+
+    # Render the template with the updated Excel data, dropdowns, and test results
+    return render_template('display_excel.html', file_path=file_path, test_results=test_results)
+
+
+# Placeholder functions for transformation and statistical tests
+def normalize_data(df):
+    # Placeholder for normalization
+    return df
+
+def transform_data(df):
+    # Placeholder for transformation
+    return df
+
+def prune_data(df):
+    # Placeholder for pruning
+    return df
+
+def perform_chi_square_test(df):
+    # Placeholder for performing Chi-Square test
+    return "Chi-Square Test Result"
+
+def perform_fishers_exact_test(df):
+    # Placeholder for performing Fisher's Exact test
+    return "Fisher's Exact Test Result"
+
+def perform_t_test(df):
+    # Placeholder for performing T-Test
+    return "T-Test Result"
+
+def perform_anova(df):
+    # Placeholder for performing ANOVA
+    return "ANOVA Result"
+
+def perform_correlation_test(df):
+    # Placeholder for performing correlation test
+    return "Correlation Test Result"
+
+def perform_regression_test(df):
+    # Placeholder for performing regression test
+    return "Regression Test Result"
+
+
+
+
+
+
+
+
+
 
 
 

@@ -8,17 +8,88 @@
             {{ table|safe }}
         {% endfor %}
     
-        <h2>Select an Option</h2>
-        <form action="/process_option" method="post" enctype="multipart/form-data">
-            <label for="regression_type">Choose a regression test:</label>
-            <select name="regression_type" id="regression_type">
-                <option value="null"></option>
-                <option value="linear">Linear Regression</option>
-                <option value="logistic">Logistic Regression</option>
-                <!-- Add more options as needed -->
-            </select><br><br>
-            <button type="submit">Graph</button>
+        <h1>Analyze Excel File</h1>
+        <form id="analyzeForm" action="/analyze" method="post">
+            <input type="hidden" name="file_path" value="{{ file_path }}">
+            
+            <label for="transform">Transform and Normalize:</label>
+            <select name="transformation" id="transform">
+                <option value=""></option>
+                <option value="normalize">Normalize</option>
+                <option value="transform">Transform</option>
+                <option value="transformconcentrations">Transform Concentrations</option>
+                <option value="prune">Prune</option>
+                <option value="area_under_curve">Area Under Curve</option>
+                <option value="fractiontotal">Fraction of Total</option>
+                <option value="transpose">Transpose</option>
+
+                <!-- Add more transformation options as needed -->
+            </select>
+            <button type="submit" formaction="/transform" formmethod="post">Submit</button>
+            <br><br>
+            
+            <label for="testNominal">Tests for Nominal Variables:</label>
+            <select name="test_nominal" id="testNominal">
+                <option value=""></option>
+                <option value="exact_test_of_goodness_of_fit">Exact Test of Goodness-of-Fit</option>
+                <option value="power_analysis">Power Analysis</option>
+                <option value="chi_square_test_of_goodness_of_fit">Chi-Square Test of Goodness-of-Fit</option>
+                <option value="g_test_of_goodness_of_fit">G-Test of Goodness-of-Fit</option>
+                <option value="chi_square_test_of_independence">Chi-Square Test of Independence</option>
+                <option value="g_test_of_independence">G-Test of Independence</option>
+                <option value="fishers_exact_test">Fisher's Exact Test</option>
+                <option value="small_numbers_in_chi_square_and_g_tests">Small Numbers in Chi-Square and G-Tests</option>
+                <option value="repeated_g_tests_of_goodness_of_fit">Repeated G-Tests of Goodness-of-Fit</option>
+                <option value="cochran_mantel_haenszel_test">Cochran-Mantel-Haenszel Test</option>
+                <!-- Add more options for tests on nominal variables -->
+            </select>
+            <button type="submit" formaction="/nominal_test" formmethod="post">Submit</button>
+            <br><br>
+            
+            <label for="testOneMeasurement">Tests for One Measurement Variable:</label>
+            <select name="test_one_measurement" id="testOneMeasurement">
+                <option value=""></option>
+                <option value="one_sample_t_test">One-Sample t-Test</option>
+                <option value="two_sample_t_test">Two-Sample t-Test</option>
+                <option value="homoscedasticity">Homoscedasticity</option>
+                <option value="data_transformations">Data Transformations</option>
+                <option value="one_way_anova">One-Way ANOVA</option>
+                <option value="kruskal_wallis_test">Kruskal-Wallis Test</option>
+                <option value="nested_anova">Nested ANOVA</option>
+                <option value="two_way_anova">Two-Way ANOVA</option>
+                <option value="paired_t_test">Paired t-Test</option>
+                <option value="wilcoxon_signed_rank_test">Wilcoxon Signed-Rank Test</option>
+                <!-- Add more options for tests on one measurement variable -->
+            </select>
+            <button type="submit" formaction="/one_measurement_test" formmethod="post">Submit</button>
+            <br><br>
+            
+            <label for="testMultipleMeasurement">Tests for Multiple Measurement Variables:</label>
+            <select name="test_multiple_measurement" id="testMultipleMeasurement">
+                <option value=""></option>
+                <option value="linear_regression_and_correlation">Linear Regression and Correlation</option>
+                <option value="spearman_rank_correlation">Spearman Rank Correlation</option>
+                <option value="polynomial_regression">Polynomial Regression</option>
+                <option value="analysis_of_covariance">Analysis of Covariance</option>
+                <option value="multiple_regression">Multiple Regression</option>
+                <option value="simple_logistic_regression">Simple Logistic Regression</option>
+                <option value="multiple_logistic_regression">Multiple Logistic Regression</option>
+                <!-- Add more options for tests on multiple measurement variables -->
+            </select>
+            <button type="submit" formaction="/multiple_measurement_test" formmethod="post">Submit</button>
+            <br><br>
         </form>
+        <hr>
+
+        <!-- Display test results -->
+        {% if test_results %}
+        <h2>Test Results</h2>
+        <ul>
+        {% for test, result in test_results.items() %}
+            <li><strong>{{ test }}</strong>: {{ result }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
     </body>
 
     {% if figname %}

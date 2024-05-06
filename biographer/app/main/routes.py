@@ -6,7 +6,7 @@ from flask_login import current_user, login_required
 import sqlalchemy as sa
 from app import db
 from app.main.forms import EditProfileForm
-from app.models import User, Post
+from app.models import User
 from app.main import bp
 import seaborn as sns
 import matplotlib.pyplot as plt

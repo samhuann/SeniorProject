@@ -62,19 +62,19 @@ def upload_file():
 def perform_nominal_test():
     test = request.form['test_nominal']
     result = perform_nominal_test(test)
-    return render_template('display_excel.html', test_results={test: result})
+    return render_template('display_excel.html', test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values)
 
 @bp.route('/one_measurement_test', methods=['POST'])
 def perform_one_measurement_test():
     test = request.form['test_one_measurement']
     result = perform_one_measurement_test(test)
-    return render_template('display_excel.html', test_results={test: result})
+    return render_template('display_excel.html', test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values)
 
 @bp.route('/multiple_measurement_test', methods=['POST'])
 def perform_multiple_measurement_test():
     test = request.form['test_multiple_measurement']
     result = perform_multiple_measurement_test(test)
-    return render_template('display_excel.html', test_results={test: result})
+    return render_template('display_excel.html', test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values)
 
 @bp.route('/transform_data', methods=['POST'])
 def transform_data():
@@ -202,18 +202,6 @@ def fraction_of_total(df):
 def transpose(df):
     # Placeholder for transformation
     return df
-
-
-
-
-
-
-
-
-
-
-
-
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

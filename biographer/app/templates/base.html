@@ -16,8 +16,10 @@
         {% else %}
         <a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a>
         <a href="{{ url_for('main.tool_list') }}">Tools</a>
-        <a href="{{ url_for('auth.logout') }}">Logout</a><br>
-        Hi, {{ current_user.username }}! It's a good day for analysis!<br>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+        <div style="position: absolute; top: 10px; right: 10px; font-size: 16px;">
+            Hi, {{ current_user.username }}! It's a good day for data analysis!
+        </div>
         {% endif %}
     </div>
     <hr>

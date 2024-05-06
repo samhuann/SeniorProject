@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from app.notes import bp
 from app import db
-
+from app.main.routes import current_user
 
 
 
@@ -67,13 +67,12 @@ def home():
 @bp.route("/notebook/create", methods=["GET", "POST"])
 def create_notebook():
     if request.method == "POST":
-        print('test1')
         if request.form["name"] and not request.form["name"].isspace():
             if request.form["password"] and not request.form["password"].isspace():
-                db.session.add(Notebook(name=request.form["name"],
+                db.session.add(Notebook(name="\"" + request.form["name"]+ "\""+" by " + current_user.username,
                                         password=hashlib.sha256(request.form["password"].encode('utf-8')).hexdigest()))
             else:
-                db.session.add(Notebook(name=request.form["name"]))
+                db.session.add(Notebook(name="\"" + request.form["name"]+ "\""+" by " + current_user.username))
             db.session.commit()
             return redirect("/notes-home")
         else:

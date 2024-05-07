@@ -1,6 +1,10 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/excel.css') }}">
+</head>
 {% extends "upload_form.html" %}
 {% block content %}
 {{super()}}
+
     <body>
         <h1>Excel Data</h1>
         File Uploaded: {{filename}}
@@ -9,7 +13,7 @@
         {% endfor %}
     
         <h1>Analyze Excel File</h1>
-        <form id="transformation" action="{{ url_for('main.transform_data') }}" method="post">
+        <form id="transformation" method="post">
             <input type="hidden" name="file_path" value="{{ file_path }}">
             
             <label for="transform">Transform:</label>
@@ -24,14 +28,56 @@
                 <option value="transpose">Transpose</option>
                 <!-- Add more transformation options as needed -->
             </select>
-            <button type="submit">Apply Transformation</button>
             <br><br>
         </form>
+
+        <div id="normalizationOptions" style="display: none;">
+            <h2>Normalization Options</h2>
+            <form id="normalizationForm" action="{{ url_for('main.normalize') }}" method="post">
+                <label for="zeroPercent">Define 0%:</label><br>
+                <input type="radio" id="smallestValue" name="zero_percent" value="smallest">
+                <label for="smallestValue">The smallest value in each data set</label><br>
+                <input type="radio" id="firstValue" name="zero_percent" value="first">
+                <label for="firstValue">The first value in each data set</label><br>
+                <input type="radio" id="customValue" name="zero_percent" value="custom">
+                <label for="customValue">Custom value (Y = <input type="number" id="customInput" name="custom_input">)</label><br><br>
+                
+                <label for="hundredPercent">Define 100%:</label><br>
+                <input type="radio" id="largestValue" name="hundred_percent" value="largest">
+                <label for="largestValue">The largest value in each data set</label><br>
+                <input type="radio" id="lastValue" name="hundred_percent" value="last">
+                <label for="lastValue">The last value in each data set</label><br><br>
+                
+                <button type="submit">Apply Normalization</button>
+            </form>
+        </div>
+
+
+
 
         <h2>Transformed Data</h2>
         {% if transformed_df %}
         <!-- Display transformed DataFrame -->
-        {{ transformed_df|safe }}
+            <div class="excel-table-container">
+                <table class="excel-table">
+                    <thead>
+                        <tr>
+                            {% for column in transformed_df[0].keys() %}
+                                <th>{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in transformed_df %}
+                            <tr>
+                                {% for value in row.values() %}
+                                    <td>{{ value }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% else %}
         <p>No transformed data available.</p>
         {% endif %}
@@ -111,6 +157,17 @@
         {% else %}
         <p>No test results available.</p>
         {% endif %}
+
+        <script>
+            document.getElementById('transform').addEventListener('change', function() {
+                var normalizationOptions = document.getElementById('normalizationOptions');
+                if (this.value === 'normalize') {
+                    normalizationOptions.style.display = 'block';
+                } else {
+                    normalizationOptions.style.display = 'none';
+                }
+            });
+        </script>
     </body>
 </html>
 

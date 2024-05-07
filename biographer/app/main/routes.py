@@ -47,6 +47,7 @@ def upload_file():
         return redirect(url_for('main.upload_form'))
     if file:
         # Save the file to a temporary location
+        global file_path
         file_path = os.path.join(current_app.root_path, 'uploads/'+ file.filename)
         file.save(file_path)
         
@@ -76,30 +77,6 @@ def perform_multiple_measurement_test():
     result = perform_multiple_measurement_test(test)
     return render_template('display_excel.html', test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values)
 
-@bp.route('/transform_data', methods=['POST'])
-def transform_data():
-    transformation = request.form['transformation']
-    file_path = request.form['file_path']
-    df = pd.read_excel(file_path)
-    transformed_df = None
-
-    if transformation == 'normalize':
-        transformed_df = normalize(df)
-    elif transformation == 'transform':
-        transformed_df = transform(df)
-    elif transformation == 'transform_concentrations':
-        transformed_df = transform_concentrations(df)
-    elif transformation == 'prune':
-        transformed_df = prune(df)
-    elif transformation == 'area_under_curve':
-        transformed_df = area_under_curve(df)
-    elif transformation == 'fraction_of_total':
-        transformed_df = fraction_of_total(df)
-    elif transformation == 'transpose':
-        transformed_df = transpose(df)
-
-
-    return render_template('display_excel.html', file_path=file_path, transformed_df=transformed_df)
 
 # Placeholder functions for performing tests
 def perform_nominal_test(test):
@@ -180,10 +157,18 @@ def perform_multiple_measurement_test(test):
         # Placeholder for performing Multiple Logistic Regression
         return "Result of Multiple Logistic Regression"
 
-# Placeholder functions for transformations
-def normalize(df):
-    # Placeholder for normalization
-    return df
+@bp.route('/normalize', methods=['POST','GET'])
+def normalize():
+    zero_percent = request.form.get('zero_percent')
+    custom_input = request.form.get('custom_input')
+    hundred_percent = request.form.get('hundred_percent')
+
+    transformed_df=df.to_dict(orient='records') if df is not None else None
+
+
+    
+    return render_template('display_excel.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=transformed_df)
+
 def transform(df):
     # Placeholder for transformation
     return df

@@ -159,15 +159,45 @@ def perform_multiple_measurement_test(test):
 
 @bp.route('/normalize', methods=['POST','GET'])
 def normalize():
+    transformed_df = df.copy()
     zero_percent = request.form.get('zero_percent')
     custom_input = request.form.get('custom_input')
+    hcustom_input = request.form.get('hcustom_input')
     hundred_percent = request.form.get('hundred_percent')
+    presentation = request.form.get('presentation')
 
-    transformed_df=df.to_dict(orient='records') if df is not None else None
-
-
+    if zero_percent == 'smallest':
+        zero_percent_values = df.min(axis=0)
+    elif zero_percent == 'first':
+        zero_percent_values = df.iloc[0]
+    elif zero_percent == 'custom':
+        zero_percent_values = pd.Series(float(custom_input), index=df.columns)
+    elif zero_percent == 'sum':
+        zero_percent_values = df.sum(axis=0)
+    elif zero_percent == 'avg':
+        zero_percent_values = df.mean(axis=0)
     
-    return render_template('display_excel.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=transformed_df)
+    if hundred_percent == "largest":
+        hundred_percent_values = df.max(axis=0)
+    elif hundred_percent == "last":
+        hundred_percent_values = df.iloc[-1]
+    elif hundred_percent == "hcustom":
+        hundred_percent_values = pd.Series(float(hcustom_input), index=df.columns)
+    elif hundred_percent == "hsum":
+        hundred_percent_values = df.sum(axis=0)
+    elif hundred_percent == "havg":
+        hundred_percent_values = df.mean(axis=0)
+    
+    for column in df.columns:
+        if presentation == "percentage":
+            transformed_df[column] = ((df[column] - zero_percent_values[column]) / (hundred_percent_values[column] - zero_percent_values[column])) * 100
+        elif presentation == "fraction":
+            transformed_df[column] = (df[column] - zero_percent_values[column]) / (hundred_percent_values[column] - zero_percent_values[column])
+    
+    print(transformed_df)
+    
+    return render_template('display_excel.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
 
 def transform(df):
     # Placeholder for transformation

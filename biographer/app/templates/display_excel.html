@@ -39,6 +39,10 @@
                 <label for="smallestValue">The smallest value in each data set</label><br>
                 <input type="radio" id="firstValue" name="zero_percent" value="first">
                 <label for="firstValue">The first value in each data set</label><br>
+                <input type="radio" id="sumValue" name="zero_percent" value="sum">
+                <label for="sumValue">Sum of all values</label><br>
+                <input type="radio" id="avgValue" name="zero_percent" value="avg">
+                <label for="avgValue">Average of all values</label><br>
                 <input type="radio" id="customValue" name="zero_percent" value="custom">
                 <label for="customValue">Custom value (Y = <input type="number" id="customInput" name="custom_input">)</label><br><br>
                 
@@ -46,8 +50,20 @@
                 <input type="radio" id="largestValue" name="hundred_percent" value="largest">
                 <label for="largestValue">The largest value in each data set</label><br>
                 <input type="radio" id="lastValue" name="hundred_percent" value="last">
-                <label for="lastValue">The last value in each data set</label><br><br>
+                <label for="lastValue">The last value in each data set</label><br>
+                <input type="radio" id="hsumValue" name="hundred_percent" value="hsum">
+                <label for="hsumValue">Sum of all values</label><br>
+                <input type="radio" id="havgValue" name="hundred_percent" value="havg">
+                <label for="havgValue">Average of all values</label><br>
+                <input type="radio" id="hcustomValue" name="hundred_percent" value="hcustom">
+                <label for="hcustomValue">Custom value (Y = <input type="number" id="hcustomInput" name="hcustom_input">)</label><br><br>
                 
+                <label for="presentation">Present results as</label><br>
+                <input type="radio" id="fraction" name="presentation" value="fraction">
+                <label for="fraction">Fraction</label><br>
+                <input type="radio" id="percentage" name="presentation" value="percentage">
+                <label for="percentage">Percentage</label><br><br>
+
                 <button type="submit">Apply Normalization</button>
             </form>
         </div>

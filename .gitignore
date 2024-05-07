@@ -2,3 +2,4 @@ biographer/.env
 biorgrapher/venv2
 biographer/app.db
 biographer/logs
+biographer/venv2

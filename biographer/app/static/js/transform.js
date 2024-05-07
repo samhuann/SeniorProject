@@ -1,0 +1,37 @@
+document.getElementById('function').addEventListener('change', function() {
+    var userInputDiv = document.getElementById('userInputs');
+    if (this.value === 'y*k' || this.value === 'y+k' || this.value === 'y-k' || this.value === 'y/k' || this.value === 'y^k'|| this.value === 'k-y'|| this.value === 'k/y') {
+        userInputDiv.style.display = 'block';
+    } else {
+        userInputDiv.style.display = 'none';
+    }
+});
+document.getElementById('transformConcentration').addEventListener('change', function() {
+    var userXInputDiv = document.getElementById('userXInputs');
+    if (this.value === 'changeX0' || this.value === 'multConstant' || this.value === 'divConstant') {
+        userXInputDiv.style.display = 'block';
+    } else {
+        userXInputDiv.style.display = 'none';
+    }
+});
+
+document.getElementById('transform').addEventListener('change', function() {
+    var normalizationOptions = document.getElementById('normalizationOptions');
+    if (this.value === 'normalize') {
+        normalizationOptions.style.display = 'block';
+    } else {
+        normalizationOptions.style.display = 'none';
+    }
+    var transformOptions = document.getElementById('transformOptions');
+    if (this.value === 'transform') {
+        transformOptions.style.display = 'block';
+    } else {
+        transformOptions.style.display = 'none';
+    }
+    var transformConcentrationOptions = document.getElementById('transformConcentrationOptions');
+    if (this.value === 'transform_concentrations') {
+        transformConcentrationOptions.style.display = 'block';
+    } else {
+        transformConcentrationOptions.style.display = 'none';
+    }
+});

@@ -290,13 +290,36 @@ def transform():
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-def transform_concentrations(df):
-    # Placeholder for transformation
-    return df
+@bp.route('/transform-concentrations', methods=['POST','GET'])
+def transform_concentrations():
+    transformed_df= df.copy()
+    transform_concentrations = request.form.get('transformConcentration')
+    userx_input = request.form.get('userx_input')
+    if transform_concentrations == "changeX0":
+        transformed_df['X'] = df.loc[df['X'] == 0, 'X'] = float(userx_input)
+    elif transform_concentrations == "multConstant":
+        transformed_df['X']*=float(userx_input)
+    elif transform_concentrations == "divConstant":
+        transformed_df['X']/=float(userx_input)
+    elif transform_concentrations == "log10x":
+        transformed_df['X'] = np.log10(df['X'])
+    elif transform_concentrations == "lnx":
+        transformed_df['X'] = np.log(df['X'])
+    elif transform_concentrations == "log2x":
+        transformed_df['X'] = np.log2(df['X'])
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_transconc'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
+    return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    
 def area_under_curve(df):
     # Placeholder for transformation
     return df
 def fraction_of_total(df):
+    # Placeholder for transformation
+    return df
+def prune(df):
     # Placeholder for transformation
     return df
 def transpose(df):

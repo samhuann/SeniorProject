@@ -24,6 +24,7 @@
                 <option value="transform_concentrations">Transform Concentrations</option>
                 <option value="area_under_curve">Area Under Curve</option>
                 <option value="fraction_of_total">Fraction of Total</option>
+                <option value="prune">Prune</option>
                 <option value="transpose">Transpose</option>
                 <!-- Add more transformation options as needed -->
             </select>
@@ -125,17 +126,29 @@
                     <input type="number" id="userInput" name="user_input"><br><br>
                 </div>
 
-                <script>
-                    document.getElementById('function').addEventListener('change', function() {
-                        var userInputDiv = document.getElementById('userInputs');
-                        if (this.value === 'y*k' || this.value === 'y+k' || this.value === 'y-k' || this.value === 'y/k' || this.value === 'y^k'|| this.value === 'k-y'|| this.value === 'k/y') {
-                            userInputDiv.style.display = 'block';
-                        } else {
-                            userInputDiv.style.display = 'none';
-                        }
-                    });
-                </script>
-            
+                
+                <button type="submit">Apply Transformation</button>
+            </form>
+        </div>
+        <div id="transformConcentrationOptions" style="display: none;">
+            <h2>Transform Concentration Options</h2>
+            <form id="trasnformConcentrationForm" action="{{ url_for('main.transform_concentrations') }}" method="post">
+                <label for="transformConcentration">Transform 'X' values:</label><br>
+                <select name="transformConcentration" id="transformConcentration">
+                    <option value="none">None</option>
+                    <option value="changeX0">Change X=0 to:</option>
+                    <option value="multConstant">X=X*K</option>
+                    <option value="divConstant">X=X/K</option>
+                    <option value="log10x">Y=Y-K</option>
+                    <option value="lnx">Y=Y/K</option>
+                    <option value="log2x">Y=Y^2</option>
+                </select><br><br>
+
+                <div id="userXInputs" style="display: none;">
+                    <label for="userXInput">Enter value for K:</label>
+                    <input type="number" id="userXInput" name="userx_input"><br><br>
+                </div>
+
                 
                 <button type="submit">Apply Transformation</button>
             </form>
@@ -253,23 +266,8 @@
         <p>No graph available.</p>
         {% endif %}
 
-        <script>
-            document.getElementById('transform').addEventListener('change', function() {
-                var normalizationOptions = document.getElementById('normalizationOptions');
-                if (this.value === 'normalize') {
-                    normalizationOptions.style.display = 'block';
-                } else {
-                    normalizationOptions.style.display = 'none';
-                }
-                var transformOptions = document.getElementById('transformOptions');
-                if (this.value === 'transform') {
-                    transformOptions.style.display = 'block';
-                } else {
-                    transformOptions.style.display = 'none';
-                }
-            });
-            
-        </script>
+        <script src="{{ url_for('static',filename='js/transform.js') }}"></script>
+
     </body>
 </html>
 

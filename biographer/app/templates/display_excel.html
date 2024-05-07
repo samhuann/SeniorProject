@@ -71,7 +71,7 @@
         <div id="transformOptions" style="display: none;">
             <h2>Transformation Options</h2>
             <form id="transformForm" action="{{ url_for('main.transform') }}" method="post">
-                <label for="biochem">Biochemistry Transforms</label><br>
+                <label for="biochem">Biochemistry Transforms:</label><br>
                 <input type="radio" id="none" name="biochem" value="none" checked="checked">
                 <label for="none">None</label><br>
                 <input type="radio" id="eadie-hofstee" name="biochem" value="eadie-hofstee">
@@ -153,6 +153,17 @@
                 <button type="submit">Apply Transformation</button>
             </form>
         </div>
+        <div id="areaUnderCurveDisplay" style="display: none;">
+            <form id="areaUnderCurveForm" action="{{ url_for('main.area_under_curve') }}" method="post">
+                <button type="submit">Apply Transformation</button>
+            </form>
+        </div>
+        {% if area %}
+            <p>Area Under Curve: {{ area }}</p>
+        {% endif %}
+    
+        
+
 
 
 

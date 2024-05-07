@@ -312,10 +312,21 @@ def transform_concentrations():
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_transconc'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
-    
-def area_under_curve(df):
-    # Placeholder for transformation
-    return df
+
+@bp.route('/area-under-curve', methods=['POST','GET'])
+def area_under_curve():
+    transformed_df=df.copy()
+    area = None
+    area = np.trapz(df['Y'], x=df['X'])
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_auc'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    print(area)          
+    return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, area=area,transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
+
+
 def fraction_of_total(df):
     # Placeholder for transformation
     return df

@@ -1,3 +1,4 @@
+
 document.getElementById('function').addEventListener('change', function() {
     var userInputDiv = document.getElementById('userInputs');
     if (this.value === 'y*k' || this.value === 'y+k' || this.value === 'y-k' || this.value === 'y/k' || this.value === 'y^k'|| this.value === 'k-y'|| this.value === 'k/y') {
@@ -34,4 +35,12 @@ document.getElementById('transform').addEventListener('change', function() {
     } else {
         transformConcentrationOptions.style.display = 'none';
     }
+    var auc = document.getElementById('areaUnderCurveDisplay');
+    if (this.value === 'area_under_curve') {
+        auc.style.display = 'block';
+    } else {
+        auc.style.display = 'none';
+    }
+    
 });
+

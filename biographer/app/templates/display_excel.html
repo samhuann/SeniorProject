@@ -72,18 +72,71 @@
             <h2>Transformation Options</h2>
             <form id="transformForm" action="{{ url_for('main.transform') }}" method="post">
                 <label for="biochem">Biochemistry Transforms</label><br>
-                <input type="radio" id="none" name="biochem" value="none">
+                <input type="radio" id="none" name="biochem" value="none" checked="checked">
                 <label for="none">None</label><br>
                 <input type="radio" id="eadie-hofstee" name="biochem" value="eadie-hofstee">
                 <label for="eadie-hofstee">Eadie-Hofstee</label><br>
                 <input type="radio" id="hanes-woolf" name="biochem" value="hanes-woolf">
                 <label for="hanes-woolf">Hanes-Woolf</label><br>
                 <input type="radio" id="hill" name="biochem" value="hill">
-                <label for="hill">Hill: Ymax = <input type="number" id="hill_input" name="hill_input"></label><br>
+                <label for="hill">Hill (Ymax = <input type="number" id="hill_input" name="hill_input">)</label><br>
                 <input type="radio" id="log-log" name="biochem" value="log-log">
                 <label for="log-log">Log-Log</label><br>
                 <input type="radio" id="scatchard" name="biochem" value="scatchard">
                 <label for="scatchard">Scatchard</label><br><br>
+
+                <label for="function">Standard Functions: </label><br>
+                <select name="function" id="function">
+                    <option value="none">None</option>
+                    <option value="y*k">Y=Y*K</option>
+                    <option value="y+k">Y=Y+K</option>
+                    <option value="y-k">Y=Y-K</option>
+                    <option value="y/k">Y=Y/K</option>
+                    <option value="ysquared">Y=Y^2</option>
+                    <option value="y^k">Y=Y^K</option>
+                    <option value="logy">Y=log(Y)</option>
+                    <option value="-logy">Y=-1*log(Y)</option>
+                    <option value="lny">Y=ln(Y)</option>
+                    <option value="10^y">Y=10^Y</option>
+                    <option value="e^y">Y=e^Y</option>
+                    <option value="1/y">Y=1/Y</option>
+                    <option value="sqrty">Y=sqrt(Y)</option>
+                    <option value="logity">Y=ln(Y/1-Y)</option>
+                    <option value="zscorey">zscore(Y)</option>
+                    <option value="siny">Y=sin(Y)</option>
+                    <option value="cosy">Y=cos(Y)</option>
+                    <option value="tany">Y=tan(Y)</option>
+                    <option value="arcsiny">Y=arcsin(Y)</option>
+                    <option value="absy">Y=absolute(Y)</option>
+                    <option value="x/y">Y=X/Y</option>
+                    <option value="y/x">Y=Y/X</option>
+                    <option value="y-x">Y=Y-X</option>
+                    <option value="y+x">Y=Y+X</option>
+                    <option value="y*x">Y=Y*X</option>
+                    <option value="x-y">Y=X-Y</option>
+                    <option value="k-y">Y=K-Y</option>
+                    <option value="k/y">Y=K/Y</option>
+                    <option value="log2y">Y=log2(y)</option>
+                    <option value="2^y">Y=2^y</option>
+
+                </select><br><br>
+
+                <div id="userInputs" style="display: none;">
+                    <label for="userInput">Enter value for K:</label>
+                    <input type="number" id="userInput" name="user_input"><br><br>
+                </div>
+
+                <script>
+                    document.getElementById('function').addEventListener('change', function() {
+                        var userInputDiv = document.getElementById('userInputs');
+                        if (this.value === 'y*k' || this.value === 'y+k' || this.value === 'y-k' || this.value === 'y/k' || this.value === 'y^k'|| this.value === 'k-y'|| this.value === 'k/y') {
+                            userInputDiv.style.display = 'block';
+                        } else {
+                            userInputDiv.style.display = 'none';
+                        }
+                    });
+                </script>
+            
                 
                 <button type="submit">Apply Transformation</button>
             </form>

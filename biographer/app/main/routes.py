@@ -11,15 +11,18 @@ from app.main import bp
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import linregress 
+from scipy.stats import linregress,zscore 
 import pandas as pd
 from scipy.optimize import curve_fit
 import os
+from scipy.special import logit
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from pandas import DataFrame, Series  # for convenience
 import pims
 import trackpy as tp
+import math
+import scipy as sp
 
 @bp.before_app_request
 def before_request():
@@ -194,13 +197,19 @@ def normalize():
         elif presentation == "fraction":
             transformed_df[column] = (df[column] - zero_percent_values[column]) / (hundred_percent_values[column] - zero_percent_values[column])
     
-    return render_template('display_excel.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_norm'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
+    return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/transform', methods=['POST','GET'])
 def transform():
     transformed_df= df.copy()
     biochem_transform = request.form.get('biochem')
+    function = request.form.get('function')
     hill_input = request.form.get('hill_input')
+    user_input = request.form.get('user_input')
     if biochem_transform == "eadie-hofstee":
         transformed_df['X'] = df['Y'] / df['X']
     elif biochem_transform == "hanes-woolf":
@@ -214,6 +223,67 @@ def transform():
     elif biochem_transform == "scatchard":
         transformed_df['Y'] = df['Y'] / df['X']
         transformed_df['X'] = df['Y']
+    if function == "y*k":
+        transformed_df['Y']=df['Y']*float(user_input)
+    elif function == "y+k":
+        transformed_df['Y']=df['Y']+float(user_input)
+    elif function == "y-k":
+        transformed_df['Y']=df['Y']-float(user_input)
+    elif function == "y/k":
+        transformed_df['Y']=df['Y']/float(user_input)
+    elif function == "ysquared":
+        transformed_df['Y']=df['Y']^2
+    elif function == "y^k":
+        transformed_df['Y']=df['Y']^float(user_input)
+    elif function == "logy":
+        transformed_df['Y']=math.log(df['Y'],10)
+    elif function == "-logy":
+        transformed_df['Y']=-1*math.log(df['Y'],10)
+    elif function == "lny":
+        transformed_df['Y']=math.log(df['Y'])
+    elif function == "10^y":
+        transformed_df['Y']=10^df['Y']
+    elif function == "e^y":
+        transformed_df['Y']=math.exp(df['Y'])
+    elif function == "1/y":
+        transformed_df['Y']=1/df['Y']
+    elif function == "sqrty":
+        transformed_df['Y']=math.sqrt(df['Y'])
+    elif function == "logity":
+        transformed_df['Y']=logit(df['Y'])
+    elif function == "zscorey":
+        transformed_df['Y']=zscore(df['Y'])
+    elif function == "siny":
+        transformed_df['Y']=math.sin(df['Y'])
+    elif function == "cosy":
+        transformed_df['Y']=math.cos(df['Y'])
+    elif function == "tany":
+        transformed_df['Y']=math.tan(df['Y'])
+    elif function == "arcsiny":
+        transformed_df['Y']=math.asin(df['Y'])
+    elif function == "absy":
+        transformed_df['Y']=abs(df['Y'])
+    elif function == "x/y":
+        transformed_df['Y']=df['X']/df['Y']
+    elif function == "y/x":
+        transformed_df['Y']=df['Y']/df['X']
+    elif function == "y-x":
+        transformed_df['Y']=df['Y']-df['X']
+    elif function == "y+x":
+        transformed_df['Y']=df['Y']+df['X']
+    elif function == "y*x":
+        transformed_df['Y']=df['Y']*df['X']
+    elif function == "x-y":
+        transformed_df['Y']=df['X']-df['Y']
+    elif function == "k-y":
+        transformed_df['Y']=float(user_input)-df['Y']
+    elif function == "k/y":
+        transformed_df['Y']=float(user_input)/df['Y']
+    elif function == "log2y":
+        transformed_df['Y']=math.log(df['Y'],2)
+    elif function == "2^y":
+        transformed_df['Y']=2^df['Y']
+    
     plt.figure(figsize=(10, 6))
     sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_trans'+'.png'

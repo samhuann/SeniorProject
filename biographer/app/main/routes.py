@@ -236,11 +236,11 @@ def transform():
     elif function == "y^k":
         transformed_df['Y']=df['Y']^float(user_input)
     elif function == "logy":
-        transformed_df['Y']=math.log(df['Y'],10)
+        transformed_df['Y']=np.log10(df['Y'])
     elif function == "-logy":
-        transformed_df['Y']=-1*math.log(df['Y'],10)
+        transformed_df['Y']=-1*np.log10(df['Y'])
     elif function == "lny":
-        transformed_df['Y']=math.log(df['Y'])
+        transformed_df['Y']=np.log(df['Y'])
     elif function == "10^y":
         transformed_df['Y']=10^df['Y']
     elif function == "e^y":
@@ -280,7 +280,7 @@ def transform():
     elif function == "k/y":
         transformed_df['Y']=float(user_input)/df['Y']
     elif function == "log2y":
-        transformed_df['Y']=math.log(df['Y'],2)
+        transformed_df['Y']=np.log2(df['Y'])
     elif function == "2^y":
         transformed_df['Y']=2^df['Y']
     
@@ -291,9 +291,6 @@ def transform():
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 def transform_concentrations(df):
-    # Placeholder for transformation
-    return df
-def prune(df):
     # Placeholder for transformation
     return df
 def area_under_curve(df):

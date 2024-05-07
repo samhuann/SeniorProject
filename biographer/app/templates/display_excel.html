@@ -68,6 +68,26 @@
             </form>
         </div>
 
+        <div id="transformOptions" style="display: none;">
+            <h2>Transformation Options</h2>
+            <form id="transformForm" action="{{ url_for('main.transform') }}" method="post">
+                <label for="biochem">Biochemistry Transforms</label><br>
+                <input type="radio" id="none" name="biochem" value="none">
+                <label for="none">None</label><br>
+                <input type="radio" id="eadie-hofstee" name="biochem" value="eadie-hofstee">
+                <label for="eadie-hofstee">Eadie-Hofstee</label><br>
+                <input type="radio" id="hanes-woolf" name="biochem" value="hanes-woolf">
+                <label for="hanes-woolf">Hanes-Woolf</label><br>
+                <input type="radio" id="hill" name="biochem" value="hill">
+                <label for="hill">Hill: Ymax = <input type="number" id="hill_input" name="hill_input"></label><br>
+                <input type="radio" id="log-log" name="biochem" value="log-log">
+                <label for="log-log">Log-Log</label><br>
+                <input type="radio" id="scatchard" name="biochem" value="scatchard">
+                <label for="scatchard">Scatchard</label><br><br>
+                
+                <button type="submit">Apply Transformation</button>
+            </form>
+        </div>
 
 
 
@@ -174,6 +194,13 @@
         <p>No test results available.</p>
         {% endif %}
 
+        <h2>Graphs</h2>
+        {% if graph %}
+            <img src= "{{ url_for('static', filename='/'+graph) }} "/>
+        {% else %}
+        <p>No graph available.</p>
+        {% endif %}
+
         <script>
             document.getElementById('transform').addEventListener('change', function() {
                 var normalizationOptions = document.getElementById('normalizationOptions');
@@ -182,7 +209,14 @@
                 } else {
                     normalizationOptions.style.display = 'none';
                 }
+                var transformOptions = document.getElementById('transformOptions');
+                if (this.value === 'transform') {
+                    transformOptions.style.display = 'block';
+                } else {
+                    transformOptions.style.display = 'none';
+                }
             });
+            
         </script>
     </body>
 </html>

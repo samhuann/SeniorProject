@@ -194,14 +194,32 @@ def normalize():
         elif presentation == "fraction":
             transformed_df[column] = (df[column] - zero_percent_values[column]) / (hundred_percent_values[column] - zero_percent_values[column])
     
-    print(transformed_df)
-    
     return render_template('display_excel.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
+@bp.route('/transform', methods=['POST','GET'])
+def transform():
+    transformed_df= df.copy()
+    biochem_transform = request.form.get('biochem')
+    hill_input = request.form.get('hill_input')
+    if biochem_transform == "eadie-hofstee":
+        transformed_df['X'] = df['Y'] / df['X']
+    elif biochem_transform == "hanes-woolf":
+        transformed_df['Y'] = df['X'] / df['Y']
+    elif biochem_transform == "hill":
+        transformed_df['X'] = np.log10(df['X'])
+        transformed_df['Y'] = np.log10(df['Y'] / (float(hill_input) - df['Y']))
+    elif biochem_transform == "log-log":
+        transformed_df['X'] = np.log10(df['X'])
+        transformed_df['Y'] = np.log10(df['Y'])
+    elif biochem_transform == "scatchard":
+        transformed_df['Y'] = df['Y'] / df['X']
+        transformed_df['X'] = df['Y']
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_trans'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
+    return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-def transform(df):
-    # Placeholder for transformation
-    return df
 def transform_concentrations(df):
     # Placeholder for transformation
     return df

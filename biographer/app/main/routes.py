@@ -316,7 +316,6 @@ def transform_concentrations():
 @bp.route('/area-under-curve', methods=['POST','GET'])
 def area_under_curve():
     transformed_df=df.copy()
-    area = None
     area = np.trapz(df['Y'], x=df['X'])
     plt.figure(figsize=(10, 6))
     sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
@@ -372,13 +371,21 @@ def prune():
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
         return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-
-        
-
 @bp.route('/transpose', methods=['POST','GET'])
-def transpose(df):
-    # Placeholder for transformation
-    return df
+def transpose():
+    transformed_df=df.copy()
+    transformed_df=df.transpose()
+    plt.figure(figsize=(10, 6)) 
+    sns.lineplot(data=transformed_df.T, dashes=False)
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.title("Transposed Data")
+    plt.legend(title="Data Sets", labels=transformed_df.index)
+    graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_tps'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
+
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

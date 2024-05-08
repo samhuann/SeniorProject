@@ -53,6 +53,12 @@ document.getElementById('transform').addEventListener('change', function() {
     } else {
         pruneOptions.style.display = 'none';
     }
+    var transposeDisplay = document.getElementById('transposeDisplay');
+    if (this.value === 'transpose') {
+        transposeDisplay.style.display = 'block';
+    } else {
+        transposeDisplay.style.display = 'none';
+    }
     
 });
 

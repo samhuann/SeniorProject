@@ -154,6 +154,7 @@
             </form>
         </div>
         <div id="areaUnderCurveDisplay" style="display: none;">
+            <h2>Find Area Under Curve</h2>
             <form id="areaUnderCurveForm" action="{{ url_for('main.area_under_curve') }}" method="post">
                 <button type="submit">Apply Transformation</button>
             </form>
@@ -192,7 +193,12 @@
                 <input type="radio" id="average" name="pruneOption" value="average">
                 <label for="average">Prune by Average: Average every<input type="number" id="avg_input" name="avg_input">rows</label><br><br>
                 <button type="submit">Apply Transformation</button>
-                
+            </form>
+        </div>
+        <div id="transposeDisplay" style="display: none;">
+            <h2>Transpose Sheet</h2>
+            <form id="transposeForm" action="{{ url_for('main.transpose') }}" method="post">
+                <button type="submit">Apply Transformation</button>
             </form>
         </div>
 

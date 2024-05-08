@@ -41,6 +41,12 @@ document.getElementById('transform').addEventListener('change', function() {
     } else {
         auc.style.display = 'none';
     }
+    var fracOptions = document.getElementById('fracOptions');
+    if (this.value === 'fraction_of_total') {
+        fracOptions.style.display = 'block';
+    } else {
+        fracOptions.style.display = 'none';
+    }
     
 });
 

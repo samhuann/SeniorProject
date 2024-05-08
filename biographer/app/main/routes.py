@@ -11,7 +11,7 @@ from app.main import bp
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import linregress,zscore 
+from scipy.stats import linregress,zscore,norm 
 import pandas as pd
 from scipy.optimize import curve_fit
 import os
@@ -326,13 +326,41 @@ def area_under_curve():
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, area=area,transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 
+@bp.route('/fraction-of-total', methods=['POST','GET'])
+def fraction_of_total():
+    transformed_df=df.copy()
+    divfrac = request.form.get('divfrac')
+    fracconfidence = request.form.get('fracconfidence')
+    conf_input = request.form.get('conf_input')
+    if divfrac == "column":
+        transformed_df = df.div(df.sum(axis=0), axis=1)
+    elif divfrac == "row":
+        transformed_df = df.div(df.sum(axis=1), axis=0)
+    elif divfrac == "grand":
+        transformed_df = df.div(df.values.sum())
+    
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_frac'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    
+    if fracconfidence == "fracconfidence":
+        lower_bound, upper_bound = calculate_confidence_intervals(df, float(conf_input))
+        return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], lower_bound = lower_bound, upper_bound = upper_bound, titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    
+    return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-def fraction_of_total(df):
-    # Placeholder for transformation
-    return df
+    
+  
+    
+
+
+@bp.route('/prune', methods=['POST','GET'])
 def prune(df):
     # Placeholder for transformation
     return df
+
+@bp.route('/transpose', methods=['POST','GET'])
 def transpose(df):
     # Placeholder for transformation
     return df
@@ -415,3 +443,19 @@ def count():
     return render_template('tools/hemocytometer/display_hemo.html', imgname=img.filename, countname=countname)
 
 
+def wilson_brown_confidence_interval(n, p, alpha=0.05):
+    z_alpha = norm.ppf(1 - alpha / 2)
+    center = p + z_alpha**2 / (2 * n)
+    width = z_alpha * np.sqrt(p * (1 - p) / n + z_alpha**2 / (4 * n**2))
+    lower_bound = (center - width) / (1 + z_alpha**2 / n)
+    upper_bound = (center + width) / (1 + z_alpha**2 / n)
+    return lower_bound, upper_bound
+
+def calculate_confidence_intervals(data, percentage):
+    if percentage > 0 and percentage < 100:
+        n = data.sum().sum()  # Total number of observations
+        p = data.values.sum() / (data.shape[0] * data.shape[1])  # Proportion of successes
+        lower_bound, upper_bound = wilson_brown_confidence_interval(n, p)
+        return lower_bound, upper_bound
+    else:
+        return None, None

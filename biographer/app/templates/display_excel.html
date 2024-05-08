@@ -161,11 +161,30 @@
         {% if area %}
             <p>Area Under Curve: {{ area }}</p>
         {% endif %}
+
+        <div id="fracOptions" style="display: none;">
+            <h2>Fraction of Total Options</h2>
+            <form id="fracForm" action="{{ url_for('main.fraction_of_total') }}" method="post">
+                <label for="divfrac">Divide each value by its:</label><br>
+                <input type="radio" id="column" name="divfrac" value="column" checked="checked">
+                <label for="column">Column total</label><br>
+                <input type="radio" id="row" name="divfrac" value="row">
+                <label for="row">Row total</label><br>
+                <input type="radio" id="grand" name="divfrac" value="grand">
+                <label for="grand">Grand total</label><br><br>
+
+                <label for="fracconfidence">Confidence Intervals:</label><br>
+                <input type="checkbox" id="fracconfidence" name="fracconfidence" value="fracconfidence">
+                <label for="fracconfidence">Calculate <input type="number" id="conf_input" name="conf_input">% confidence intervals.</label><br><br>  
+                <button type="submit">Apply Transformation</button>
+            </form>
+        </div>
+        {% if upper_bound and lower_bound %}
+            <p>Upper Bound: {{ upper_bound }}</p><br>
+            <p>Lower Bound: {{ lower_bound }}</p><br>
+        {% endif %}
     
         
-
-
-
 
         <h2>Transformed Data</h2>
         {% if transformed_df %}

@@ -183,6 +183,20 @@
             <p>Upper Bound: {{ upper_bound }}</p><br>
             <p>Lower Bound: {{ lower_bound }}</p><br>
         {% endif %}
+        <div id="pruneOptions" style="display: none;">
+            <h2>Prune Options</h2>
+            <form id="pruneForm" action="{{ url_for('main.prune') }}" method="post">
+                <label for="pruneOption">Prune by Range or Average:</label><br>
+                <input type="radio" id="xRange" name="pruneOption" value="xRange" checked="checked">
+                <label for="xRange">Prune by Range: From <input type="number" id="xmin" name="xmin"> to <input type="number" id="xmax" name="xmax"></label><br>
+                <input type="radio" id="average" name="pruneOption" value="average">
+                <label for="average">Prune by Average: Average every<input type="number" id="avg_input" name="avg_input">rows</label><br><br>
+                <button type="submit">Apply Transformation</button>
+                
+            </form>
+        </div>
+
+
     
         
 

@@ -350,15 +350,30 @@ def fraction_of_total():
     
     return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-    
-  
-    
-
-
 @bp.route('/prune', methods=['POST','GET'])
-def prune(df):
-    # Placeholder for transformation
-    return df
+def prune():
+    transformed_df=df.copy()
+    pruneOption = request.form.get('pruneOption')
+    avg_input = request.form.get('avg_input')
+    if pruneOption == 'xRange':
+        xmin = request.form.get('xmin')
+        xmax = request.form.get('xmax')
+        transformed_df= df[(df['X'] >= float(xmin)) & (df['X'] <= float(xmax))]
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+        graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_prune'+'.png'
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+        return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    elif pruneOption == 'average':
+        transformed_df = df.groupby(df.index // float(avg_input)).mean()
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+        graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_prune'+'.png'
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+        return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
+
+        
 
 @bp.route('/transpose', methods=['POST','GET'])
 def transpose(df):

@@ -47,6 +47,12 @@ document.getElementById('transform').addEventListener('change', function() {
     } else {
         fracOptions.style.display = 'none';
     }
+    var pruneOptions = document.getElementById('pruneOptions');
+    if (this.value === 'prune') {
+        pruneOptions.style.display = 'block';
+    } else {
+        pruneOptions.style.display = 'none';
+    }
     
 });
 

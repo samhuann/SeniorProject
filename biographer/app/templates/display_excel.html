@@ -191,7 +191,7 @@
                 <input type="radio" id="xRange" name="pruneOption" value="xRange" checked="checked">
                 <label for="xRange">Prune by Range: From <input type="number" id="xmin" name="xmin"> to <input type="number" id="xmax" name="xmax"></label><br>
                 <input type="radio" id="average" name="pruneOption" value="average">
-                <label for="average">Prune by Average: Average every<input type="number" id="avg_input" name="avg_input">rows</label><br><br>
+                <label for="average">Prune by Average: Average every <input type="number" id="avg_input" name="avg_input"> rows</label><br><br>
                 <button type="submit">Apply Transformation</button>
             </form>
         </div>
@@ -201,11 +201,6 @@
                 <button type="submit">Apply Transformation</button>
             </form>
         </div>
-
-
-    
-        
-
         <h2>Transformed Data</h2>
         {% if transformed_df %}
         <!-- Display transformed DataFrame -->
@@ -232,9 +227,7 @@
         {% else %}
         <p>No transformed data available.</p>
         {% endif %}
-
         <hr>
-
         <!-- Tests for Nominal Variables -->
         <form id="test_nominal" action="{{ url_for('main.perform_nominal_test') }}" method="post">
             <input type="hidden" name="file_path" value="{{ file_path }}">
@@ -254,6 +247,7 @@
             <button type="submit">Submit</button>
             <br><br>
         </form>
+
 
         <!-- Tests for One Measurement Variable -->
         <form id="test_one_measurement" action="{{ url_for('main.perform_one_measurement_test') }}" method="post">
@@ -313,7 +307,13 @@
         {% if graph %}
             <img src= "{{ url_for('static', filename='/'+graph) }} "/>
         {% else %}
-        <p>No graph available.</p>
+        <p>No Excel graph available.</p>
+        {% endif %}
+
+        {% if statsgraph %}
+            <img src= "{{ url_for('static', filename='/'+statsgraph) }} "/>
+        {% else %}
+        <p>No statistical graph available.</p>
         {% endif %}
 
         <script src="{{ url_for('static',filename='js/transform.js') }}"></script>

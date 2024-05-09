@@ -61,4 +61,14 @@ document.getElementById('transform').addEventListener('change', function() {
     }
     
 });
+document.getElementById('test_nominal').addEventListener('change', function() {
+    var normalizationOptions = document.getElementById('normalizationOptions');
+    if (this.value === 'normalize') {
+        normalizationOptions.style.display = 'block';
+    } else {
+        normalizationOptions.style.display = 'none';
+    }
+    
+    
+});
 

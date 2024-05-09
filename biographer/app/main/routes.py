@@ -10,8 +10,9 @@ from app.models import User
 from app.main import bp
 import seaborn as sns
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 import numpy as np
-from scipy.stats import linregress,zscore,norm 
+from scipy.stats import linregress,zscore,norm,binomtest 
 import pandas as pd
 from scipy.optimize import curve_fit
 import os
@@ -57,112 +58,19 @@ def upload_file():
         # Read the Excel file
         global df
         df = pd.read_excel(file_path)
+        global transformed_df
+        transformed_df = df.copy()
+        global graph
+        graph = None
         # Render the template with the Excel data
        
         return render_template('display_excel.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values)
 
 
-@bp.route('/nominal_test', methods=['POST'])
-def perform_nominal_test():
-    test = request.form['test_nominal']
-    result = perform_nominal_test(test)
-    return render_template('display_excel.html', test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values)
-
-@bp.route('/one_measurement_test', methods=['POST'])
-def perform_one_measurement_test():
-    test = request.form['test_one_measurement']
-    result = perform_one_measurement_test(test)
-    return render_template('display_excel.html', test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values)
-
-@bp.route('/multiple_measurement_test', methods=['POST'])
-def perform_multiple_measurement_test():
-    test = request.form['test_multiple_measurement']
-    result = perform_multiple_measurement_test(test)
-    return render_template('display_excel.html', test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values)
-
-
-# Placeholder functions for performing tests
-def perform_nominal_test(test):
-    if test == 'exact_test_of_goodness_of_fit':
-        # Placeholder for performing Exact Test of Goodness-of-Fit
-        return "Result of Exact Test of Goodness-of-Fit"
-    elif test == 'power_analysis':
-        # Placeholder for performing Power Analysis
-        return "Result of Power Analysis"
-    elif test == 'chi_square_test_of_goodness_of_fit':
-        # Placeholder for performing Chi-Square Test of Goodness-of-Fit
-        return "Result of Chi-Square Test of Goodness-of-Fit"
-    elif test == 'g_test_of_goodness_of_fit':
-        # Placeholder for performing G-Test of Goodness-of-Fit
-        return "Result of G-Test of Goodness-of-Fit"
-    elif test == 'chi_square_test_of_independence':
-        # Placeholder for performing Chi-Square Test of Independence
-        return "Result of Chi-Square Test of Independence"
-    elif test == 'g_test_of_independence':
-        # Placeholder for performing G-Test of Independence
-        return "Result of G-Test of Independence"
-    elif test == 'fishers_exact_test':
-        # Placeholder for performing Fisher's Exact Test
-        return "Result of Fisher's Exact Test"
-    elif test == 'cochran_mantel_haenszel_test':
-        # Placeholder for performing Cochran-Mantel-Haenszel Test
-        return "Result of Cochran-Mantel-Haenszel Test"
-
-def perform_one_measurement_test(test):
-    if test == 'one_sample_t_test':
-        # Placeholder for performing One-Sample t-Test
-        return "Result of One-Sample t-Test"
-    elif test == 'two_sample_t_test':
-        # Placeholder for performing Two-Sample t-Test
-        return "Result of Two-Sample t-Test"
-    elif test == 'homoscedasticity':
-        # Placeholder for performing Homoscedasticity test
-        return "Result of Homoscedasticity test"
-    elif test == 'one_way_anova':
-        # Placeholder for performing One-Way ANOVA
-        return "Result of One-Way ANOVA"
-    elif test == 'kruskal_wallis_test':
-        # Placeholder for performing Kruskal-Wallis Test
-        return "Result of Kruskal-Wallis Test"
-    elif test == 'nested_anova':
-        # Placeholder for performing Nested ANOVA
-        return "Result of Nested ANOVA"
-    elif test == 'two_way_anova':
-        # Placeholder for performing Two-Way ANOVA
-        return "Result of Two-Way ANOVA"
-    elif test == 'paired_t_test':
-        # Placeholder for performing Paired t-Test
-        return "Result of Paired t-Test"
-    elif test == 'wilcoxon_signed_rank_test':
-        # Placeholder for performing Wilcoxon Signed-Rank Test
-        return "Result of Wilcoxon Signed-Rank Test"
-
-def perform_multiple_measurement_test(test):
-    if test == 'linear_regression_and_correlation':
-        # Placeholder for performing Linear Regression and Correlation
-        return "Result of Linear Regression and Correlation"
-    elif test == 'spearman_rank_correlation':
-        # Placeholder for performing Spearman Rank Correlation
-        return "Result of Spearman Rank Correlation"
-    elif test == 'polynomial_regression':
-        # Placeholder for performing Polynomial Regression
-        return "Result of Polynomial Regression"
-    elif test == 'analysis_of_covariance':
-        # Placeholder for performing Analysis of Covariance
-        return "Result of Analysis of Covariance"
-    elif test == 'multiple_regression':
-        # Placeholder for performing Multiple Regression
-        return "Result of Multiple Regression"
-    elif test == 'simple_logistic_regression':
-        # Placeholder for performing Simple Logistic Regression
-        return "Result of Simple Logistic Regression"
-    elif test == 'multiple_logistic_regression':
-        # Placeholder for performing Multiple Logistic Regression
-        return "Result of Multiple Logistic Regression"
-
 @bp.route('/normalize', methods=['POST','GET'])
 def normalize():
-    transformed_df = df.copy()
+    global transformed_df
+    global graph
     zero_percent = request.form.get('zero_percent')
     custom_input = request.form.get('custom_input')
     hcustom_input = request.form.get('hcustom_input')
@@ -199,13 +107,15 @@ def normalize():
     
     plt.figure(figsize=(10, 6))
     sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    global graph
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_norm'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/transform', methods=['POST','GET'])
 def transform():
-    transformed_df= df.copy()
+    global transformed_df
+    global graph
     biochem_transform = request.form.get('biochem')
     function = request.form.get('function')
     hill_input = request.form.get('hill_input')
@@ -292,7 +202,8 @@ def transform():
 
 @bp.route('/transform-concentrations', methods=['POST','GET'])
 def transform_concentrations():
-    transformed_df= df.copy()
+    global transformed_df
+    global graph
     transform_concentrations = request.form.get('transformConcentration')
     userx_input = request.form.get('userx_input')
     if transform_concentrations == "changeX0":
@@ -315,7 +226,8 @@ def transform_concentrations():
 
 @bp.route('/area-under-curve', methods=['POST','GET'])
 def area_under_curve():
-    transformed_df=df.copy()
+    global transformed_df
+    global graph
     area = np.trapz(df['Y'], x=df['X'])
     plt.figure(figsize=(10, 6))
     sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
@@ -324,10 +236,10 @@ def area_under_curve():
     print(area)          
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, area=area,transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-
 @bp.route('/fraction-of-total', methods=['POST','GET'])
 def fraction_of_total():
-    transformed_df=df.copy()
+    global transformed_df
+    global graph
     divfrac = request.form.get('divfrac')
     fracconfidence = request.form.get('fracconfidence')
     conf_input = request.form.get('conf_input')
@@ -351,7 +263,8 @@ def fraction_of_total():
 
 @bp.route('/prune', methods=['POST','GET'])
 def prune():
-    transformed_df=df.copy()
+    global transformed_df
+    global graph
     pruneOption = request.form.get('pruneOption')
     avg_input = request.form.get('avg_input')
     if pruneOption == 'xRange':
@@ -373,7 +286,8 @@ def prune():
 
 @bp.route('/transpose', methods=['POST','GET'])
 def transpose():
-    transformed_df=df.copy()
+    global transformed_df
+    global graph
     transformed_df=df.transpose()
     plt.figure(figsize=(10, 6)) 
     sns.lineplot(data=transformed_df.T, dashes=False)
@@ -384,6 +298,131 @@ def transpose():
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_tps'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
     return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
+
+
+@bp.route('/nominal-test', methods=['POST'])
+def perform_nominal_test():
+    global transformed_df
+    global graph
+    test = request.form['test_nominal']
+    if test == 'exact_test_of_goodness_of_fit':
+        num_successes = 12  # Example number of successes
+        num_trials = 20  # Example total number of trials
+
+        # Assuming you have the null hypothesis probability
+        null_hypothesis_prob = 0.5  # Example null hypothesis probability
+
+        # Perform the binomial test
+        p_value = binomtest(num_successes, n=num_trials, p=null_hypothesis_prob)
+
+        # You can then interpret the p-value to make a decision
+        if p_value.pvalue < 0.05:
+            result = "Reject null hypothesis: There is evidence of a significant difference."
+        else:
+            result = "Fail to reject null hypothesis: There is no evidence of a significant difference."
+        x = ['Binomial Test']
+        y = [float(p_value.pvalue)]
+        plt.bar(x, y)
+        plt.ylabel('P-value')
+        plt.title('Binomial Test Results')
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_bin'+'.png'
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
+    elif test == 'power_analysis':
+        # Placeholder for performing Power Analysis
+        return "Result of Power Analysis"
+    elif test == 'chi_square_test_of_goodness_of_fit':
+        # Placeholder for performing Chi-Square Test of Goodness-of-Fit
+        return "Result of Chi-Square Test of Goodness-of-Fit"
+    elif test == 'g_test_of_goodness_of_fit':
+        # Placeholder for performing G-Test of Goodness-of-Fit
+        return "Result of G-Test of Goodness-of-Fit"
+    elif test == 'chi_square_test_of_independence':
+        # Placeholder for performing Chi-Square Test of Independence
+        return "Result of Chi-Square Test of Independence"
+    elif test == 'g_test_of_independence':
+        # Placeholder for performing G-Test of Independence
+        return "Result of G-Test of Independence"
+    elif test == 'fishers_exact_test':
+        # Placeholder for performing Fisher's Exact Test
+        return "Result of Fisher's Exact Test"
+    elif test == 'cochran_mantel_haenszel_test':
+        # Placeholder for performing Cochran-Mantel-Haenszel Test
+        return "Result of Cochran-Mantel-Haenszel Test"
+
+@bp.route('/one-measurement-test',methods=['POST'])
+def perform_one_measurement_test():
+    if test == 'one_sample_t_test':
+        # Placeholder for performing One-Sample t-Test
+        return "Result of One-Sample t-Test"
+    elif test == 'two_sample_t_test':
+        # Placeholder for performing Two-Sample t-Test
+        return "Result of Two-Sample t-Test"
+    elif test == 'homoscedasticity':
+        # Placeholder for performing Homoscedasticity test
+        return "Result of Homoscedasticity test"
+    elif test == 'one_way_anova':
+        # Placeholder for performing One-Way ANOVA
+        return "Result of One-Way ANOVA"
+    elif test == 'kruskal_wallis_test':
+        # Placeholder for performing Kruskal-Wallis Test
+        return "Result of Kruskal-Wallis Test"
+    elif test == 'nested_anova':
+        # Placeholder for performing Nested ANOVA
+        return "Result of Nested ANOVA"
+    elif test == 'two_way_anova':
+        # Placeholder for performing Two-Way ANOVA
+        return "Result of Two-Way ANOVA"
+    elif test == 'paired_t_test':
+        # Placeholder for performing Paired t-Test
+        return "Result of Paired t-Test"
+    elif test == 'wilcoxon_signed_rank_test':
+        # Placeholder for performing Wilcoxon Signed-Rank Test
+        return "Result of Wilcoxon Signed-Rank Test"
+    
+@bp.route('/multiple-measurement-test',methods=['POST'])
+def perform_multiple_measurement_test():
+    if test == 'linear_regression_and_correlation':
+        # Placeholder for performing Linear Regression and Correlation
+        return "Result of Linear Regression and Correlation"
+    elif test == 'spearman_rank_correlation':
+        # Placeholder for performing Spearman Rank Correlation
+        return "Result of Spearman Rank Correlation"
+    elif test == 'polynomial_regression':
+        # Placeholder for performing Polynomial Regression
+        return "Result of Polynomial Regression"
+    elif test == 'analysis_of_covariance':
+        # Placeholder for performing Analysis of Covariance
+        return "Result of Analysis of Covariance"
+    elif test == 'multiple_regression':
+        # Placeholder for performing Multiple Regression
+        return "Result of Multiple Regression"
+    elif test == 'simple_logistic_regression':
+        # Placeholder for performing Simple Logistic Regression
+        return "Result of Simple Logistic Regression"
+    elif test == 'multiple_logistic_regression':
+        # Placeholder for performing Multiple Logistic Regression
+        return "Result of Multiple Logistic Regression"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -442,7 +481,6 @@ def hemocytometer_upload():
 
 @bp.route('/count', methods=['POST'])
 def count():
-
     mpl.rc('figure',  figsize=(10, 5))
     mpl.rc('image', cmap='gray')
     @pims.pipeline
@@ -463,7 +501,6 @@ def count():
     countname=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'count'+ '.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ countname))
     return render_template('tools/hemocytometer/display_hemo.html', imgname=img.filename, countname=countname)
-
 
 def wilson_brown_confidence_interval(n, p, alpha=0.05):
     z_alpha = norm.ppf(1 - alpha / 2)

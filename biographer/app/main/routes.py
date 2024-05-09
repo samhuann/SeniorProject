@@ -402,10 +402,10 @@ def perform_one_measurement_test():
     elif test == 'two_sample_t_test':
         t_statistic, p_value = stats.ttest_ind(a=transformed_df.iloc[:, 0], b=transformed_df.iloc[:, 1], equal_var=True)
         return render_template('display_excel.html', graph=graph, test_results={"Two sample t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
-
     elif test == 'homoscedasticity':
-        # Placeholder for performing Homoscedasticity test
-        return "Result of Homoscedasticity test"
+        statistic, p_value = stats.bartlett(transformed_df.iloc[:,0], transformed_df.iloc[:,1])
+        return render_template('display_excel.html', graph=graph, test_results={"Bartlett's Test": "(p-value = " + str(p_value)+")"}, statistic = "Bartlett's test statistic is: " + str(statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
     elif test == 'one_way_anova':
         # Placeholder for performing One-Way ANOVA
         return "Result of One-Way ANOVA"

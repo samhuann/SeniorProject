@@ -154,9 +154,8 @@
             </form>
         </div>
         <div id="areaUnderCurveDisplay" style="display: none;">
-            <h2>Find Area Under Curve</h2>
             <form id="areaUnderCurveForm" action="{{ url_for('main.area_under_curve') }}" method="post">
-                <button type="submit">Apply Transformation</button>
+                <button type="submit">Find Area Under Curve</button>
             </form>
         </div>
         {% if area %}
@@ -196,9 +195,8 @@
             </form>
         </div>
         <div id="transposeDisplay" style="display: none;">
-            <h2>Transpose Sheet</h2>
             <form id="transposeForm" action="{{ url_for('main.transpose') }}" method="post">
-                <button type="submit">Apply Transformation</button>
+                <button type="submit">Transpose</button>
             </form>
         </div>
         <h2>Transformed Data</h2>
@@ -238,7 +236,6 @@
                 <option value="chi_square_test_of_goodness_of_fit">Chi-Square Test of Goodness-of-Fit</option>
                 <option value="chi_square_test_of_independence">Chi-Square Test of Independence</option>
                 <option value="fishers_exact_test">Fisher's Exact Test</option>
-                <option value="cochran_mantel_haenszel_test">Cochran-Mantel-Haenszel Test</option>
             </select>
             <br><br>
         </form>
@@ -259,6 +256,11 @@
         </div>
         <div id="chiindDisplay" style="display: none;">
             <form id="chiindForm" action="{{ url_for('main.chi_square_independence') }}" method="post">
+                <button type="submit">Run Test</button>
+            </form>
+        </div>
+        <div id="fisherdisplay" style="display: none;">
+            <form id="fisherForm" action="{{ url_for('main.fisher_test') }}" method="post">
                 <button type="submit">Run Test</button>
             </form>
         </div>
@@ -305,7 +307,11 @@
             </select>
             <button type="submit">Submit</button>
             <br><br>
+            <div id="sampleMeans" style="display: none;">
+                <label for="sampleMeans">Test for mean: <input type="number" id="means_input" name="means_input"></label><br>
+            </div>
         </form>
+        
 
         <!-- Tests for Multiple Measurement Variables -->
         <form id="test_multiple_measurement" action="{{ url_for('main.perform_multiple_measurement_test') }}" method="post">
@@ -362,6 +368,11 @@
         {% endif %}
 
         <script src="{{ url_for('static',filename='js/transform.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/nominal.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/onemeasurement.js') }}"></script>
+
+
+        
 
     </body>
 </html>

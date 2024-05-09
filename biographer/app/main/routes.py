@@ -70,6 +70,7 @@ def upload_file():
 @bp.route('/normalize', methods=['POST','GET'])
 def normalize():
     global transformed_df
+    transformed_df=df.copy()
     global graph
     zero_percent = request.form.get('zero_percent')
     custom_input = request.form.get('custom_input')
@@ -205,6 +206,7 @@ def transform():
 @bp.route('/transform-concentrations', methods=['POST','GET'])
 def transform_concentrations():
     global transformed_df
+    transformed_df=df.copy()
     global graph
     transform_concentrations = request.form.get('transformConcentration')
     userx_input = request.form.get('userx_input')
@@ -230,20 +232,18 @@ def transform_concentrations():
 @bp.route('/area-under-curve', methods=['POST','GET'])
 def area_under_curve():
     global transformed_df
+    transformed_df=df.copy()
     global graph
     area = np.trapz(df.iloc[:, 1], x=df.iloc[:, 0])
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 1])
-    graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_auc'+'.png'
-    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
-    plt.clf()
-    print(area)          
+
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, area=area,transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/fraction-of-total', methods=['POST','GET'])
 def fraction_of_total():
     global transformed_df
     global graph
+    transformed_df=df.copy()
+
     divfrac = request.form.get('divfrac')
     fracconfidence = request.form.get('fracconfidence')
     conf_input = request.form.get('conf_input')
@@ -271,6 +271,8 @@ def fraction_of_total():
 def prune():
     global transformed_df
     global graph
+    transformed_df=df.copy()
+
     pruneOption = request.form.get('pruneOption')
     avg_input = request.form.get('avg_input')
     if pruneOption == 'xRange':
@@ -310,8 +312,6 @@ def transpose():
     plt.clf()
     return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-
-
 @bp.route('/exact-test', methods=['POST'])
 def exact_test():
     global transformed_df
@@ -331,24 +331,23 @@ def exact_test():
 def chi_square_goodness():
     global transformed_df
     global graph
-    observed_data = df.iloc[:, 0]
-    expected_data = df.iloc[:, 1]
+    observed_data = transformed_df.iloc[:, 0]
+    expected_data = transformed_df.iloc[:, 1]
     chi_square_test_statistic, p_value = stats.chisquare(observed_data,expected_data) 
-    return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit p-value": str(p_value)}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit": "(p-value = " + str(p_value) + ")"}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/chi-square-independence-test', methods=['POST','GET'])
 def chi_square_independence():
-    chi2, p, dof, expected = stats.chi2_contingency(df)
+    global transformed_df
+    global graph
+    chi2, p, dof, expected = stats.chi2_contingency(transformed_df)
     # Display the results
-
     # Plotting the observed proportions
-    categories = list(df.columns)
     observed_proportions = []
-    for i in range(df.shape[1]):
-        observed_proportions.append(df.iloc[:, i].sum() / df.sum().sum())
-    
-    expected_table = pd.DataFrame(expected, index=df.index)
-
+    for i in range(transformed_df.shape[1]):
+        observed_proportions.append(transformed_df.iloc[:, i].sum() / transformed_df.sum().sum())
+    expected_table = pd.DataFrame(expected, index=transformed_df.index)
+    categories = list(transformed_df.columns)
     plt.bar(range(len(categories)), observed_proportions, tick_label=categories)
     plt.xlabel('Categories')
     plt.ylabel('Proportions')
@@ -357,7 +356,7 @@ def chi_square_independence():
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
     plt.clf()
     return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
-                            test_results={"Chi-Square Test of Goodness-of-Fit": "(p-value = " + str(p)+")"}, 
+                            test_results={"Chi-Square Test of Independence": "(p-value = " + str(p)+")"}, 
                             tables=[df.to_html(classes='data')], 
                             titles=df.columns.values, 
                             transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
@@ -365,7 +364,70 @@ def chi_square_independence():
                             dof="Degrees of freedom: " + str(dof),
                             expected_table = (expected_table.to_dict(orient='records') if df is not None else None)
                             )
+
+@bp.route('/fisher-test', methods=['POST','GET'])
+def fisher_test():
+    global transformed_df
+    global graph
+    odd_ratio, p_value = stats.fisher_exact(transformed_df)
+    observed_proportions = []
+    for i in range(transformed_df.shape[1]):
+        observed_proportions.append(transformed_df.iloc[:, i].sum() / transformed_df.sum().sum())
     
+    categories = list(transformed_df.columns)
+    plt.bar(range(len(categories)), observed_proportions, tick_label=categories)
+    plt.xlabel('Categories')
+    plt.ylabel('Proportions')
+    plt.title('Observed Proportions')
+    statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_fish'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+    plt.clf()
+    return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
+                            test_results={"Fisher's Exact Test": "(p-value = " + str(p_value)+")"}, 
+                            tables=[df.to_html(classes='data')], 
+                            titles=df.columns.values, 
+                            transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
+                            statistic="Odd ratio " + str(odd_ratio),
+                            )
+
+@bp.route('/one-measurement-test',methods=['POST', 'GET'])
+def perform_one_measurement_test():
+    global transformed_df
+    global graph
+    test = request.form.get('test_one_measurement')
+    if test == 'one_sample_t_test':
+        test_mean = request.form.get('means_input')
+        t_statistic, p_value = stats.ttest_1samp(a=transformed_df, popmean=float(test_mean))
+        return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Independence": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+ 
+    elif test == 'two_sample_t_test':
+        # Placeholder for performing Two-Sample t-Test
+        return "Result of Two-Sample t-Test"
+    elif test == 'homoscedasticity':
+        # Placeholder for performing Homoscedasticity test
+        return "Result of Homoscedasticity test"
+    elif test == 'one_way_anova':
+        # Placeholder for performing One-Way ANOVA
+        return "Result of One-Way ANOVA"
+    elif test == 'kruskal_wallis_test':
+        # Placeholder for performing Kruskal-Wallis Test
+        return "Result of Kruskal-Wallis Test"
+    elif test == 'nested_anova':
+        # Placeholder for performing Nested ANOVA
+        return "Result of Nested ANOVA"
+    elif test == 'two_way_anova':
+        # Placeholder for performing Two-Way ANOVA
+        return "Result of Two-Way ANOVA"
+    elif test == 'paired_t_test':
+        # Placeholder for performing Paired t-Test
+        return "Result of Paired t-Test"
+    elif test == 'wilcoxon_signed_rank_test':
+        # Placeholder for performing Wilcoxon Signed-Rank Test
+        return "Result of Wilcoxon Signed-Rank Test"
+
+
+
+
 
 
 
@@ -480,35 +542,7 @@ def calculate_confidence_intervals(data, percentage):
 
 
 
-@bp.route('/one-measurement-test',methods=['POST'])
-def perform_one_measurement_test():
-    if test == 'one_sample_t_test':
-        # Placeholder for performing One-Sample t-Test
-        return "Result of One-Sample t-Test"
-    elif test == 'two_sample_t_test':
-        # Placeholder for performing Two-Sample t-Test
-        return "Result of Two-Sample t-Test"
-    elif test == 'homoscedasticity':
-        # Placeholder for performing Homoscedasticity test
-        return "Result of Homoscedasticity test"
-    elif test == 'one_way_anova':
-        # Placeholder for performing One-Way ANOVA
-        return "Result of One-Way ANOVA"
-    elif test == 'kruskal_wallis_test':
-        # Placeholder for performing Kruskal-Wallis Test
-        return "Result of Kruskal-Wallis Test"
-    elif test == 'nested_anova':
-        # Placeholder for performing Nested ANOVA
-        return "Result of Nested ANOVA"
-    elif test == 'two_way_anova':
-        # Placeholder for performing Two-Way ANOVA
-        return "Result of Two-Way ANOVA"
-    elif test == 'paired_t_test':
-        # Placeholder for performing Paired t-Test
-        return "Result of Paired t-Test"
-    elif test == 'wilcoxon_signed_rank_test':
-        # Placeholder for performing Wilcoxon Signed-Rank Test
-        return "Result of Wilcoxon Signed-Rank Test"
+
     
 @bp.route('/multiple-measurement-test',methods=['POST'])
 def perform_multiple_measurement_test():
@@ -533,3 +567,11 @@ def perform_multiple_measurement_test():
     elif test == 'multiple_logistic_regression':
         # Placeholder for performing Multiple Logistic Regression
         return "Result of Multiple Logistic Regression"
+    
+def scale_factor(df):
+    scaling_factor = 0.01  # Adjust this factor as needed
+    max_data_value = df.max().max()  # Find the maximum value in the DataFrame
+    min_data_value = df.min().min()  # Find the minimum value in the DataFrame
+    data_range = max_data_value - min_data_value  # Calculate the range of the data
+    scaling_factor *= data_range
+    return scaling_factor

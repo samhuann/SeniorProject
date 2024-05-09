@@ -301,56 +301,34 @@ def transpose():
 
 
 
-@bp.route('/nominal-test', methods=['POST'])
-def perform_nominal_test():
+@bp.route('/exact-test', methods=['POST'])
+def exact_test():
     global transformed_df
     global graph
-    test = request.form['test_nominal']
-    if test == 'exact_test_of_goodness_of_fit':
-        num_successes = 12  # Example number of successes
-        num_trials = 20  # Example total number of trials
+    num_successes = request.form.get('success_input')  
+    num_trials = request.form.get('trials_input')
 
-        # Assuming you have the null hypothesis probability
-        null_hypothesis_prob = 0.5  # Example null hypothesis probability
+    # Assuming you have the null hypothesis probability
+    null_hypothesis_prob = request.form.get('prob')
 
-        # Perform the binomial test
-        p_value = binomtest(num_successes, n=num_trials, p=null_hypothesis_prob)
+    # Perform the binomial test
+    p_value = binomtest(int(num_successes), n=int(num_trials), p=float(null_hypothesis_prob))
 
-        # You can then interpret the p-value to make a decision
-        if p_value.pvalue < 0.05:
-            result = "Reject null hypothesis: There is evidence of a significant difference."
-        else:
-            result = "Fail to reject null hypothesis: There is no evidence of a significant difference."
-        x = ['Binomial Test']
-        y = [float(p_value.pvalue)]
-        plt.bar(x, y)
-        plt.ylabel('P-value')
-        plt.title('Binomial Test Results')
-        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_bin'+'.png'
-        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
-        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={test: result}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    # You can then interpret the p-value to make a decision
+    if p_value.pvalue < 0.05:
+        result = "Reject null hypothesis: There is evidence of a significant difference."
+    else:
+        result = "Fail to reject null hypothesis: There is no evidence of a significant difference."
+    x = ['Binomial Test']
+    y = [float(p_value.pvalue)]
+    plt.bar(x, y)
+    plt.ylabel('P-value')
+    plt.title('Binomial Test Results')
+    statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_bin'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+    return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Exact Test of Goodness-of-Fit": result}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-    elif test == 'power_analysis':
-        # Placeholder for performing Power Analysis
-        return "Result of Power Analysis"
-    elif test == 'chi_square_test_of_goodness_of_fit':
-        # Placeholder for performing Chi-Square Test of Goodness-of-Fit
-        return "Result of Chi-Square Test of Goodness-of-Fit"
-    elif test == 'g_test_of_goodness_of_fit':
-        # Placeholder for performing G-Test of Goodness-of-Fit
-        return "Result of G-Test of Goodness-of-Fit"
-    elif test == 'chi_square_test_of_independence':
-        # Placeholder for performing Chi-Square Test of Independence
-        return "Result of Chi-Square Test of Independence"
-    elif test == 'g_test_of_independence':
-        # Placeholder for performing G-Test of Independence
-        return "Result of G-Test of Independence"
-    elif test == 'fishers_exact_test':
-        # Placeholder for performing Fisher's Exact Test
-        return "Result of Fisher's Exact Test"
-    elif test == 'cochran_mantel_haenszel_test':
-        # Placeholder for performing Cochran-Mantel-Haenszel Test
-        return "Result of Cochran-Mantel-Haenszel Test"
+
 
 @bp.route('/one-measurement-test',methods=['POST'])
 def perform_one_measurement_test():

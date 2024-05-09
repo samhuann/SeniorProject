@@ -61,14 +61,13 @@ document.getElementById('transform').addEventListener('change', function() {
     }
     
 });
-document.getElementById('test_nominal').addEventListener('change', function() {
-    var normalizationOptions = document.getElementById('normalizationOptions');
-    if (this.value === 'normalize') {
-        normalizationOptions.style.display = 'block';
+document.getElementById('testNominal').addEventListener('change', function() {
+    var binomOptions = document.getElementById('binomOptions');
+    if (this.value === 'exact_test_of_goodness_of_fit') {
+        binomOptions.style.display = 'block';
     } else {
-        normalizationOptions.style.display = 'none';
+        binomOptions.style.display = 'none';
     }
-    
     
 });
 

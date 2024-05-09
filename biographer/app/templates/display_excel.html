@@ -44,7 +44,7 @@
                 <input type="radio" id="avgValue" name="zero_percent" value="avg">
                 <label for="avgValue">Average of all values</label><br>
                 <input type="radio" id="customValue" name="zero_percent" value="custom">
-                <label for="customValue">Custom value (Y = <input type="number" id="customInput" name="custom_input">)</label><br><br>
+                <label for="customValue">Custom value (Y = <input type="number" id="customInput" name="custom_input" step="any">)</label><br><br>
                 
                 <label for="hundredPercent">Define 100%:</label><br>
                 <input type="radio" id="largestValue" name="hundred_percent" value="largest">
@@ -56,7 +56,7 @@
                 <input type="radio" id="havgValue" name="hundred_percent" value="havg">
                 <label for="havgValue">Average of all values</label><br>
                 <input type="radio" id="hcustomValue" name="hundred_percent" value="hcustom">
-                <label for="hcustomValue">Custom value (Y = <input type="number" id="hcustomInput" name="hcustom_input">)</label><br><br>
+                <label for="hcustomValue">Custom value (Y = <input type="number" id="hcustomInput" name="hcustom_input" step="any">)</label><br><br>
                 
                 <label for="presentation">Present results as</label><br>
                 <input type="radio" id="fraction" name="presentation" value="fraction">
@@ -79,7 +79,7 @@
                 <input type="radio" id="hanes-woolf" name="biochem" value="hanes-woolf">
                 <label for="hanes-woolf">Hanes-Woolf</label><br>
                 <input type="radio" id="hill" name="biochem" value="hill">
-                <label for="hill">Hill (Ymax = <input type="number" id="hill_input" name="hill_input">)</label><br>
+                <label for="hill">Hill (Ymax = <input type="number" id="hill_input" name="hill_input" step="any">)</label><br>
                 <input type="radio" id="log-log" name="biochem" value="log-log">
                 <label for="log-log">Log-Log</label><br>
                 <input type="radio" id="scatchard" name="biochem" value="scatchard">
@@ -123,7 +123,7 @@
 
                 <div id="userInputs" style="display: none;">
                     <label for="userInput">Enter value for K:</label>
-                    <input type="number" id="userInput" name="user_input"><br><br>
+                    <input type="number" id="userInput" name="user_input" step="any"><br><br>
                 </div>
 
                 
@@ -146,7 +146,7 @@
 
                 <div id="userXInputs" style="display: none;">
                     <label for="userXInput">Enter value for K:</label>
-                    <input type="number" id="userXInput" name="userx_input"><br><br>
+                    <input type="number" id="userXInput" name="userx_input" step="any"><br><br>
                 </div>
 
                 
@@ -176,7 +176,7 @@
 
                 <label for="fracconfidence">Confidence Intervals:</label><br>
                 <input type="checkbox" id="fracconfidence" name="fracconfidence" value="fracconfidence">
-                <label for="fracconfidence">Calculate <input type="number" id="conf_input" name="conf_input">% confidence intervals.</label><br><br>  
+                <label for="fracconfidence">Calculate <input type="number" id="conf_input" name="conf_input" step="any">% confidence intervals.</label><br><br>  
                 <button type="submit">Apply Transformation</button>
             </form>
         </div>
@@ -189,7 +189,7 @@
             <form id="pruneForm" action="{{ url_for('main.prune') }}" method="post">
                 <label for="pruneOption">Prune by Range or Average:</label><br>
                 <input type="radio" id="xRange" name="pruneOption" value="xRange" checked="checked">
-                <label for="xRange">Prune by Range: From <input type="number" id="xmin" name="xmin"> to <input type="number" id="xmax" name="xmax"></label><br>
+                <label for="xRange">Prune by Range: From <input type="number" id="xmin" name="xmin" step="any"> to <input type="number" id="xmax" name="xmax" step="any"></label><br>
                 <input type="radio" id="average" name="pruneOption" value="average">
                 <label for="average">Prune by Average: Average every <input type="number" id="avg_input" name="avg_input"> rows</label><br><br>
                 <button type="submit">Apply Transformation</button>
@@ -229,14 +229,12 @@
         {% endif %}
         <hr>
         <!-- Tests for Nominal Variables -->
-        <form id="test_nominal" action="{{ url_for('main.perform_nominal_test') }}" method="post">
+        <form id="test_nominal" method="post">
             <input type="hidden" name="file_path" value="{{ file_path }}">
-            
             <label for="testNominal">Tests for Nominal Variables:</label>
             <select name="test_nominal" id="testNominal">
                 <option value=""></option>
                 <option value="exact_test_of_goodness_of_fit">Exact Test of Goodness-of-Fit</option>
-                <option value="power_analysis">Power Analysis</option>
                 <option value="chi_square_test_of_goodness_of_fit">Chi-Square Test of Goodness-of-Fit</option>
                 <option value="g_test_of_goodness_of_fit">G-Test of Goodness-of-Fit</option>
                 <option value="chi_square_test_of_independence">Chi-Square Test of Independence</option>
@@ -244,9 +242,17 @@
                 <option value="fishers_exact_test">Fisher's Exact Test</option>
                 <option value="cochran_mantel_haenszel_test">Cochran-Mantel-Haenszel Test</option>
             </select>
-            <button type="submit">Submit</button>
             <br><br>
         </form>
+
+        <div id="binomOptions" style="display: none;">
+            <form id="binomForm" action="{{ url_for('main.exact_test') }}" method="post">
+                <label for="successes">Successes: <input type="number" id="success_input" name="success_input"></label><br>
+                <label for="trials">Trials: <input type="number" id="trials_input" name="trials_input"></label><br>
+                <label for="prob">Null Hypothesis Probability: <input type="number" id="prob" name="prob" min="0" max="1" step="any"></label><br><br>                
+                <button type="submit">Run Test</button>
+            </form>
+        </div>
 
 
         <!-- Tests for One Measurement Variable -->

@@ -8,6 +8,8 @@ from app import db
 from app.main.forms import EditProfileForm
 from app.models import User
 from app.main import bp
+import sklearn
+from sklearn.metrics import r2_score
 import seaborn as sns
 import matplotlib.pyplot as plt
 plt.switch_backend('agg')
@@ -472,10 +474,95 @@ def perform_one_measurement_test():
         plt.xticks(rotation = 45)
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
         plt.clf()
-        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Wilcoxon Signed Rank Test:": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Wilcoxon Signed Rank Test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        
+
+@bp.route('/multiple-measurement-test',methods=['POST'])
+def perform_multiple_measurement_test():
+    global transformed_df
+    global graph
+    test = request.form.get('test_multiple_measurement')
+    if test == 'linear_regression_and_correlation':
+        X = transformed_df.iloc[:,0]
+        Y = transformed_df.iloc[:,1]
+        slope, intercept, r_value, p_value, std_err = stats.linregress(X, Y)
+    
+        # Plot the data and regression line
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(x=X, y=Y, label='Data')
+        sns.lineplot(x=X, y=slope*X + intercept, color='red', label='Linear Regression')
+        plt.xlabel(transformed_df.columns[0])
+        plt.ylabel(transformed_df.columns[1])
+        plt.title("Simple Linear Regression")
+        plt.legend()
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_linr'+'.png'
+        plt.xticks(rotation = 45)
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Linear Regression": "Sucessfully ran."}, 
+                               statistic="p-value: " + str(p_value), stat2 = 'r-value: ' + str(r_value**2), stat3 = 'Slope: ' + str(slope), stat4 = 'Intercept: ' + str(intercept),
+                               stat5='Standard Error: ' + str(std_err),
+                                 tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    
+    elif test == 'spearman_rank_correlation':
+        X = transformed_df.iloc[:,0]
+        Y = transformed_df.iloc[:,1]
+        corr, pval = stats.spearmanr(X, Y)
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(x=X, y=Y, label='Data')
+        plt.xlabel(transformed_df.columns[0])
+        plt.ylabel(transformed_df.columns[1])
+        plt.title("Spearman Rank Correlation")
+        plt.legend()
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_spr'+'.png'
+        plt.xticks(rotation = 45)
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Spearman Rank Correlation": "Sucessfully ran."}, 
+                               statistic="p-value: " + str(pval), stat2 = 'Spearman\'s Correlation Coefficient: ' + str(corr), 
+                               tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
+    elif test == 'polynomial_regression':
+        x = transformed_df.iloc[:,0]
+        y = transformed_df.iloc[:,1]
+        mymodel = np.poly1d(np.polyfit(x, y, 3))
+        myline = np.linspace(0, max(x), max(y))
+        r_value = stats.linregress(x, y)
+        plt.scatter(x, y)
+        plt.plot(myline, mymodel(myline))
+        plt.xlabel(transformed_df.columns[0])
+        plt.ylabel(transformed_df.columns[1])
+        plt.title("Polynomial Regression")
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_polr'+'.png'
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Polynomial Regression": "Sucessfully ran."}, 
+                               statistic="r-squared: " + str(r2_score(y, mymodel(x))),
+                               tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
         
 
 
+        
+
+
+
+
+
+         
+    elif test == 'analysis_of_covariance':
+        # Placeholder for performing Analysis of Covariance
+        return "Result of Analysis of Covariance"
+    elif test == 'multiple_regression':
+        # Placeholder for performing Multiple Regression
+        return "Result of Multiple Regression"
+    elif test == 'simple_logistic_regression':
+        # Placeholder for performing Simple Logistic Regression
+        return "Result of Simple Logistic Regression"
+    elif test == 'multiple_logistic_regression':
+        # Placeholder for performing Multiple Logistic Regression
+        return "Result of Multiple Logistic Regression"
+    
 
 
 
@@ -593,35 +680,3 @@ def calculate_confidence_intervals(data, percentage):
 
 
 
-    
-@bp.route('/multiple-measurement-test',methods=['POST'])
-def perform_multiple_measurement_test():
-    if test == 'linear_regression_and_correlation':
-        # Placeholder for performing Linear Regression and Correlation
-        return "Result of Linear Regression and Correlation"
-    elif test == 'spearman_rank_correlation':
-        # Placeholder for performing Spearman Rank Correlation
-        return "Result of Spearman Rank Correlation"
-    elif test == 'polynomial_regression':
-        # Placeholder for performing Polynomial Regression
-        return "Result of Polynomial Regression"
-    elif test == 'analysis_of_covariance':
-        # Placeholder for performing Analysis of Covariance
-        return "Result of Analysis of Covariance"
-    elif test == 'multiple_regression':
-        # Placeholder for performing Multiple Regression
-        return "Result of Multiple Regression"
-    elif test == 'simple_logistic_regression':
-        # Placeholder for performing Simple Logistic Regression
-        return "Result of Simple Logistic Regression"
-    elif test == 'multiple_logistic_regression':
-        # Placeholder for performing Multiple Logistic Regression
-        return "Result of Multiple Logistic Regression"
-    
-def scale_factor(df):
-    scaling_factor = 0.01  # Adjust this factor as needed
-    max_data_value = df.max().max()  # Find the maximum value in the DataFrame
-    min_data_value = df.min().min()  # Find the minimum value in the DataFrame
-    data_range = max_data_value - min_data_value  # Calculate the range of the data
-    scaling_factor *= data_range
-    return scaling_factor

@@ -419,10 +419,10 @@ def perform_one_measurement_test():
         plt.xticks(rotation = 45)
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
         plt.clf()
-        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"One-way ANOVA": "(p-value = " + str(p_value)+")"}, statistic = "F-statistic statistic is: " + str(f_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"One-way ANOVA": "(p-value = " + str(p_value)+")"}, statistic = "F-statistic is: " + str(f_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'kruskal_wallis_test':
         h_statistic, p_value = stats.kruskal(*[transformed_df[col] for col in transformed_df.columns])
-        return render_template('display_excel.html', graph=graph, test_results={"Kruskal-Wallis": "(p-value = " + str(p_value)+")"}, statistic = "H-statistic statistic is: " + str(h_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, test_results={"Kruskal-Wallis": "(p-value = " + str(p_value)+")"}, statistic = "H-statistic is: " + str(h_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'two_way_anova':
         categories = list(transformed_df.columns)
         formula = ols(f'{transformed_df.columns[2]} ~ transformed_df.iloc[:, 0] + transformed_df.iloc[:, 1] + transformed_df.iloc[:, 0]:transformed_df.iloc[:, 1]',transformed_df).fit()
@@ -437,12 +437,25 @@ def perform_one_measurement_test():
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
         plt.clf()
         return render_template('display_excel.html', twoanova=twoanova,graph=graph, statsgraph = statsgraph, test_results={"Two-way ANOVA": "Sucessfully ran."}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
-
-        
         
     elif test == 'paired_t_test':
-        # Placeholder for performing Paired t-Test
-        return "Result of Paired t-Test"
+        before = transformed_df.iloc[:,0]
+        after = transformed_df.iloc[:,1]
+        t_statistic, p_value = stats.ttest_rel(before, after)
+        labels = ['Before', 'After']
+        means = [np.mean(before), np.mean(after)]
+        errors = [np.std(before), np.std(after)]
+        x_pos = np.arange(len(labels))
+        plt.bar(x_pos, means, yerr=errors, align='center', alpha=0.5, ecolor='black', capsize=10)
+        plt.xticks(x_pos, labels)
+        plt.ylabel('Mean Value')
+        plt.title('Paired t-test Results')
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_pairt'+'.png'
+        plt.xticks(rotation = 45)
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Paired t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
     elif test == 'wilcoxon_signed_rank_test':
         # Placeholder for performing Wilcoxon Signed-Rank Test
         return "Result of Wilcoxon Signed-Rank Test"

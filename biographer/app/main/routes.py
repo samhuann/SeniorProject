@@ -1,7 +1,7 @@
 from __future__ import division, unicode_literals, print_function  # for compatibility with Python 2 and 3
 from datetime import datetime, timezone
 from flask import render_template, flash, redirect, url_for, request, g, \
-    current_app, send_from_directory
+    current_app, send_from_directory,request_finished, request_started
 from flask_login import current_user, login_required
 import sqlalchemy as sa
 from app import db
@@ -27,15 +27,50 @@ import pims
 import trackpy as tp
 import math
 import scipy as sp
-import patsy
-import statsmodels.api as sm
-from statsmodels.formula.api import ols
+import shutil
 
-@bp.before_app_request
+
+STATIC_FOLDER = os.path.join(current_app.root_path, 'static/')
+UPLOADS_FOLDER = os.path.join(current_app.root_path, 'uploads/')
+PRESERVE_FOLDERS = ['css', 'js']
+
+def clear_folders():
+    # Clear static folder
+    for filename in os.listdir(STATIC_FOLDER):
+        file_path = os.path.join(STATIC_FOLDER, filename)
+        try:
+            if filename not in PRESERVE_FOLDERS:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+    # Clear uploads folder
+    for filename in os.listdir(UPLOADS_FOLDER):
+        file_path = os.path.join(UPLOADS_FOLDER, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+
+@bp.after_request
+def after_request(response):
+    clear_folders()
+    return response
+
+
+@bp.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.now(timezone.utc)
         db.session.commit()
+        clear_folders()
 
 
 

@@ -24,6 +24,9 @@ import pims
 import trackpy as tp
 import math
 import scipy as sp
+import patsy
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
 
 @bp.before_app_request
 def before_request():
@@ -352,6 +355,7 @@ def chi_square_independence():
     plt.xlabel('Categories')
     plt.ylabel('Proportions')
     plt.title('Observed Proportions')
+    plt.xticks(rotation = 45)
     statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_csit'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
     plt.clf()
@@ -379,6 +383,7 @@ def fisher_test():
     plt.xlabel('Categories')
     plt.ylabel('Proportions')
     plt.title('Observed Proportions')
+    plt.xticks(rotation = 45)
     statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_fish'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
     plt.clf()
@@ -405,19 +410,36 @@ def perform_one_measurement_test():
     elif test == 'homoscedasticity':
         statistic, p_value = stats.bartlett(transformed_df.iloc[:,0], transformed_df.iloc[:,1])
         return render_template('display_excel.html', graph=graph, test_results={"Bartlett's Test": "(p-value = " + str(p_value)+")"}, statistic = "Bartlett's test statistic is: " + str(statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
-
     elif test == 'one_way_anova':
-        # Placeholder for performing One-Way ANOVA
-        return "Result of One-Way ANOVA"
+        f_statistic, p_value = stats.f_oneway(*[transformed_df[col] for col in transformed_df.columns])
+        categories = list(transformed_df.columns)
+        means = transformed_df.mean()
+        plt.bar(range(len(categories)), means.values, tick_label=categories)
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_anova'+'.png'
+        plt.xticks(rotation = 45)
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"One-way ANOVA": "(p-value = " + str(p_value)+")"}, statistic = "F-statistic statistic is: " + str(f_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'kruskal_wallis_test':
-        # Placeholder for performing Kruskal-Wallis Test
-        return "Result of Kruskal-Wallis Test"
-    elif test == 'nested_anova':
-        # Placeholder for performing Nested ANOVA
-        return "Result of Nested ANOVA"
+        h_statistic, p_value = stats.kruskal(*[transformed_df[col] for col in transformed_df.columns])
+        return render_template('display_excel.html', graph=graph, test_results={"Kruskal-Wallis": "(p-value = " + str(p_value)+")"}, statistic = "H-statistic statistic is: " + str(h_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'two_way_anova':
-        # Placeholder for performing Two-Way ANOVA
-        return "Result of Two-Way ANOVA"
+        categories = list(transformed_df.columns)
+        formula = ols(f'{transformed_df.columns[2]} ~ transformed_df.iloc[:, 0] + transformed_df.iloc[:, 1] + transformed_df.iloc[:, 0]:transformed_df.iloc[:, 1]',transformed_df).fit()
+        anova_table = sm.stats.anova_lm(formula, typ=2)
+        twoanova= anova_table.to_html()
+        sns.barplot(data=transformed_df, x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 2], hue=transformed_df.iloc[:, 1], palette='Set1', legend=True)
+        plt.xlabel(categories[0])
+        plt.ylabel(categories[2])
+        plt.legend(title=categories[1])
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_twowayanova'+'.png'
+        plt.xticks(rotation = 45)
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', twoanova=twoanova,graph=graph, statsgraph = statsgraph, test_results={"Two-way ANOVA": "Sucessfully ran."}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
+        
+        
     elif test == 'paired_t_test':
         # Placeholder for performing Paired t-Test
         return "Result of Paired t-Test"

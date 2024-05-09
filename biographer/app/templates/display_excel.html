@@ -300,7 +300,6 @@
                 <option value="homoscedasticity">Homoscedasticity</option>
                 <option value="one_way_anova">One-Way ANOVA</option>
                 <option value="kruskal_wallis_test">Kruskal-Wallis Test</option>
-                <option value="nested_anova">Nested ANOVA</option>
                 <option value="two_way_anova">Two-Way ANOVA</option>
                 <option value="paired_t_test">Paired t-Test</option>
                 <option value="wilcoxon_signed_rank_test">Wilcoxon Signed-Rank Test</option>
@@ -348,6 +347,9 @@
             {% if dof %}
                 {{dof}}
             {% endif %}
+            
+            {{ twoanova | safe }}
+
 
         </ul>
         {% else %}

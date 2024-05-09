@@ -27,50 +27,17 @@ import pims
 import trackpy as tp
 import math
 import scipy as sp
-import shutil
+from app.clear import clear_folders
 
-
-STATIC_FOLDER = os.path.join(current_app.root_path, 'static/')
-UPLOADS_FOLDER = os.path.join(current_app.root_path, 'uploads/')
-PRESERVE_FOLDERS = ['css', 'js']
-
-def clear_folders():
-    # Clear static folder
-    for filename in os.listdir(STATIC_FOLDER):
-        file_path = os.path.join(STATIC_FOLDER, filename)
-        try:
-            if filename not in PRESERVE_FOLDERS:
-                if os.path.isfile(file_path) or os.path.islink(file_path):
-                    os.unlink(file_path)
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
-        except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
-
-    # Clear uploads folder
-    for filename in os.listdir(UPLOADS_FOLDER):
-        file_path = os.path.join(UPLOADS_FOLDER, filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)
-        except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
-
-
-@bp.after_request
-def after_request(response):
-    clear_folders()
-    return response
 
 
 @bp.before_request
 def before_request():
+    clear_folders()
     if current_user.is_authenticated:
         current_user.last_seen = datetime.now(timezone.utc)
         db.session.commit()
-        clear_folders()
+
 
 
 
@@ -562,7 +529,7 @@ def perform_multiple_measurement_test():
         x = transformed_df.iloc[:,0]
         y = transformed_df.iloc[:,1]
         mymodel = np.poly1d(np.polyfit(x, y, 3))
-        myline = np.linspace(0, max(x), max(y))
+        myline = np.linspace(0, int(max(x)), int(max(y)))
         r_value = stats.linregress(x, y)
         plt.scatter(x, y)
         plt.plot(myline, mymodel(myline))
@@ -627,28 +594,8 @@ def perform_multiple_measurement_test():
     
 
     
-    
         
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+clear_folders()
 
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])

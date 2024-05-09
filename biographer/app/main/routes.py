@@ -398,11 +398,11 @@ def perform_one_measurement_test():
     if test == 'one_sample_t_test':
         test_mean = request.form.get('means_input')
         t_statistic, p_value = stats.ttest_1samp(a=transformed_df, popmean=float(test_mean))
-        return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Independence": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
- 
+        return render_template('display_excel.html', graph=graph, test_results={"One sample t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'two_sample_t_test':
-        # Placeholder for performing Two-Sample t-Test
-        return "Result of Two-Sample t-Test"
+        t_statistic, p_value = stats.ttest_ind(a=transformed_df.iloc[:, 0], b=transformed_df.iloc[:, 1], equal_var=True)
+        return render_template('display_excel.html', graph=graph, test_results={"Two sample t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+
     elif test == 'homoscedasticity':
         # Placeholder for performing Homoscedasticity test
         return "Result of Homoscedasticity test"

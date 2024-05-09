@@ -12,7 +12,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 import numpy as np
-from scipy.stats import linregress,zscore,norm,binomtest 
+import scipy.stats as stats
 import pandas as pd
 from scipy.optimize import curve_fit
 import os
@@ -106,10 +106,11 @@ def normalize():
             transformed_df[column] = (df[column] - zero_percent_values[column]) / (hundred_percent_values[column] - zero_percent_values[column])
     
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    sns.scatterplot(x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 1])
     global graph
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_norm'+'.png'
-    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    plt.clf()          
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/transform', methods=['POST','GET'])
@@ -121,83 +122,84 @@ def transform():
     hill_input = request.form.get('hill_input')
     user_input = request.form.get('user_input')
     if biochem_transform == "eadie-hofstee":
-        transformed_df['X'] = df['Y'] / df['X']
+        transformed_df.iloc[:, 0] = df.iloc[:, 1] / df.iloc[:, 0]
     elif biochem_transform == "hanes-woolf":
-        transformed_df['Y'] = df['X'] / df['Y']
+        transformed_df.iloc[:, 1] = df.iloc[:, 0] / df.iloc[:, 1]
     elif biochem_transform == "hill":
-        transformed_df['X'] = np.log10(df['X'])
-        transformed_df['Y'] = np.log10(df['Y'] / (float(hill_input) - df['Y']))
+        transformed_df.iloc[:, 0] = np.log10(df.iloc[:, 0])
+        transformed_df.iloc[:, 1] = np.log10(df.iloc[:, 1] / (float(hill_input) - df.iloc[:, 1]))
     elif biochem_transform == "log-log":
-        transformed_df['X'] = np.log10(df['X'])
-        transformed_df['Y'] = np.log10(df['Y'])
+        transformed_df.iloc[:, 0] = np.log10(df.iloc[:, 0])
+        transformed_df.iloc[:, 1] = np.log10(df.iloc[:, 1])
     elif biochem_transform == "scatchard":
-        transformed_df['Y'] = df['Y'] / df['X']
-        transformed_df['X'] = df['Y']
+        transformed_df.iloc[:, 1] = df.iloc[:, 1] / df.iloc[:, 0]
+        transformed_df.iloc[:, 0] = df.iloc[:, 1]
     if function == "y*k":
-        transformed_df['Y']=df['Y']*float(user_input)
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]*float(user_input)
     elif function == "y+k":
-        transformed_df['Y']=df['Y']+float(user_input)
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]+float(user_input)
     elif function == "y-k":
-        transformed_df['Y']=df['Y']-float(user_input)
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]-float(user_input)
     elif function == "y/k":
-        transformed_df['Y']=df['Y']/float(user_input)
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]/float(user_input)
     elif function == "ysquared":
-        transformed_df['Y']=df['Y']^2
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]^2
     elif function == "y^k":
-        transformed_df['Y']=df['Y']^float(user_input)
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]^float(user_input)
     elif function == "logy":
-        transformed_df['Y']=np.log10(df['Y'])
+        transformed_df.iloc[:, 1]=np.log10(df.iloc[:, 1])
     elif function == "-logy":
-        transformed_df['Y']=-1*np.log10(df['Y'])
+        transformed_df.iloc[:, 1]=-1*np.log10(df.iloc[:, 1])
     elif function == "lny":
-        transformed_df['Y']=np.log(df['Y'])
+        transformed_df.iloc[:, 1]=np.log(df.iloc[:, 1])
     elif function == "10^y":
-        transformed_df['Y']=10^df['Y']
+        transformed_df.iloc[:, 1]=10^df.iloc[:, 1]
     elif function == "e^y":
-        transformed_df['Y']=math.exp(df['Y'])
+        transformed_df.iloc[:, 1]=math.exp(df.iloc[:, 1])
     elif function == "1/y":
-        transformed_df['Y']=1/df['Y']
+        transformed_df.iloc[:, 1]=1/df.iloc[:, 1]
     elif function == "sqrty":
-        transformed_df['Y']=math.sqrt(df['Y'])
+        transformed_df.iloc[:, 1]=math.sqrt(df.iloc[:, 1])
     elif function == "logity":
-        transformed_df['Y']=logit(df['Y'])
+        transformed_df.iloc[:, 1]=logit(df.iloc[:, 1])
     elif function == "zscorey":
-        transformed_df['Y']=zscore(df['Y'])
+        transformed_df.iloc[:, 1]=stats.zscore(df.iloc[:, 1])
     elif function == "siny":
-        transformed_df['Y']=math.sin(df['Y'])
+        transformed_df.iloc[:, 1]=math.sin(df.iloc[:, 1])
     elif function == "cosy":
-        transformed_df['Y']=math.cos(df['Y'])
+        transformed_df.iloc[:, 1]=math.cos(df.iloc[:, 1])
     elif function == "tany":
-        transformed_df['Y']=math.tan(df['Y'])
+        transformed_df.iloc[:, 1]=math.tan(df.iloc[:, 1])
     elif function == "arcsiny":
-        transformed_df['Y']=math.asin(df['Y'])
+        transformed_df.iloc[:, 1]=math.asin(df.iloc[:, 1])
     elif function == "absy":
-        transformed_df['Y']=abs(df['Y'])
+        transformed_df.iloc[:, 1]=abs(df.iloc[:, 1])
     elif function == "x/y":
-        transformed_df['Y']=df['X']/df['Y']
+        transformed_df.iloc[:, 1]=df.iloc[:, 0]/df.iloc[:, 1]
     elif function == "y/x":
-        transformed_df['Y']=df['Y']/df['X']
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]/df.iloc[:, 0]
     elif function == "y-x":
-        transformed_df['Y']=df['Y']-df['X']
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]-df.iloc[:, 0]
     elif function == "y+x":
-        transformed_df['Y']=df['Y']+df['X']
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]+df.iloc[:, 0]
     elif function == "y*x":
-        transformed_df['Y']=df['Y']*df['X']
+        transformed_df.iloc[:, 1]=df.iloc[:, 1]*df.iloc[:, 0]
     elif function == "x-y":
-        transformed_df['Y']=df['X']-df['Y']
+        transformed_df.iloc[:, 1]=df.iloc[:, 0]-df.iloc[:, 1]
     elif function == "k-y":
-        transformed_df['Y']=float(user_input)-df['Y']
+        transformed_df.iloc[:, 1]=float(user_input)-df.iloc[:, 1]
     elif function == "k/y":
-        transformed_df['Y']=float(user_input)/df['Y']
+        transformed_df.iloc[:, 1]=float(user_input)/df.iloc[:, 1]
     elif function == "log2y":
-        transformed_df['Y']=np.log2(df['Y'])
+        transformed_df.iloc[:, 1]=np.log2(df.iloc[:, 1])
     elif function == "2^y":
-        transformed_df['Y']=2^df['Y']
+        transformed_df.iloc[:, 1]=2^df.iloc[:, 1]
     
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    sns.scatterplot(x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 1])
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_trans'+'.png'
-    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    plt.clf()          
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/transform-concentrations', methods=['POST','GET'])
@@ -207,32 +209,34 @@ def transform_concentrations():
     transform_concentrations = request.form.get('transformConcentration')
     userx_input = request.form.get('userx_input')
     if transform_concentrations == "changeX0":
-        transformed_df['X'] = df.loc[df['X'] == 0, 'X'] = float(userx_input)
+        transformed_df.iloc[:, 0] = df.loc[df.iloc[:, 0] == 0, 'X'] = float(userx_input)
     elif transform_concentrations == "multConstant":
-        transformed_df['X']*=float(userx_input)
+        transformed_df.iloc[:, 0]*=float(userx_input)
     elif transform_concentrations == "divConstant":
-        transformed_df['X']/=float(userx_input)
+        transformed_df.iloc[:, 0]/=float(userx_input)
     elif transform_concentrations == "log10x":
-        transformed_df['X'] = np.log10(df['X'])
+        transformed_df.iloc[:, 0] = np.log10(df.iloc[:, 0])
     elif transform_concentrations == "lnx":
-        transformed_df['X'] = np.log(df['X'])
+        transformed_df.iloc[:, 0] = np.log(df.iloc[:, 0])
     elif transform_concentrations == "log2x":
-        transformed_df['X'] = np.log2(df['X'])
+        transformed_df.iloc[:, 0] = np.log2(df.iloc[:, 0])
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    sns.scatterplot(x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 1])
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_transconc'+'.png'
-    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))          
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    plt.clf()          
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/area-under-curve', methods=['POST','GET'])
 def area_under_curve():
     global transformed_df
     global graph
-    area = np.trapz(df['Y'], x=df['X'])
+    area = np.trapz(df.iloc[:, 1], x=df.iloc[:, 0])
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    sns.scatterplot(x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 1])
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_auc'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    plt.clf()
     print(area)          
     return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, area=area,transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
@@ -251,9 +255,11 @@ def fraction_of_total():
         transformed_df = df.div(df.values.sum())
     
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+    sns.scatterplot(x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 1])
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_frac'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    plt.clf()
+
     
     if fracconfidence == "fracconfidence":
         lower_bound, upper_bound = calculate_confidence_intervals(df, float(conf_input))
@@ -270,18 +276,22 @@ def prune():
     if pruneOption == 'xRange':
         xmin = request.form.get('xmin')
         xmax = request.form.get('xmax')
-        transformed_df= df[(df['X'] >= float(xmin)) & (df['X'] <= float(xmax))]
+        transformed_df= df[(df.iloc[:, 0] >= float(xmin)) & (df.iloc[:, 0] <= float(xmax))]
         plt.figure(figsize=(10, 6))
-        sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+        sns.scatterplot(x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 1])
         graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_prune'+'.png'
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+        plt.clf()
+
         return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif pruneOption == 'average':
         transformed_df = df.groupby(df.index // float(avg_input)).mean()
         plt.figure(figsize=(10, 6))
-        sns.scatterplot(x=transformed_df['X'], y=transformed_df['Y'])
+        sns.scatterplot(x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 1])
         graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_prune'+'.png'
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+        plt.clf()
+
         return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/transpose', methods=['POST','GET'])
@@ -297,6 +307,7 @@ def transpose():
     plt.legend(title="Data Sets", labels=transformed_df.index)
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_tps'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
+    plt.clf()
     return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 
@@ -307,84 +318,54 @@ def exact_test():
     global graph
     num_successes = request.form.get('success_input')  
     num_trials = request.form.get('trials_input')
-
     # Assuming you have the null hypothesis probability
     null_hypothesis_prob = request.form.get('prob')
 
     # Perform the binomial test
-    p_value = binomtest(int(num_successes), n=int(num_trials), p=float(null_hypothesis_prob))
+    p_value = stats.binomtest(int(num_successes), n=int(num_trials), p=float(null_hypothesis_prob))
 
     # You can then interpret the p-value to make a decision
-    if p_value.pvalue < 0.05:
-        result = "Reject null hypothesis: There is evidence of a significant difference."
-    else:
-        result = "Fail to reject null hypothesis: There is no evidence of a significant difference."
-    x = ['Binomial Test']
-    y = [float(p_value.pvalue)]
-    plt.bar(x, y)
-    plt.ylabel('P-value')
-    plt.title('Binomial Test Results')
-    statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_bin'+'.png'
-    plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
-    return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Exact Test of Goodness-of-Fit": result}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', graph=graph, test_results={"Exact Test of Goodness-of-Fit p-value": str(p_value.pvalue)}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
+@bp.route('/chi-square-goodness-test', methods=['POST'])
+def chi_square_goodness():
+    global transformed_df
+    global graph
+    observed_data = df.iloc[:, 0]
+    expected_data = df.iloc[:, 1]
+    chi_square_test_statistic, p_value = stats.chisquare(observed_data,expected_data) 
+    return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit p-value": str(p_value)}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
+@bp.route('/chi-square-independence-test', methods=['POST','GET'])
+def chi_square_independence():
+    chi2, p, dof, expected = stats.chi2_contingency(df)
+    # Display the results
 
-@bp.route('/one-measurement-test',methods=['POST'])
-def perform_one_measurement_test():
-    if test == 'one_sample_t_test':
-        # Placeholder for performing One-Sample t-Test
-        return "Result of One-Sample t-Test"
-    elif test == 'two_sample_t_test':
-        # Placeholder for performing Two-Sample t-Test
-        return "Result of Two-Sample t-Test"
-    elif test == 'homoscedasticity':
-        # Placeholder for performing Homoscedasticity test
-        return "Result of Homoscedasticity test"
-    elif test == 'one_way_anova':
-        # Placeholder for performing One-Way ANOVA
-        return "Result of One-Way ANOVA"
-    elif test == 'kruskal_wallis_test':
-        # Placeholder for performing Kruskal-Wallis Test
-        return "Result of Kruskal-Wallis Test"
-    elif test == 'nested_anova':
-        # Placeholder for performing Nested ANOVA
-        return "Result of Nested ANOVA"
-    elif test == 'two_way_anova':
-        # Placeholder for performing Two-Way ANOVA
-        return "Result of Two-Way ANOVA"
-    elif test == 'paired_t_test':
-        # Placeholder for performing Paired t-Test
-        return "Result of Paired t-Test"
-    elif test == 'wilcoxon_signed_rank_test':
-        # Placeholder for performing Wilcoxon Signed-Rank Test
-        return "Result of Wilcoxon Signed-Rank Test"
+    # Plotting the observed proportions
+    categories = list(df.columns)
+    observed_proportions = []
+    for i in range(df.shape[1]):
+        observed_proportions.append(df.iloc[:, i].sum() / df.sum().sum())
     
-@bp.route('/multiple-measurement-test',methods=['POST'])
-def perform_multiple_measurement_test():
-    if test == 'linear_regression_and_correlation':
-        # Placeholder for performing Linear Regression and Correlation
-        return "Result of Linear Regression and Correlation"
-    elif test == 'spearman_rank_correlation':
-        # Placeholder for performing Spearman Rank Correlation
-        return "Result of Spearman Rank Correlation"
-    elif test == 'polynomial_regression':
-        # Placeholder for performing Polynomial Regression
-        return "Result of Polynomial Regression"
-    elif test == 'analysis_of_covariance':
-        # Placeholder for performing Analysis of Covariance
-        return "Result of Analysis of Covariance"
-    elif test == 'multiple_regression':
-        # Placeholder for performing Multiple Regression
-        return "Result of Multiple Regression"
-    elif test == 'simple_logistic_regression':
-        # Placeholder for performing Simple Logistic Regression
-        return "Result of Simple Logistic Regression"
-    elif test == 'multiple_logistic_regression':
-        # Placeholder for performing Multiple Logistic Regression
-        return "Result of Multiple Logistic Regression"
+    expected_table = pd.DataFrame(expected, index=df.index)
 
-
+    plt.bar(range(len(categories)), observed_proportions, tick_label=categories)
+    plt.xlabel('Categories')
+    plt.ylabel('Proportions')
+    plt.title('Observed Proportions')
+    statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_csit'+'.png'
+    plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+    plt.clf()
+    return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
+                            test_results={"Chi-Square Test of Goodness-of-Fit": "(p-value = " + str(p)+")"}, 
+                            tables=[df.to_html(classes='data')], 
+                            titles=df.columns.values, 
+                            transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
+                            statistic="Chi-square statistic: " + str(chi2),
+                            dof="Degrees of freedom: " + str(dof),
+                            expected_table = (expected_table.to_dict(orient='records') if df is not None else None)
+                            )
+    
 
 
 
@@ -481,7 +462,7 @@ def count():
     return render_template('tools/hemocytometer/display_hemo.html', imgname=img.filename, countname=countname)
 
 def wilson_brown_confidence_interval(n, p, alpha=0.05):
-    z_alpha = norm.ppf(1 - alpha / 2)
+    z_alpha = stats.norm.ppf(1 - alpha / 2)
     center = p + z_alpha**2 / (2 * n)
     width = z_alpha * np.sqrt(p * (1 - p) / n + z_alpha**2 / (4 * n**2))
     lower_bound = (center - width) / (1 + z_alpha**2 / n)
@@ -496,3 +477,59 @@ def calculate_confidence_intervals(data, percentage):
         return lower_bound, upper_bound
     else:
         return None, None
+
+
+
+@bp.route('/one-measurement-test',methods=['POST'])
+def perform_one_measurement_test():
+    if test == 'one_sample_t_test':
+        # Placeholder for performing One-Sample t-Test
+        return "Result of One-Sample t-Test"
+    elif test == 'two_sample_t_test':
+        # Placeholder for performing Two-Sample t-Test
+        return "Result of Two-Sample t-Test"
+    elif test == 'homoscedasticity':
+        # Placeholder for performing Homoscedasticity test
+        return "Result of Homoscedasticity test"
+    elif test == 'one_way_anova':
+        # Placeholder for performing One-Way ANOVA
+        return "Result of One-Way ANOVA"
+    elif test == 'kruskal_wallis_test':
+        # Placeholder for performing Kruskal-Wallis Test
+        return "Result of Kruskal-Wallis Test"
+    elif test == 'nested_anova':
+        # Placeholder for performing Nested ANOVA
+        return "Result of Nested ANOVA"
+    elif test == 'two_way_anova':
+        # Placeholder for performing Two-Way ANOVA
+        return "Result of Two-Way ANOVA"
+    elif test == 'paired_t_test':
+        # Placeholder for performing Paired t-Test
+        return "Result of Paired t-Test"
+    elif test == 'wilcoxon_signed_rank_test':
+        # Placeholder for performing Wilcoxon Signed-Rank Test
+        return "Result of Wilcoxon Signed-Rank Test"
+    
+@bp.route('/multiple-measurement-test',methods=['POST'])
+def perform_multiple_measurement_test():
+    if test == 'linear_regression_and_correlation':
+        # Placeholder for performing Linear Regression and Correlation
+        return "Result of Linear Regression and Correlation"
+    elif test == 'spearman_rank_correlation':
+        # Placeholder for performing Spearman Rank Correlation
+        return "Result of Spearman Rank Correlation"
+    elif test == 'polynomial_regression':
+        # Placeholder for performing Polynomial Regression
+        return "Result of Polynomial Regression"
+    elif test == 'analysis_of_covariance':
+        # Placeholder for performing Analysis of Covariance
+        return "Result of Analysis of Covariance"
+    elif test == 'multiple_regression':
+        # Placeholder for performing Multiple Regression
+        return "Result of Multiple Regression"
+    elif test == 'simple_logistic_regression':
+        # Placeholder for performing Simple Logistic Regression
+        return "Result of Simple Logistic Regression"
+    elif test == 'multiple_logistic_regression':
+        # Placeholder for performing Multiple Logistic Regression
+        return "Result of Multiple Logistic Regression"

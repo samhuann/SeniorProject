@@ -236,9 +236,7 @@
                 <option value=""></option>
                 <option value="exact_test_of_goodness_of_fit">Exact Test of Goodness-of-Fit</option>
                 <option value="chi_square_test_of_goodness_of_fit">Chi-Square Test of Goodness-of-Fit</option>
-                <option value="g_test_of_goodness_of_fit">G-Test of Goodness-of-Fit</option>
                 <option value="chi_square_test_of_independence">Chi-Square Test of Independence</option>
-                <option value="g_test_of_independence">G-Test of Independence</option>
                 <option value="fishers_exact_test">Fisher's Exact Test</option>
                 <option value="cochran_mantel_haenszel_test">Cochran-Mantel-Haenszel Test</option>
             </select>
@@ -253,7 +251,40 @@
                 <button type="submit">Run Test</button>
             </form>
         </div>
-
+        <div id="chigoodDisplay" style="display: none;">
+            <form id="chigoodForm" action="{{ url_for('main.chi_square_goodness') }}" method="post">
+            <p>Tip: The columns must be equal in sum!</p>
+                <button type="submit">Run Test</button>
+            </form>
+        </div>
+        <div id="chiindDisplay" style="display: none;">
+            <form id="chiindForm" action="{{ url_for('main.chi_square_independence') }}" method="post">
+                <button type="submit">Run Test</button>
+            </form>
+        </div>
+        {% if expected_table %}
+        <h2>Expected Frequency Table:</h2>
+            <div class="excel-table-container">
+                <table class="excel-table">
+                    <thead>
+                        <tr>
+                            {% for column in expected_table[0].keys() %}
+                                <th>{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in expected_table %}
+                            <tr>
+                                {% for value in row.values() %}
+                                    <td>{{ value }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
 
         <!-- Tests for One Measurement Variable -->
         <form id="test_one_measurement" action="{{ url_for('main.perform_one_measurement_test') }}" method="post">
@@ -294,6 +325,7 @@
             <button type="submit">Submit</button>
             <br><br>
         </form>
+        
 
         <hr>
 
@@ -304,6 +336,13 @@
             {% for test, result in test_results.items() %}
             <li><strong>{{ test }}</strong>: {{ result }}</li>
             {% endfor %}
+            {% if statistic %}
+                {{statistic}}
+            {% endif %}<br>
+            {% if dof %}
+                {{dof}}
+            {% endif %}
+
         </ul>
         {% else %}
         <p>No test results available.</p>

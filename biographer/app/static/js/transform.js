@@ -68,6 +68,17 @@ document.getElementById('testNominal').addEventListener('change', function() {
     } else {
         binomOptions.style.display = 'none';
     }
+    var chigoodDisplay = document.getElementById('chigoodDisplay');
+    if (this.value === 'chi_square_test_of_goodness_of_fit') {
+        chigoodDisplay.style.display = 'block';
+    } else {
+        chigoodDisplay.style.display = 'none';
+    }
+    if (this.value === 'chi_square_test_of_independence') {
+        chiindDisplay.style.display = 'block';
+    } else {
+        chiindDisplay.style.display = 'none';
+    }
     
 });
 

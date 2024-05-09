@@ -457,8 +457,23 @@ def perform_one_measurement_test():
         return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Paired t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
     elif test == 'wilcoxon_signed_rank_test':
-        # Placeholder for performing Wilcoxon Signed-Rank Test
-        return "Result of Wilcoxon Signed-Rank Test"
+        before = transformed_df.iloc[:,0]
+        after = transformed_df.iloc[:,1]
+        t_statistic, p_value = stats.wilcoxon(before, after)
+        labels = ['Before', 'After']
+        means = [np.mean(before), np.mean(after)]
+        errors = [np.std(before), np.std(after)]
+        x_pos = np.arange(len(labels))
+        plt.bar(x_pos, means, yerr=errors, align='center', alpha=0.5, ecolor='black', capsize=10)
+        plt.xticks(x_pos, labels)
+        plt.ylabel('Mean Value')
+        plt.title('Paired t-test Results')
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_wilc'+'.png'
+        plt.xticks(rotation = 45)
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Wilcoxon Signed Rank Test:": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        
 
 
 

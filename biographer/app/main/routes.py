@@ -321,85 +321,70 @@ def transpose():
     plt.clf()
     return render_template('display_excel.html', filename=file.filename, graph=graph, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
-@bp.route('/exact-test', methods=['POST'])
-def exact_test():
+@bp.route('/nominal-test', methods = ['POST','GET'])
+def perform_nominal_test():
     global transformed_df
-    global graph
-    num_successes = request.form.get('success_input')  
-    num_trials = request.form.get('trials_input')
-    # Assuming you have the null hypothesis probability
-    null_hypothesis_prob = request.form.get('prob')
+    global graph 
+    test = request.form.get('test_nominal')
+    if test == 'exact_test_of_goodness_of_fit':
+        num_successes = request.form.get('success_input')  
+        num_trials = request.form.get('trials_input')
+        null_hypothesis_prob = request.form.get('prob')
+        # Perform the binomial test
+        p_value = stats.binomtest(int(num_successes), n=int(num_trials), p=float(null_hypothesis_prob))
 
-    # Perform the binomial test
-    p_value = stats.binomtest(int(num_successes), n=int(num_trials), p=float(null_hypothesis_prob))
-
-    # You can then interpret the p-value to make a decision
-    return render_template('display_excel.html', graph=graph, test_results={"Exact Test of Goodness-of-Fit p-value": str(p_value.pvalue)}, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
-
-@bp.route('/chi-square-goodness-test', methods=['POST'])
-def chi_square_goodness():
-    global transformed_df
-    global graph
-    observed_data = transformed_df.iloc[:, 0]
-    expected_data = transformed_df.iloc[:, 1]
-    chi_square_test_statistic, p_value = stats.chisquare(observed_data,expected_data) 
-    return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit": "(p-value = " + str(p_value) + ")"}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
-
-@bp.route('/chi-square-independence-test', methods=['POST','GET'])
-def chi_square_independence():
-    global transformed_df
-    global graph
-    chi2, p, dof, expected = stats.chi2_contingency(transformed_df)
-    # Display the results
-    # Plotting the observed proportions
-    observed_proportions = []
-    for i in range(transformed_df.shape[1]):
-        observed_proportions.append(transformed_df.iloc[:, i].sum() / transformed_df.sum().sum())
-    expected_table = pd.DataFrame(expected, index=transformed_df.index)
-    categories = list(transformed_df.columns)
-    plt.bar(range(len(categories)), observed_proportions, tick_label=categories)
-    plt.xlabel('Categories')
-    plt.ylabel('Proportions')
-    plt.title('Observed Proportions')
-    plt.xticks(rotation = 45)
-    statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_csit'+'.png'
-    plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
-    plt.clf()
-    return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
-                            test_results={"Chi-Square Test of Independence": "(p-value = " + str(p)+")"}, 
-                            df=df.to_dict(orient='records'), 
-                             
-                            transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
-                            statistic="Chi-square statistic: " + str(chi2),
-                            dof="Degrees of freedom: " + str(dof),
-                            expected_table = (expected_table.to_dict(orient='records') if df is not None else None)
-                            )
-
-@bp.route('/fisher-test', methods=['POST','GET'])
-def fisher_test():
-    global transformed_df
-    global graph
-    odd_ratio, p_value = stats.fisher_exact(transformed_df)
-    observed_proportions = []
-    for i in range(transformed_df.shape[1]):
-        observed_proportions.append(transformed_df.iloc[:, i].sum() / transformed_df.sum().sum())
-    
-    categories = list(transformed_df.columns)
-    plt.bar(range(len(categories)), observed_proportions, tick_label=categories)
-    plt.xlabel('Categories')
-    plt.ylabel('Proportions')
-    plt.title('Observed Proportions')
-    plt.xticks(rotation = 45)
-    statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_fish'+'.png'
-    plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
-    plt.clf()
-    return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
-                            test_results={"Fisher's Exact Test": "(p-value = " + str(p_value)+")"}, 
-                            df=df.to_dict(orient='records'), 
-                             
-                            transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
-                            statistic="Odd ratio " + str(odd_ratio),
-                            )
+        # You can then interpret the p-value to make a decision
+        return render_template('display_excel.html', graph=graph, test_results={"Exact Test of Goodness-of-Fit": "Ran successfully."}, statistic = "p-value: " + str(p_value.pvalue),df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    elif test == 'chi_square_test_of_goodness_of_fit':
+        observed_data = transformed_df.iloc[:, 0]
+        expected_data = transformed_df.iloc[:, 1]
+        chi_square_test_statistic, p_value = stats.chisquare(observed_data,expected_data) 
+        return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit": "Ran successfully."}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), stat2 = "p-value: " + str(p_value.pvalue),df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    elif test == 'chi_square_test_of_independence':
+        chi2, p, dof, expected = stats.chi2_contingency(transformed_df)
+        observed_proportions = []
+        for i in range(transformed_df.shape[1]):
+            observed_proportions.append(transformed_df.iloc[:, i].sum() / transformed_df.sum().sum())
+        expected_table = pd.DataFrame(expected, index=transformed_df.index)
+        categories = list(transformed_df.columns)
+        plt.bar(range(len(categories)), observed_proportions, tick_label=categories)
+        plt.xlabel('Categories')
+        plt.ylabel('Proportions')
+        plt.title('Observed Proportions')
+        plt.xticks(rotation = 45)
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_csit'+'.png'
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
+                                test_results={"Chi-Square Test of Independence": "(p-value = " + str(p)+")"}, 
+                                df=df.to_dict(orient='records'), 
+                                
+                                transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
+                                statistic="Chi-square statistic: " + str(chi2),
+                                dof="Degrees of freedom: " + str(dof),
+                                expected_table = (expected_table.to_dict(orient='records') if df is not None else None)
+                                )
+    elif test == 'fishers_exact_test':
+        odd_ratio, p_value = stats.fisher_exact(transformed_df)
+        observed_proportions = []
+        for i in range(transformed_df.shape[1]):
+            observed_proportions.append(transformed_df.iloc[:, i].sum() / transformed_df.sum().sum())
+        
+        categories = list(transformed_df.columns)
+        plt.bar(range(len(categories)), observed_proportions, tick_label=categories)
+        plt.xlabel('Categories')
+        plt.ylabel('Proportions')
+        plt.title('Observed Proportions')
+        plt.xticks(rotation = 45)
+        statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_fish'+'.png'
+        plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
+        plt.clf()
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
+                                test_results={"Fisher's Exact Test": "(p-value = " + str(p_value)+")"}, 
+                                df=df.to_dict(orient='records'), 
+                                transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
+                                statistic="Odd ratio " + str(odd_ratio),
+                                )
 
 @bp.route('/one-measurement-test',methods=['POST', 'GET'])
 def perform_one_measurement_test():

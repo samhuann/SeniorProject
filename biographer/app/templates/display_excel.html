@@ -2,16 +2,35 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/excel.css') }}">
 </head>
 {% extends "upload_form.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
 {% block content %}
 {{super()}}
+    {% if form %}
+        {{ wtf.quick_form(form) }}
+    {% endif %} 
 
     <body>
-        <h1>Excel Data</h1>
-        File Uploaded: {{filename}}
-        {% for table in tables %}
-            {{ table|safe }}
-        {% endfor %}
-    
+        File Uploaded: {{ filename }}
+        <div class="excel-table-container">
+            <table class="excel-table">
+                <thead>
+                    <tr>
+                        {% for column in df[0].keys() %}
+                            <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>   
+                </thead>
+                <tbody>
+                    {% for row in df %}
+                        <tr>
+                            {% for value in row.values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         <h1>Analyze Excel File</h1>
         <form id="transformation" method="post">
             <input type="hidden" name="file_path" value="{{ file_path }}">
@@ -35,7 +54,7 @@
             <h2>Normalization Options</h2>
             <form id="normalizationForm" action="{{ url_for('main.normalize') }}" method="post">
                 <label for="zeroPercent">Define 0%:</label><br>
-                <input type="radio" id="smallestValue" name="zero_percent" value="smallest">
+                <input type="radio" id="smallestValue" name="zero_percent" value="smallest" checked="checked">
                 <label for="smallestValue">The smallest value in each data set</label><br>
                 <input type="radio" id="firstValue" name="zero_percent" value="first">
                 <label for="firstValue">The first value in each data set</label><br>
@@ -47,7 +66,7 @@
                 <label for="customValue">Custom value (Y = <input type="number" id="customInput" name="custom_input" step="any">)</label><br><br>
                 
                 <label for="hundredPercent">Define 100%:</label><br>
-                <input type="radio" id="largestValue" name="hundred_percent" value="largest">
+                <input type="radio" id="largestValue" name="hundred_percent" value="largest" checked="checked">
                 <label for="largestValue">The largest value in each data set</label><br>
                 <input type="radio" id="lastValue" name="hundred_percent" value="last">
                 <label for="lastValue">The last value in each data set</label><br>
@@ -59,7 +78,7 @@
                 <label for="hcustomValue">Custom value (Y = <input type="number" id="hcustomInput" name="hcustom_input" step="any">)</label><br><br>
                 
                 <label for="presentation">Present results as</label><br>
-                <input type="radio" id="fraction" name="presentation" value="fraction">
+                <input type="radio" id="fraction" name="presentation" value="fraction" checked="checked">
                 <label for="fraction">Fraction</label><br>
                 <input type="radio" id="percentage" name="presentation" value="percentage">
                 <label for="percentage">Percentage</label><br><br>
@@ -340,24 +359,46 @@
             <li><strong>{{ test }}</strong>: {{ result }}</li>
             {% endfor %}
             {% if statistic %}
-                {{statistic}}
-            {% endif %}<br>
-            {% if stat2 %}
-                {{stat2}}
-            {% endif %}<br>
-            {% if stat3 %}
-                {{stat3}}
-            {% endif %}<br>
-            {% if stat4 %}
-                {{stat4}}
-            {% endif %}<br>
-            {% if stat5 %}
-                {{stat5}}
-            {% endif %}<br>
-            {% if dof %}
-                {{dof}}
+                {{statistic}}<br>
             {% endif %}
-            {{ twoanova | safe }}
+            {% if stat2 %}<br>
+                {{stat2}}
+            {% endif %}
+            {% if stat3 %}
+                {{stat3}}<br>
+            {% endif %}
+            {% if stat4 %}
+                {{stat4}}<br>
+            {% endif %}
+            {% if stat5 %}
+                {{stat5}}<br>
+            {% endif %}
+            {% if dof %}
+                {{dof}}<br>
+            {% endif %}
+            {% if twoanova %}
+        <!-- Display transformed DataFrame -->
+            <div class="excel-table-container">
+                <table class="excel-table">
+                    <thead>
+                        <tr>
+                            {% for column in twoanova[0].keys() %}
+                                <th>{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in twoanova %}
+                            <tr>
+                                {% for value in row.values() %}
+                                    <td>{{ value }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
 
 
         </ul>

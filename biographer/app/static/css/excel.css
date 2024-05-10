@@ -36,3 +36,7 @@ th, td {
     padding: 8px;
     text-align: left;
 }
+.custom-table tr {
+    text-align: left !important; /* or 'center' or 'justify' */
+}
+

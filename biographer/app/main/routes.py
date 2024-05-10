@@ -44,6 +44,7 @@ def before_request():
 @bp.route('/')
 @login_required
 def upload_form():
+    clear_folders()
     return render_template('upload_form.html', title='Home')
 
 
@@ -72,7 +73,7 @@ def upload_file():
         graph = None
         # Render the template with the Excel data
        
-        return render_template('display_excel.html', filename=file.filename, tables=[df.to_html(classes='data')], titles=df.columns.values)
+        return render_template('display_excel.html', filename=file.filename, df=df.to_dict(orient='records'))
 
 
 @bp.route('/normalize', methods=['POST','GET'])
@@ -120,7 +121,7 @@ def normalize():
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_norm'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
     plt.clf()          
-    return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', filename=file.filename, graph=graph,df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/transform', methods=['POST','GET'])
 def transform():
@@ -209,7 +210,7 @@ def transform():
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_trans'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
     plt.clf()          
-    return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', filename=file.filename, graph=graph,df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/transform-concentrations', methods=['POST','GET'])
 def transform_concentrations():
@@ -235,7 +236,7 @@ def transform_concentrations():
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_transconc'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
     plt.clf()          
-    return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', filename=file.filename, graph=graph,df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/area-under-curve', methods=['POST','GET'])
 def area_under_curve():
@@ -244,7 +245,7 @@ def area_under_curve():
     global graph
     area = np.trapz(df.iloc[:, 1], x=df.iloc[:, 0])
 
-    return render_template('display_excel.html', filename=file.filename, graph=graph,tables=[df.to_html(classes='data')], titles=df.columns.values, area=area,transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', filename=file.filename, graph=graph,df=df.to_dict(orient='records'),  area=area,transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/fraction-of-total', methods=['POST','GET'])
 def fraction_of_total():
@@ -271,9 +272,9 @@ def fraction_of_total():
     
     if fracconfidence == "fracconfidence":
         lower_bound, upper_bound = calculate_confidence_intervals(df, float(conf_input))
-        return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], lower_bound = lower_bound, upper_bound = upper_bound, titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', filename=file.filename, graph=graph, df=df.to_dict(orient='records'), lower_bound = lower_bound, upper_bound = upper_bound,  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     
-    return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', filename=file.filename, graph=graph, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/prune', methods=['POST','GET'])
 def prune():
@@ -293,7 +294,7 @@ def prune():
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
         plt.clf()
 
-        return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', filename=file.filename, graph=graph, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif pruneOption == 'average':
         transformed_df = df.groupby(df.index // float(avg_input)).mean()
         plt.figure(figsize=(10, 6))
@@ -302,7 +303,7 @@ def prune():
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
         plt.clf()
 
-        return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', filename=file.filename, graph=graph, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/transpose', methods=['POST','GET'])
 def transpose():
@@ -318,7 +319,7 @@ def transpose():
     graph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_tps'+'.png'
     plt.savefig(os.path.join(current_app.root_path, 'static/'+ graph))
     plt.clf()
-    return render_template('display_excel.html', filename=file.filename, graph=graph, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', filename=file.filename, graph=graph, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/exact-test', methods=['POST'])
 def exact_test():
@@ -333,7 +334,7 @@ def exact_test():
     p_value = stats.binomtest(int(num_successes), n=int(num_trials), p=float(null_hypothesis_prob))
 
     # You can then interpret the p-value to make a decision
-    return render_template('display_excel.html', graph=graph, test_results={"Exact Test of Goodness-of-Fit p-value": str(p_value.pvalue)}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', graph=graph, test_results={"Exact Test of Goodness-of-Fit p-value": str(p_value.pvalue)}, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/chi-square-goodness-test', methods=['POST'])
 def chi_square_goodness():
@@ -342,7 +343,7 @@ def chi_square_goodness():
     observed_data = transformed_df.iloc[:, 0]
     expected_data = transformed_df.iloc[:, 1]
     chi_square_test_statistic, p_value = stats.chisquare(observed_data,expected_data) 
-    return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit": "(p-value = " + str(p_value) + ")"}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+    return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit": "(p-value = " + str(p_value) + ")"}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
 @bp.route('/chi-square-independence-test', methods=['POST','GET'])
 def chi_square_independence():
@@ -366,8 +367,8 @@ def chi_square_independence():
     plt.clf()
     return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
                             test_results={"Chi-Square Test of Independence": "(p-value = " + str(p)+")"}, 
-                            tables=[df.to_html(classes='data')], 
-                            titles=df.columns.values, 
+                            df=df.to_dict(orient='records'), 
+                             
                             transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
                             statistic="Chi-square statistic: " + str(chi2),
                             dof="Degrees of freedom: " + str(dof),
@@ -394,8 +395,8 @@ def fisher_test():
     plt.clf()
     return render_template('display_excel.html', graph=graph, statsgraph = statsgraph,
                             test_results={"Fisher's Exact Test": "(p-value = " + str(p_value)+")"}, 
-                            tables=[df.to_html(classes='data')], 
-                            titles=df.columns.values, 
+                            df=df.to_dict(orient='records'), 
+                             
                             transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None),
                             statistic="Odd ratio " + str(odd_ratio),
                             )
@@ -408,13 +409,13 @@ def perform_one_measurement_test():
     if test == 'one_sample_t_test':
         test_mean = request.form.get('means_input')
         t_statistic, p_value = stats.ttest_1samp(a=transformed_df, popmean=float(test_mean))
-        return render_template('display_excel.html', graph=graph, test_results={"One sample t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, test_results={"One sample t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'two_sample_t_test':
         t_statistic, p_value = stats.ttest_ind(a=transformed_df.iloc[:, 0], b=transformed_df.iloc[:, 1], equal_var=True)
-        return render_template('display_excel.html', graph=graph, test_results={"Two sample t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, test_results={"Two sample t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'homoscedasticity':
         statistic, p_value = stats.bartlett(transformed_df.iloc[:,0], transformed_df.iloc[:,1])
-        return render_template('display_excel.html', graph=graph, test_results={"Bartlett's Test": "(p-value = " + str(p_value)+")"}, statistic = "Bartlett's test statistic is: " + str(statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, test_results={"Bartlett's Test": "(p-value = " + str(p_value)+")"}, statistic = "Bartlett's test statistic is: " + str(statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'one_way_anova':
         f_statistic, p_value = stats.f_oneway(*[transformed_df[col] for col in transformed_df.columns])
         categories = list(transformed_df.columns)
@@ -424,15 +425,14 @@ def perform_one_measurement_test():
         plt.xticks(rotation = 45)
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
         plt.clf()
-        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"One-way ANOVA": "(p-value = " + str(p_value)+")"}, statistic = "F-statistic is: " + str(f_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"One-way ANOVA": "(p-value = " + str(p_value)+")"}, statistic = "F-statistic is: " + str(f_statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'kruskal_wallis_test':
         h_statistic, p_value = stats.kruskal(*[transformed_df[col] for col in transformed_df.columns])
-        return render_template('display_excel.html', graph=graph, test_results={"Kruskal-Wallis": "(p-value = " + str(p_value)+")"}, statistic = "H-statistic is: " + str(h_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, test_results={"Kruskal-Wallis": "(p-value = " + str(p_value)+")"}, statistic = "H-statistic is: " + str(h_statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'two_way_anova':
 
         anova_table = pg.anova(data=transformed_df, dv=transformed_df.columns[2], between=[transformed_df.columns[0], transformed_df.columns[1]])
 
-        twoanova= anova_table.to_html()
         sns.barplot(data=transformed_df, x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 2], hue=transformed_df.iloc[:, 1], palette='Set1', legend=True)
         plt.xlabel(transformed_df.columns[0])
         plt.ylabel(transformed_df.columns[2])
@@ -441,7 +441,7 @@ def perform_one_measurement_test():
         plt.xticks(rotation = 45)
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
         plt.clf()
-        return render_template('display_excel.html', twoanova=twoanova,graph=graph, statsgraph = statsgraph, test_results={"Two-way ANOVA": "Sucessfully ran."}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', twoanova=anova_table.to_dict(orient='records'),graph=graph, statsgraph = statsgraph, test_results={"Two-way ANOVA": "Sucessfully ran."}, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
         
     elif test == 'paired_t_test':
         before = transformed_df.iloc[:,0]
@@ -459,7 +459,7 @@ def perform_one_measurement_test():
         plt.xticks(rotation = 45)
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
         plt.clf()
-        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Paired t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Paired t-test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
     elif test == 'wilcoxon_signed_rank_test':
         before = transformed_df.iloc[:,0]
@@ -477,7 +477,7 @@ def perform_one_measurement_test():
         plt.xticks(rotation = 45)
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
         plt.clf()
-        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Wilcoxon Signed Rank Test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Wilcoxon Signed Rank Test": "(p-value = " + str(p_value)+")"}, statistic = "t-statistic is: " + str(t_statistic), df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
         
 
 @bp.route('/multiple-measurement-test',methods=['POST'])
@@ -505,7 +505,7 @@ def perform_multiple_measurement_test():
         return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Linear Regression": "Sucessfully ran."}, 
                                statistic="p-value: " + str(p_value), stat2 = 'r-value: ' + str(r_value**2), stat3 = 'Slope: ' + str(slope), stat4 = 'Intercept: ' + str(intercept),
                                stat5='Standard Error: ' + str(std_err),
-                                 tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+                                 df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     
     elif test == 'spearman_rank_correlation':
         X = transformed_df.iloc[:,0]
@@ -523,7 +523,7 @@ def perform_multiple_measurement_test():
         plt.clf()
         return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Spearman Rank Correlation": "Sucessfully ran."}, 
                                statistic="p-value: " + str(pval), stat2 = 'Spearman\'s Correlation Coefficient: ' + str(corr), 
-                               tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+                               df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
     elif test == 'polynomial_regression':
         x = transformed_df.iloc[:,0]
@@ -541,7 +541,7 @@ def perform_multiple_measurement_test():
         plt.clf()
         return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Polynomial Regression": "Sucessfully ran."}, 
                                statistic="r-squared: " + str(r2_score(y, mymodel(x))),
-                               tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+                               df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
          
     elif test == 'analysis_of_covariance':
         result = pg.ancova(data=transformed_df, dv=transformed_df.columns[2], covar=transformed_df.columns[1], between= transformed_df.columns[0])
@@ -555,8 +555,7 @@ def perform_multiple_measurement_test():
         statsgraph=datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")+'_ancova'+'.png'
         plt.savefig(os.path.join(current_app.root_path, 'static/'+ statsgraph))
         plt.clf()
-        twoanova=result.to_html()
-        return render_template('display_excel.html', twoanova=twoanova,graph=graph, statsgraph = statsgraph, test_results={"ANCOVA": "Sucessfully ran."}, tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', twoanova=result.to_dict(orient='records'),graph=graph, statsgraph = statsgraph, test_results={"ANCOVA": "Sucessfully ran."}, df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
 
     elif test == 'simple_logistic_regression':
         def logistic_function(x, L, k, x0):
@@ -590,13 +589,12 @@ def perform_multiple_measurement_test():
         plt.clf()
         return render_template('display_excel.html', graph=graph, statsgraph = statsgraph, test_results={"Logistic Regression": "Sucessfully ran."}, 
                                statistic="L (Maximum Value): " + str(L), stat2 = 'k (Steepness): ' + str(k), stat3 = 'x0 (Midpoint): ' + str(x0),
-                                 tables=[df.to_html(classes='data')], titles=df.columns.values, transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+                                 df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     
 
     
         
 clear_folders()
-
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

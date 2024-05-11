@@ -33,7 +33,6 @@ from app.clear import clear_folders
 
 @bp.before_request
 def before_request():
-    clear_folders()
     if current_user.is_authenticated:
         current_user.last_seen = datetime.now(timezone.utc)
         db.session.commit()
@@ -51,6 +50,7 @@ def upload_form():
 @bp.route('/upload', methods=['POST'])
 @login_required
 def upload_file():
+    clear_folders()
     if 'file' not in request.files:
         return 'No file part'
     global file
@@ -417,8 +417,8 @@ def perform_one_measurement_test():
     elif test == 'two_way_anova':
 
         anova_table = pg.anova(data=transformed_df, dv=transformed_df.columns[2], between=[transformed_df.columns[0], transformed_df.columns[1]])
-
-        sns.barplot(data=transformed_df, x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 2], hue=transformed_df.iloc[:, 1], palette='Set1', legend=True)
+        sns.color_palette("rocket")
+        sns.barplot(data=transformed_df, x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 2], hue=transformed_df.iloc[:, 1], legend=True)
         plt.xlabel(transformed_df.columns[0])
         plt.ylabel(transformed_df.columns[2])
         plt.legend(title=transformed_df.columns[1])
@@ -579,7 +579,6 @@ def perform_multiple_measurement_test():
 
     
         
-clear_folders()
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -620,6 +619,7 @@ def get_upload(filename):
 @bp.route('/hemocytometer-upload', methods=['GET','POST'])
 @login_required
 def hemocytometer_upload():
+    clear_folders()
     if 'img' not in request.files:
         return ('No file part')
     global img

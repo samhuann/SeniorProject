@@ -417,8 +417,8 @@ def perform_one_measurement_test():
     elif test == 'two_way_anova':
 
         anova_table = pg.anova(data=transformed_df, dv=transformed_df.columns[2], between=[transformed_df.columns[0], transformed_df.columns[1]])
-        sns.color_palette("rocket")
-        sns.barplot(data=transformed_df, x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 2], hue=transformed_df.iloc[:, 1], legend=True)
+        plt.title('Two-Way ANOVA')
+        sns.barplot(data=transformed_df, x=transformed_df.iloc[:, 0], y=transformed_df.iloc[:, 2], hue=transformed_df.iloc[:, 1], legend=True, palette='rocket')
         plt.xlabel(transformed_df.columns[0])
         plt.ylabel(transformed_df.columns[2])
         plt.legend(title=transformed_df.columns[1])

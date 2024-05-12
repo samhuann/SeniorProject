@@ -1,6 +1,5 @@
 biographer/.env
 biorgrapher/venv2
-biographer/app.db
 biographer/logs
 biographer/__pycache__
 biographer/.vscode

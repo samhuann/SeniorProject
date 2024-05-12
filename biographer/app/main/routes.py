@@ -41,18 +41,17 @@ def before_request():
 
 
 @bp.route('/')
-@login_required
 def upload_form():
     clear_folders()
-    return render_template('upload_form.html', title='Home')
+    return render_template('home.html')
 
 
-@bp.route('/upload', methods=['POST'])
+@bp.route('/upload', methods=['POST','GET'])
 @login_required
 def upload_file():
     clear_folders()
     if 'file' not in request.files:
-        return 'No file part'
+        return render_template('upload_form.html')
     global file
     file = request.files['file']
     if file.filename == '':

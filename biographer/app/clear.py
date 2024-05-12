@@ -4,7 +4,7 @@ import shutil
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
 UPLOADS_FOLDER = os.path.join(BASE_DIR, 'uploads')
-PRESERVE_FOLDERS = ['css', 'js']  # Add folders to preserve here
+PRESERVE_FOLDERS = ['css', 'js','images']  # Add folders to preserve here
 
 def clear_folders():
     # Clear static folder

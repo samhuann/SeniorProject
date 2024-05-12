@@ -460,7 +460,31 @@
     line-height: 14px;
     white-space: nowrap;
   }
+  .design .logout {
+    position: absolute;
+    width: 100px;
+    height: 48px;
+    top: 0;
+    left: 1082px;
+    background-color: #3e4580;
+    border-radius: 5px;
+  }
   
+  .design .text-wrapper-23 {
+    position: absolute;
+    height: 14px;
+    top: 16px;
+    left: 26px;
+    font-family: "Inter", Helvetica;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 14px;
+    white-space: nowrap;
+  }
+
   .design .hero-content {
     position: absolute;
     width: 900px;
@@ -1163,4 +1187,7 @@
     top: 7px;
     left: 255px;
   }
+  
+  
+  
   

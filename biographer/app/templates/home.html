@@ -89,12 +89,16 @@
                 <img class="image" src="https://c.animaapp.com/YnardM1l/img/image-11-1@2x.png" />
               </div>
               <div class="nav-links">
-                <div class="component"><div class="text-wrapper-7">Upload File</div></div>
+                <a href="{{ url_for('main.upload_file') }}" class="component"><div class="text-wrapper-7">Upload File</div></a>
                 <div class="component-2"><div class="text-wrapper-7">Documentation</div></div>
                 <div class="component-3"><div class="text-wrapper-7">Learn</div></div>
                 <div class="component-4"><div class="text-wrapper-7">Contact</div></div>
               </div>
-              <div class="component-5"><div class="text-wrapper-8">Login</div></div>
+              {% if not current_user.is_authenticated %}
+              <a href="{{ url_for('auth.login') }}" class="component-5"><div class="text-wrapper-8">Login</div></a>
+              {% else %}
+              <a href="{{ url_for('auth.logout')}}" class="logout"><div class="text-wrapper-23">Logout</div></a>
+              {% endif %}
             </div>
             <div class="hero-content">
               <p class="upload-transform-and">
@@ -139,7 +143,7 @@
           <img class="image-5" src="https://c.animaapp.com/YnardM1l/img/image-6@2x.png" />
           <img class="image-6" src="https://c.animaapp.com/YnardM1l/img/image-7@2x.png" />
           <div class="component-6"><div class="text-wrapper-10">Contact</div></div>
-          <div class="component-7"><div class="text-wrapper-11">Get Started</div></div>
+          <a href="{{ url_for('main.upload_file') }}" class="component-7"><div class="text-wrapper-11">Get Started</div></a>
         </div>
         <div class="overlap-2">
           <div class="group-5">
@@ -206,7 +210,7 @@
                 <img class="image" src="https://c.animaapp.com/YnardM1l/img/image-11-1@2x.png" />
               </div>
               <div class="nav-links-2">
-                <div class="component"><div class="text-wrapper-7">Upload File</div></div>
+                <a href="{{ url_for('main.upload_file') }}" class="component"><div class="text-wrapper-7">Upload File</div></a>
                 <div class="component-2"><div class="text-wrapper-7">Documentation</div></div>
                 <div class="component-3"><div class="text-wrapper-7">Learn</div></div>
                 <div class="component-4"><div class="text-wrapper-7">Contact</div></div>

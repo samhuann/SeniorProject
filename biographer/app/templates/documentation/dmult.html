@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/dmultguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/dmultstyle.css') }}" />
+  </head>
+  <body>
+    <div class="frame">
+      <div class="overlap-wrapper">
+        <div class="overlap">
+          <div class="design">
+            <div class="newsletter-footer">
+              <div class="group">
+                <footer class="footer">
+                  <div class="text-wrapper">Copyright © Biographer</div>
+                  <img class="line" src="https://c.animaapp.com/SoolB1T6/img/line-1.svg" />
+                  <img class="social-icon" src="https://c.animaapp.com/SoolB1T6/img/social-icon@2x.png" />
+                  <div class="logo">
+                    <div class="div">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/SoolB1T6/img/image-11-1@2x.png" />
+                  </div>
+                  <div class="nav-links">
+                    <a class="component" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <a class="div-wrapper" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-2">Documentation</div></a>
+                    <div class="learn-wrapper"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </footer>
+              </div>
+            </div>
+            <div class="overlap-group">
+              <header class="header">
+                <div class="nav-bar">
+                  <a class="logo-2" href="{{ url_for('main.upload_form') }}">
+                    <div class="text-wrapper-3">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/SoolB1T6/img/image-11-1@2x.png" />
+                  </a>
+                  <div class="nav-links-2">
+                    <a class="upload-file-wrapper" href="{{ url_for('main.upload_form') }}"><div class="text-wrapper-2">Home</div></a>
+                    <a class="documentation-wrapper" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <div class="component-3"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </div>
+              </header>
+            </div>
+            <img
+              class="file-delete"
+              src="https://c.animaapp.com/SoolB1T6/img/file-delete-alternate--file-common-delete-cross.svg"
+            />
+            <div class="group-wrapper">
+              <div class="quick-start-wrapper">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Linear Regression and Correlation</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you want to know whether one measurement variable is associated with another
+                        measurement variable; you want to measure the strength of the association (r-squared); or you
+                        want an equation that describes the relationship and can be used to predict unknown values.
+                        Returns a
+                      </span>
+                      <span class="text-wrapper-5"
+                        >p-value, r-value, slope, intercept, standard error, and a scatterplot+line.</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-2">
+              <div class="group-3">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Simple Logistic Regression</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have one nominal variable and one measurement variable, and you want to know
+                        whether variation in the measurement variable causes variation in the nominal variable. Returns
+                      </span>
+                      <span class="text-wrapper-5">L, k, x0, </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">line on scatterplot.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-4">
+              <div class="quick-start-wrapper">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Spearman Rank Correlation</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use to test the association between two ranked variables, or one ranked variable and one
+                        measurement variable. You can also use Spearman rank correlation instead of linear
+                        regression/correlation for two measurement variables if you&#39;re worried about non-normality,
+                        but this is not usually necessary. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value, Spearman Correlation Coefficient, </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">scatterplot.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-5">
+              <div class="group-3">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Polynomial Regression</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use polynomial regression when you have graphed two measurement variables and you want to fit
+                        an equation for a curved line to the points on the graph. Returns
+                      </span>
+                      <span class="text-wrapper-5">r-squared </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">line </span>
+                      <span class="span">on </span>
+                      <span class="text-wrapper-5">scatter plot.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-6">
+              <div class="group-3">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Analysis of Covariance (ANCOVA)</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you want to compare two or more regression lines to each other; ANCOVA will tell you
+                        whether the regression lines are different from each other in either slope or intercept. Returns
+                        an
+                      </span>
+                      <span class="text-wrapper-5">ANCOVA table </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">scatterplot.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <img class="img" src="https://c.animaapp.com/SoolB1T6/img/image-12.png" />
+            <img class="image-2" src="https://c.animaapp.com/SoolB1T6/img/image-15.png" />
+            <img class="image-3" src="https://c.animaapp.com/SoolB1T6/img/image-13.png" />
+            <img class="image-4" src="https://c.animaapp.com/SoolB1T6/img/image-14.png" />
+          </div>
+          <div class="chip"><div class="chip-2">Documentation</div></div>
+          <div class="title-2">
+            <div class="title"><p class="p">Tests for Multiple Measurement Variables</p></div>
+            <p class="lorem-ipsum-dolor">
+              Measurement variables are things you can measure. An observation of a measurement variable is always a
+              number. Examples <br />include length, weight, pH, and bone density. Other names for them include
+              &#34;numeric&#34; or &#34;quantitative&#34; variables.
+            </p>
+          </div>
+          <img class="image-5" src="https://c.animaapp.com/SoolB1T6/img/image-15-1.png" />
+          <div class="navigation">
+            <div class="navigation-subheader"><div class="text-wrapper-6">Overview</div></div>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-7">Introduction</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_install') }}"><div class="text-wrapper-8">Installation</div></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="text-wrapper-6">Analysis</div></div>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_transform') }}"><div class="text-wrapper-7">Transform</div></a>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_dnom') }}"><div class="text-wrapper-7">Tests for Nominal Variables</div></a>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_done') }}"><p class="text-wrapper-7">Tests for One Measurement Variable </p></a>
+            <a class="navigation-pages-3" href="{{ url_for('main.documentation_dmult') }}"><p class="text-wrapper-9">Tests for Multiple Measurement Variables</p></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="text-wrapper-6">Tools</div></div>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_hemo') }}"><div class="text-wrapper-8">Hemocytometer</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_notebook') }}"><div class="text-wrapper-8">Biographer Notebooks</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

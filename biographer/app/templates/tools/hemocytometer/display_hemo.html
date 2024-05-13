@@ -2,8 +2,9 @@
 {% block content %}
 {{super()}}
 <body>
+    <br>
+    <img src= "{{  url_for('main.get_upload', filename=imgname)  }}"/><br>
     Image Uploaded: {{imgname}}
-    <img src= "{{  url_for('main.get_upload', filename=imgname)  }}"/>
     <form action="/count" method="post">
         <input type="hidden" name="imgname" value="{{ imgname }}">
         <button type="submit">Count</button>

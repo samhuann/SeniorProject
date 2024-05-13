@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/globals.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/styleguide.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/home.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/home/globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/home/styleguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/home/home.css') }}" />
     <link rel="icon" type="image/x-icon" href="https://c.animaapp.com/YnardM1l/img/image-11-1@2x.png">
     <title>Biographer - biostatistics made easy</title>
   </head>
@@ -91,7 +91,7 @@
               </div>
               <div class="nav-links">
                 <a href="{{ url_for('main.upload_file') }}" class="component"><div class="text-wrapper-7">Upload File</div></a>
-                <div class="component-2"><div class="text-wrapper-7">Documentation</div></div>
+                <a class="component-2" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-7">Documentation</div></a>
                 <div class="component-3"><div class="text-wrapper-7">About the Project</div></div>
                 <a href="mailto:biographerhelp@gmail.com" class = "component-4"><div class="text-wrapper-7">Contact</div></a>
               </div>

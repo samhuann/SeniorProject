@@ -338,7 +338,7 @@ def perform_nominal_test():
         observed_data = transformed_df.iloc[:, 0]
         expected_data = transformed_df.iloc[:, 1]
         chi_square_test_statistic, p_value = stats.chisquare(observed_data,expected_data) 
-        return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit": "Ran successfully."}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), stat2 = "p-value: " + str(p_value.pvalue),df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
+        return render_template('display_excel.html', graph=graph, test_results={"Chi-Square Test of Goodness-of-Fit": "Ran successfully."}, statistic = "Chi Square Test Statistic: " + str(chi_square_test_statistic), stat2 = "p-value: " + str(p_value),df=df.to_dict(orient='records'),  transformed_df=(transformed_df.to_dict(orient='records') if df is not None else None))
     elif test == 'chi_square_test_of_independence':
         chi2, p, dof, expected = stats.chi2_contingency(transformed_df)
         observed_proportions = []
@@ -513,7 +513,7 @@ def perform_multiple_measurement_test():
         x = transformed_df.iloc[:,0]
         y = transformed_df.iloc[:,1]
         mymodel = np.poly1d(np.polyfit(x, y, 3))
-        myline = np.linspace(0, int(max(x)), int(max(y)))
+        myline = np.linspace(1, int(max(x)), int(max(y)))
         r_value = stats.linregress(x, y)
         plt.scatter(x, y)
         plt.plot(myline, mymodel(myline))
@@ -676,3 +676,34 @@ def calculate_confidence_intervals(data, percentage):
 
 
 
+@bp.route('/documentation-intro', methods=['GET','POST'])
+def documentation_intro():
+    return render_template('documentation/introduction.html')
+
+@bp.route('/documentation-install', methods=['GET','POST'])
+def documentation_install():
+    return render_template('documentation/install.html')
+
+@bp.route('/documentation-transform', methods=['GET','POST'])
+def documentation_transform():
+    return render_template('documentation/transform.html')
+
+@bp.route('/documentation-tests-for-nominal-variables', methods=['GET','POST'])
+def documentation_dnom():
+    return render_template('documentation/dnom.html')
+
+@bp.route('/documentation-tests-for-one-measurement-variable', methods=['GET','POST'])
+def documentation_done():
+    return render_template('documentation/done.html')
+
+@bp.route('/documentation-tests-for-multiple-measurement-variables', methods=['GET','POST'])
+def documentation_dmult():
+    return render_template('documentation/dmult.html')
+
+@bp.route('/documentation-hemocytometer', methods=['GET','POST'])
+def documentation_hemo():
+    return render_template('documentation/hemo.html')
+
+@bp.route('/documentation-notebook', methods=['GET','POST'])
+def documentation_notebook():
+    return render_template('documentation/notebook.html')

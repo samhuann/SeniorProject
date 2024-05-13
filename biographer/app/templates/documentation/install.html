@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/installguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/installstyle.css') }} "/>
+  </head>
+  <body>
+    <div class="frame">
+      <div class="overlap-wrapper">
+        <div class="overlap">
+          <div class="design">
+            <div class="ellipse"></div>
+            <div class="newsletter-footer">
+              <div class="group">
+                <footer class="footer">
+                  <div class="text-wrapper">Copyright © Biographer</div>
+                  <img class="line" src="https://c.animaapp.com/NU62k9qn/img/line-1.svg" />
+                  <img class="social-icon" src="https://c.animaapp.com/NU62k9qn/img/social-icon@2x.png" />
+                  <a class="logo" href="{{ url_for('main.upload_form') }}">
+                    <div class="div">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/NU62k9qn/img/image-11-1@2x.png" />
+                  </a>
+                  <div class="nav-links">
+                    <a class="component" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <a class="div-wrapper" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-2">Documentation</div></a>
+                    <div class="learn-wrapper"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </footer>
+              </div>
+            </div>
+            <div class="overlap-group">
+              <header class="header">
+                <div class="nav-bar">
+                  <a class="logo-2" href="{{ url_for('main.upload_form') }}">
+                    <div class="text-wrapper-3">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/NU62k9qn/img/image-11-1@2x.png" />
+                  </a>
+                  <div class="nav-links-2">
+                    <a class="upload-file-wrapper" href="{{ url_for('main.upload_form') }}"><div class="text-wrapper-2">Home</div></a>
+                    <a class="documentation-wrapper" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <div class="component-3"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </div>
+              </header>
+            </div>
+            <img
+              class="file-delete"
+              src="https://c.animaapp.com/NU62k9qn/img/file-delete-alternate--file-common-delete-cross.svg"
+            />
+            <div class="limitations">
+              <div class="div-2">
+                <div class="title"><div class="quick-start">Have Fun !</div></div>
+                <div class="div-3"></div>
+              </div>
+            </div>
+            <p class="p">Follow the installation guide in GitHub:</p>
+          </div>
+          <div class="chip"><div class="chip-2">Documentation</div></div>
+          <div class="content">
+            <div class="div-2">
+              <div class="title"><div class="quick-start-2">Installation</div></div>
+              <div class="flexcontainer">
+                <p class="div-3">
+                  <span class="span"
+                    >Installation is not required, but if you want to run the app on your local machine, you must follow
+                    some installation steps.<br
+                  /></span>
+                </p>
+                <p class="div-3">
+                  <span class="span">All the files related to this project are available on GitHub.</span>
+                </p>
+              </div>
+            </div>
+            <div class="quick-start-3">
+              <div class="div-2">
+                <div class="title"><div class="quick-start">Biology Scripts</div></div>
+                <p class="div-3">A collection of biostatistics scripts written in Python with Jupyter Notebook.</p>
+              </div>
+              <div class="alert">
+                <img class="img" src="https://c.animaapp.com/NU62k9qn/img/info-2.svg" />
+                <div class="text"><p class="this-is-a-general">This directory is not part of the Flask app.</p></div>
+              </div>
+            </div>
+            <div class="navigation">
+              <div class="content-2">
+                <div class="title"><div class="quick-start">Installation</div></div>
+                <p class="div-3">
+                  <span class="span">Download the </span>
+                  <span class="text-wrapper-5">‘biographer’</span>
+                  <span class="span"> directory. This is where the app lives.</span>
+                </p>
+              </div>
+              <img class="ezgif" src="https://c.animaapp.com/NU62k9qn/img/ezgif-1-677d0c74a1-1.png" />
+              <div class="version">
+                <div class="alert-2">
+                  <img class="img" src="https://c.animaapp.com/NU62k9qn/img/bulb-1.svg" />
+                  <div class="text">
+                    <p class="this-is-a-general-2">
+                      <span class="text-wrapper-6">It is a good idea to create a </span>
+                      <span class="text-wrapper-5">venv</span>
+                      <span class="text-wrapper-6">
+                        for all the packages. Make sure Python is installed on your machine.</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <img class="image-2" src="https://c.animaapp.com/NU62k9qn/img/image-12.png" />
+          <div class="navigation-2">
+            <div class="navigation-subheader"><div class="subheader-title">Overview</div></div>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-7">Introduction</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_install') }}"><div class="text-wrapper-8">Installation</div></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="subheader-title">Analysis</div></div>
+            <a class="navigation-pages-3" href="{{ url_for('main.documentation_transform') }}"><div class="text-wrapper-9">Transform</div></a>
+            <a class="navigation-pages-3" href="{{ url_for('main.documentation_dnom') }}"><div class="text-wrapper-9">Tests for Nominal Variables</div></a>
+            <a class="navigation-pages-3" href="{{ url_for('main.documentation_done') }}"><p class="text-wrapper-9">Tests for One Measurement Variable</p></a>
+            <a class="navigation-pages-3" href="{{ url_for('main.documentation_dmult') }}"><p class="text-wrapper-9">Tests for Multiple Measurement Variables</p></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="subheader-title">Tools</div></div>
+            <a class="navigation-pages-3" href="{{ url_for('main.documentation_hemo') }}"><div class="text-wrapper-9">Hemocytometer</div></a>
+            <a class="navigation-pages-3 " href="{{ url_for('main.documentation_notebook') }}"><div class="text-wrapper-9">Biographer Notebooks</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

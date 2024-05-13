@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/dnomguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/dnomstyle.css') }}" />
+  </head>
+  <body>
+    <div class="frame">
+      <div class="overlap-wrapper">
+        <div class="overlap">
+          <div class="design">
+            <div class="ellipse"></div>
+            <div class="newsletter-footer">
+              <div class="group">
+                <footer class="footer">
+                  <div class="text-wrapper">Copyright © Biographer</div>
+                  <img class="line" src="https://c.animaapp.com/aUguhKCS/img/line-1.svg" />
+                  <img class="social-icon" src="https://c.animaapp.com/aUguhKCS/img/social-icon@2x.png" />
+                  <div class="logo">
+                    <div class="div">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/aUguhKCS/img/image-11-1@2x.png" />
+                  </div>
+                  <div class="nav-links">
+                    <a class="component" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <a class="div-wrapper" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-2">Documentation</div></a>
+                    <div class="learn-wrapper"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </footer>
+              </div>
+            </div>
+            <div class="overlap-group">
+              <header class="header">
+                <div class="nav-bar">
+                  <a class="logo-2" href="{{ url_for('main.upload_form') }}">
+                    <div class="text-wrapper-3">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/aUguhKCS/img/image-11-1@2x.png" />
+                  </a>
+                  <div class="nav-links-2">
+                    <a class="upload-file-wrapper" href="{{ url_for('main.upload_form') }}"><div class="text-wrapper-2">Home</div></a>
+                    <a class="documentation-wrapper" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <div class="component-3"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </div>
+              </header>
+            </div>
+            <img
+              class="file-delete"
+              src="https://c.animaapp.com/aUguhKCS/img/file-delete-alternate--file-common-delete-cross.svg"
+            />
+            <div class="overlap-2">
+              <div class="group-wrapper">
+                <div class="quick-start-wrapper">
+                  <div class="quick-start">
+                    <div class="content">
+                      <div class="title"><div class="quick-start-2">Exact Test of Goodness-of-Fit</div></div>
+                      <p class="lorem-ipsum-dolor">
+                        Use when you have one nominal variable, you want to see whether the number of observations in
+                        each category fits a theoretical expectation, and the sample size is small.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="group-wrapper">
+                <div class="quick-start-wrapper">
+                  <div class="quick-start">
+                    <div class="content">
+                      <div class="title"><div class="quick-start-2">Exact Test of Goodness-of-Fit</div></div>
+                      <p class="lorem-ipsum-dolor">
+                        <span class="span"
+                          >Use when you have one nominal variable, you want to see whether the number of observations in
+                          each category fits a theoretical expectation, and the sample size is small. Returns a
+                        </span>
+                        <span class="text-wrapper-5">p-value.</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-2">
+              <div class="quick-start-wrapper">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><p class="quick-start-2">Chi-Square Test of Goodness of Fit</p></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have one nominal variable, you want to see whether the number of observations in
+                        each category fits a theoretical expectation, and the sample size is large. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">chi-square statistic.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-3">
+              <div class="group-4">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Chi-Square Test of Independence</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have two nominal variables and you want to see whether the proportions of one
+                        variable are different for different values of the other variable. Use it when the sample size
+                        is large. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value, chi-square statistic, degrees of freedom, </span>
+                      <span class="span">an </span>
+                      <span class="text-wrapper-5">expected frequencies table, </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">bar graph.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-5">
+              <div class="quick-start-wrapper">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Fisher’s Exact Test</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have two nominal variables and you want to see whether the proportions of one
+                        variable are different depending on the value of the other variable. Use it when the sample size
+                        is small. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value, </span>
+                      <span class="span">an </span>
+                      <span class="text-wrapper-5">odd-ratio,</span>
+                      <span class="span"> and a </span>
+                      <span class="text-wrapper-5">bar graph.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="overlap-group-2">
+              <img class="img" src="https://c.animaapp.com/aUguhKCS/img/image-12.png" />
+              <img class="image-2" src="https://c.animaapp.com/aUguhKCS/img/image-13.png" />
+            </div>
+            <div class="alert">
+              <img class="img-2" src="https://c.animaapp.com/aUguhKCS/img/info-2.svg" />
+              <div class="text">
+                <p class="this-is-a-general">This test does not take any input from your Excel.</p>
+              </div>
+            </div>
+            <div class="alert-2">
+              <img class="img-2" src="https://c.animaapp.com/aUguhKCS/img/bulb-2.svg" />
+              <div class="text">
+                <p class="this-is-a-general-2">Remember, only two columns allowed, and they must have the same sum.</p>
+              </div>
+            </div>
+            <div class="alert-3">
+              <img class="img-2" src="https://c.animaapp.com/aUguhKCS/img/bulb-2.svg" />
+              <div class="text"><div class="this-is-a-general-2">Only 2x2 tables allowed!</div></div>
+            </div>
+            <img class="image-3" src="https://c.animaapp.com/aUguhKCS/img/image-14@2x.png" />
+            <img class="image-4" src="https://c.animaapp.com/aUguhKCS/img/image-15.png" />
+            <div class="text-wrapper-6">that’s a lotta data.</div>
+            <img class="image-5" src="https://c.animaapp.com/aUguhKCS/img/image-17.png" />
+          </div>
+          <div class="chip"><div class="chip-2">Documentation</div></div>
+          <div class="title-2">
+            <div class="title"><div class="quick-start-3">Tests for Nominal Variables</div></div>
+            <p class="p">
+              <span class="text-wrapper-7"
+                >A nominal variable is a type of variable that represents categories or groups without any inherent
+                order or ranking. <br />For example, consider a variable called &#34;color&#34; that represents the
+                colors of cars:
+              </span>
+              <span class="text-wrapper-8">red</span>
+              <span class="text-wrapper-7">, </span>
+              <span class="text-wrapper-9">blue</span>
+              <span class="text-wrapper-7">, and </span>
+              <span class="text-wrapper-10">green</span>
+              <span class="text-wrapper-7"
+                >. Each color is a category, but <br />there&#39;s no inherent order or ranking among them.
+              </span>
+              <span class="text-wrapper-11">Red</span>
+              <span class="text-wrapper-7"> is not &#34;greater&#34; or &#34;higher&#34; than </span>
+              <span class="text-wrapper-9">blue</span>
+              <span class="text-wrapper-7">; they are just different categories.</span>
+            </p>
+          </div>
+          <img class="image-6" src="https://c.animaapp.com/aUguhKCS/img/image-16.png" />
+          <div class="navigation">
+            <div class="navigation-subheader"><div class="text-wrapper-12">Overview</div></div>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-13">Introduction</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_install') }}"><div class="text-wrapper-14">Installation</div></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="text-wrapper-12">Analysis</div></div>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_transform') }}"><div class="text-wrapper-13">Transform</div></a>
+            <a class="navigation-pages-3" href="{{ url_for('main.documentation_dnom') }}"><div class="text-wrapper-15">Tests for Nominal Variables</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_done') }}"><p class="text-wrapper-14">Tests for One Measurement Variable</p></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_dmult') }}">
+              <p class="text-wrapper-14">Tests for Multiple Measurement Variables</p>
+            </a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="text-wrapper-12">Tools</div></div>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_hemo') }}"><div class="text-wrapper-14">Hemocytometer</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_notebook') }}"><div class="text-wrapper-14">Biographer Notebooks</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

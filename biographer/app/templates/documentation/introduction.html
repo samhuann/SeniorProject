@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/introguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/introstyle.css') }}" />
+  </head>
+  <body>
+    <div class="frame">
+      <div class="overlap-wrapper">
+        <div class="overlap">
+          <div class="design">
+            <div class="ellipse"></div>
+            <div class="newsletter-footer">
+              <div class="group">
+                <footer class="footer">
+                  <div class="text-wrapper">Copyright © Biographer</div>
+                  <img class="line" src="https://c.animaapp.com/Mp1lw7d2/img/line-1.svg" />
+                  <img class="social-icon" src="https://c.animaapp.com/Mp1lw7d2/img/social-icon@2x.png" />
+                  <a class="logo" href="{{ url_for('main.upload_form') }}">
+                    <div class="div">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/Mp1lw7d2/img/image-11-1@2x.png" />
+                  </a>
+                  <div class="nav-links">
+                    <a class="component" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <a class="div-wrapper" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-2">Documentation</div></a>
+                    <div class="learn-wrapper"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </footer>
+              </div>
+            </div>
+            <div class="overlap-group">
+              <header class="header">
+                <div class="nav-bar">
+                  <a class="logo-2" href="{{ url_for('main.upload_form') }}">
+                    <div class="text-wrapper-3">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/Mp1lw7d2/img/image-11-1@2x.png" />
+                  </a>
+                  <div class="nav-links-2">
+                    <a class="upload-file-wrapper" href="{{ url_for('main.upload_form') }}"><div class="text-wrapper-2">Home</div></a>
+                    <a class="documentation-wrapper" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <div class="component-3"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </div>
+              </header>
+            </div>
+            <img
+              class="file-delete"
+              src="https://c.animaapp.com/Mp1lw7d2/img/file-delete-alternate--file-common-delete-cross.svg"
+            />
+            <div class="limitations">
+              <div class="div-2">
+                <div class="title"><div class="text-wrapper-5">Limitations</div></div>
+                <div class="flexcontainer">
+                  <p class="p">
+                    <span class="span"
+                      >Since this is a Flask web app and not a full fledged data analysis software, it is bound to have
+                      some limitations.<br
+                    /></span>
+                  </p>
+                  <p class="p">
+                    <span class="span">You cannot customize your graphs (yet).<br /></span>
+                  </p>
+                  <p class="p">
+                    <span class="span">You cannot edit the Excel file within the web app.<br /></span>
+                  </p>
+                  <p class="p">
+                    <span class="span"
+                      >Data cannot be organized within the app, so you have to keep organized on your computer.<br
+                    /></span>
+                  </p>
+                  <p class="p"><span class="span">Excel is currently the only supported file type.</span></p>
+                </div>
+              </div>
+            </div>
+            <img class="ezgif" src="https://c.animaapp.com/Mp1lw7d2/img/ezgif-1-677d0c74a1-1.png" />
+          </div>
+          <div class="chip"><div class="chip-2">Documentation</div></div>
+          <div class="content">
+            <div class="div-2">
+              <div class="title"><div class="quick-start">Introduction</div></div>
+              <p class="p">
+                This is a simple web application to analyze statistical data that has been formatted with Excel.
+              </p>
+            </div>
+            <div class="quick-start-2">
+              <div class="div-2">
+                <div class="title"><div class="text-wrapper-5">Quick Start</div></div>
+                <p class="p">
+                  When you choose a file and upload it, make sure the file is formatted in Excel. Choose your file and
+                  click ‘Upload’.
+                </p>
+              </div>
+              <div class="alert">
+                <img class="img" src="https://c.animaapp.com/Mp1lw7d2/img/info-2.svg" />
+                <div class="text">
+                  <p class="this-is-a-general">
+                    Make sure the data is formatted properly with Excel and there are no gaps.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="navigation">
+              <div class="navigation-2">
+                <div class="content-2">
+                  <div class="title"><div class="text-wrapper-5">Upload Excel File</div></div>
+                  <p class="p">The Excel file will be displayed to you after a successful upload.</p>
+                </div>
+                <div class="alert-2">
+                  <img class="img" src="https://c.animaapp.com/Mp1lw7d2/img/bulb-2.svg" />
+                  <div class="text">
+                    <p class="this-is-a-general-2">
+                      Attempting to upload anything other than an Excel file will return an error.
+                    </p>
+                  </div>
+                </div>
+                <img class="ezgif-dca" src="https://c.animaapp.com/Mp1lw7d2/img/ezgif-1-677d0c74a1-1-1.png" />
+              </div>
+              <div class="version">
+                <div class="div-2">
+                  <div class="title"><div class="quick-start-3">Analyze Excel File</div></div>
+                  <p class="p">
+                    <span class="span"
+                      >You can see a dropdown once the file is successfully uploaded. There options to
+                    </span>
+                    <span class="text-wrapper-6">Transform</span>
+                    <span class="span">
+                      your data, which included options to transform by functions, normalize, or even apply some
+                      biochemistry transforms. There are also options for three kinds of
+                    </span>
+                    <span class="text-wrapper-6">statistical tests</span>
+                    <span class="span"
+                      >. Each dropdown will have a small selection of tests to apply to your data.</span
+                    >
+                  </p>
+                </div>
+                <div class="alert-3">
+                  <img class="img" src="https://c.animaapp.com/Mp1lw7d2/img/bulb-2.svg" />
+                  <div class="text">
+                    <p class="this-is-a-general-2">
+                      <span class="text-wrapper-7">Be sure to transform your data </span>
+                      <span class="text-wrapper-6">before</span>
+                      <span class="text-wrapper-7">
+                        beginning a statistical analysis. Also, some statistical tests require the Excel file to be
+                        formatted a certain way.</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="navigation-3">
+            <div class="navigation-subheader"><div class="subheader-title">Overview</div></div>
+            <div class="navigation-pages"><div class="page-name">Introduction</div></div>
+            <a class="navigation-pages-2" href = "{{ url_for('main.documentation_install') }}"><div class="text-wrapper-8">Installation</div></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="subheader-title">Analysis</div></div>
+            <a class="navigation-pages-2" href = "{{ url_for('main.documentation_transform') }}"><div class="text-wrapper-8">Transform</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_dnom') }}"><div class="text-wrapper-8">Tests for Nominal Variables</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_done') }}"><p class="text-wrapper-8">Tests for One Measurement Variable</p></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_dmult') }}"><p class="text-wrapper-8">Tests for Multiple Measurement Variables</p></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="subheader-title">Tools</div></div>
+            <a class="navigation-pages-2" href = "{{ url_for('main.documentation_hemo') }}"><div class="text-wrapper-8">Hemocytometer</div></a>
+            <a class="navigation-pages-2" href = "{{ url_for('main.documentation_notebook') }}"><div class="text-wrapper-8">Biographer Notebooks</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

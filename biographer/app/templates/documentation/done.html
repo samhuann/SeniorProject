@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/globals.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/doneguide.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/documentation/donestyle.css') }}" />
+  </head>
+  <body>
+    <div class="frame">
+      <div class="overlap-wrapper">
+        <div class="overlap">
+          <div class="design">
+            <div class="newsletter-footer">
+              <div class="group">
+                <footer class="footer">
+                  <div class="text-wrapper">Copyright © Biographer</div>
+                  <img class="line" src="https://c.animaapp.com/ZDPrbZGk/img/line-1.svg" />
+                  <img class="social-icon" src="https://c.animaapp.com/ZDPrbZGk/img/social-icon@2x.png" />
+                  <a class="logo" href="{{ url_for('main.upload_form') }}">
+                    <div class="div">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/ZDPrbZGk/img/image-11-1@2x.png" />
+                  </a>
+                  <div class="nav-links">
+                    <a class="component" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <a class="div-wrapper " href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-2">Documentation</div></a>
+                    <div class="learn-wrapper"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </footer>
+              </div>
+            </div>
+            <div class="overlap-group">
+              <header class="header">
+                <div class="nav-bar">
+                  <a class="logo-2" href="{{ url_for('main.upload_form') }}">
+                    <div class="text-wrapper-3">Biographer</div>
+                    <img class="image" src="https://c.animaapp.com/ZDPrbZGk/img/image-11-1@2x.png" />
+                  </a>
+                  <div class="nav-links-2">
+                    <a class="upload-file-wrapper" href="{{ url_for('main.upload_form') }}"><div class="text-wrapper-2">Home</div></a>
+                    <a class="documentation-wrapper" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-2">Upload File</div></a>
+                    <div class="component-3"><div class="text-wrapper-2">About the Project</div></div>
+                    <a class="component-2" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-2">Contact</div></a>
+                  </div>
+                </div>
+              </header>
+            </div>
+            <img
+              class="file-delete"
+              src="https://c.animaapp.com/ZDPrbZGk/img/file-delete-alternate--file-common-delete-cross.svg"
+            />
+            <div class="group-wrapper">
+              <div class="quick-start-wrapper">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">One Sample t-test</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have one measurement variable and a theoretical expectation of what the mean
+                        should be under the null hypothesis. It tests whether the mean of the measurement variable is
+                        different from the null expectation. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">t-statistic.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-2">
+              <div class="quick-start-wrapper">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Two Sample t-test</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use for two samples when you have one measurement variable and one nominal variable, and the
+                        nominal variable has only two values. It tests whether the means of the measurement variable are
+                        different in the two groups. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value </span>
+                      <span class="span">and </span>
+                      <span class="text-wrapper-5">t-statistic.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-3">
+              <div class="quick-start-wrapper">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Bartlett’s Test for Homoscedasticity</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have one measurement variable, one nominal variable, and you want to test the null
+                        hypothesis that the standard deviations of the measurement variable are the same for the
+                        different groups. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value </span>
+                      <span class="span">and </span>
+                      <span class="text-wrapper-5">Bartlett’s Test Statistic.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-4">
+              <div class="group-5">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><p class="quick-start-2">One-Way Analysis of Variance (ANOVA)</p></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have one nominal variable and one measurement variable; the nominal variable
+                        divides the measurements into two or more groups. Tests whether the means of the measurement
+                        variable are the same for the different groups. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value, F-statistic, </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">bar graph.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-6">
+              <div class="group-7">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><p class="quick-start-2">Two-Way Analysis of Variance (ANOVA)</p></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have one measurement variable and two nominal variables, and each value of one
+                        nominal variable is found in combination with each value of the other nominal variable. Tests
+                        three null hypotheses: the means of the measurement variable are equal for different values of
+                        the first nominal variable; the means are equal for different values of the second nominal
+                        variable; and that there is no interaction (effects of one nominal variable don&#39;t depend on
+                        the value of the other nominal variable). Returns an
+                      </span>
+                      <span class="text-wrapper-5">ANOVA table </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">bar graph.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-8">
+              <div class="quick-start-wrapper">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Kruskal-Wallis Test</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use the when you have one nominal variable and one ranked variable. Tests whether the mean
+                        ranks are the same in all the groups. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value</span>
+                      <span class="span"> and an </span>
+                      <span class="text-wrapper-5">H-statistic.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <img class="img" src="https://c.animaapp.com/ZDPrbZGk/img/image-15@2x.png" />
+            <img class="image-2" src="https://c.animaapp.com/ZDPrbZGk/img/image-18.png" />
+            <img class="image-3" src="https://c.animaapp.com/ZDPrbZGk/img/image-19.png" />
+            <img class="image-4" src="https://c.animaapp.com/ZDPrbZGk/img/image-20.png" />
+            <img class="image-5" src="https://c.animaapp.com/ZDPrbZGk/img/image-21.png" />
+            <img class="image-6" src="https://c.animaapp.com/ZDPrbZGk/img/image-22.png" />
+            <img class="image-7" src="https://c.animaapp.com/ZDPrbZGk/img/image-23.png" />
+            <div class="group-9">
+              <div class="group-5">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Paired t-test</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      <span class="span"
+                        >Use when you have one measurement variable and two nominal variables, one of the nominal
+                        variables has only two values, and you only have one observation for each combination of the
+                        nominal variables; in other words, you have multiple pairs of observations. It tests whether the
+                        mean difference in the pairs is different from 0. Returns a
+                      </span>
+                      <span class="text-wrapper-5">p-value, t-statistic, </span>
+                      <span class="span">and a </span>
+                      <span class="text-wrapper-5">bar graph.</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="group-10">
+              <div class="group-11">
+                <div class="quick-start">
+                  <div class="content">
+                    <div class="title"><div class="quick-start-2">Wilcoxon Signed-Rank Test</div></div>
+                    <p class="lorem-ipsum-dolor">
+                      Use when you&#39;d like to use the paired t–test, but the differences are severely non-normally
+                      distributed.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <img class="image-8" src="https://c.animaapp.com/ZDPrbZGk/img/image-24@2x.png" />
+          </div>
+          <div class="chip"><div class="chip-2">Documentation</div></div>
+          <div class="title-2">
+            <div class="title"><p class="p">Tests for One Measurement Variable</p></div>
+            <p class="lorem-ipsum-dolor">
+              Measurement variables are things you can measure. An observation of a measurement variable is always a
+              number. Examples <br />include length, weight, pH, and bone density. Other names for them include
+              &#34;numeric&#34; or &#34;quantitative&#34; variables.
+            </p>
+          </div>
+          <div class="navigation">
+            <div class="navigation-subheader"><div class="text-wrapper-6">Overview</div></div>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-7">Introduction</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_install') }}"><div class="text-wrapper-8">Installation</div></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="text-wrapper-6">Analysis</div></div>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_transform') }}"><div class="text-wrapper-7">Transform</div></a>
+            <a class="navigation-pages" href="{{ url_for('main.documentation_dnom') }}"><div class="text-wrapper-7">Tests for Nominal Variables</div></a>
+            <a class="navigation-pages-3" href="{{ url_for('main.documentation_done') }}"><p class="text-wrapper-9">Tests for One Measurement Variable</p></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_dmult') }}"><p class="text-wrapper-8">Tests for Multiple Measurement Variables</p></a>
+            <div class="divider"></div>
+            <div class="navigation-subheader"><div class="text-wrapper-6">Tools</div></div>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_hemo') }}"><div class="text-wrapper-8">Hemocytometer</div></a>
+            <a class="navigation-pages-2" href="{{ url_for('main.documentation_notebook') }}"><div class="text-wrapper-8">Biographer Notebooks</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

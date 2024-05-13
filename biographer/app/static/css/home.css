@@ -196,13 +196,14 @@
   
   .design .text-wrapper-2 {
     position: absolute;
+    width: 611px;
     top: 0;
     left: 158px;
     background: linear-gradient(
-      180deg,
-      rgb(44.05, 141.25, 230.97) 0%,
-      rgb(237.61, 123.11, 191.81) 48.7%,
-      rgb(240.46, 123.99, 61.97) 97.4%
+        180deg,
+        rgb(44.05, 141.25, 230.97) 0%,
+        rgb(237.61, 123.11, 191.81) 48.7%,
+        rgb(240.46, 123.99, 61.97) 97.4%
     );
     -webkit-background-clip: text !important;
     background-clip: text;
@@ -707,6 +708,35 @@
     letter-spacing: 0;
     line-height: normal;
   }
+  .component-7:hover {
+    background-color:#8689a9a5;
+  }
+
+  .component:hover .text-wrapper-7 {
+    text-decoration: underline;
+  }
+  .component-2:hover .text-wrapper-7 {
+    text-decoration: underline;
+  }
+  .component-3:hover .text-wrapper-7 {
+    text-decoration: underline;
+  }
+  .component-4:hover .text-wrapper-7 {
+    text-decoration: underline;
+  }
+  .component-5:hover {
+    background-color:#8689a9a5;
+  }
+  .component-6:hover {
+    border-color:#8689a9a5;
+  }
+  .component-6:hover .text-wrapper-10 {
+    color: #8689a9a5;
+  }
+  .logout:hover {
+    background-color:#8689a9a5;
+  }
+  
   
   .design .overlap-2 {
     position: absolute;

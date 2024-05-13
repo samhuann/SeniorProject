@@ -1,17 +1,68 @@
 {% extends "base.html" %}
 {% block content %}
 <head>
-    <title>Tools</title>
+    <title>Biographer Toolbox</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Custom styles for biographer toolbox */
+        .toolbox-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .toolbox-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .toolbox-item {
+            margin-bottom: 20px;
+        }
+        .toolbox-item a {
+            display: block;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        .toolbox-item a:hover {
+            background-color: #e9ecef;
+            text-decoration: none;
+        }
+        .toolbox-item i {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Tools</h1>
-    <ul>
-        <li><a href="{{ url_for('main.hemocytometer') }}">Hemocytometer (Cell Counter)</a></li>
-        <li><a href="{{ url_for('notes.home') }}">Notebook</a></li>
-        <li><a href="https://vclock.com/timer/">Timer</a></li>
-        <li><a href="https://www.desmos.com/scientific">Calculator</a></li>
-        <li><a href="https://www.biostathandbook.com/">Handbook of Biological Statistics</a></li>
-    </ul>
+    <div class="toolbox-container">
+        <h1 class="toolbox-header">Biographer Toolbox</h1>
+        <div class="toolbox-item">
+            <a href="{{ url_for('main.hemocytometer') }}">
+                <i class="fas fa-vial"></i> Hemocytometer (Cell Counter)
+            </a>
+        </div>
+        <div class="toolbox-item">
+            <a href="{{ url_for('notes.home') }}">
+                <i class="fas fa-book"></i> Notebook
+            </a>
+        </div>
+        <div class="toolbox-item">
+            <a href="https://vclock.com/timer/">
+                <i class="fas fa-clock"></i> Timer
+            </a>
+        </div>
+        <div class="toolbox-item">
+            <a href="https://www.desmos.com/scientific">
+                <i class="fas fa-calculator"></i> Calculator
+            </a>
+        </div>
+        <div class="toolbox-item">
+            <a href="https://www.biostathandbook.com/">
+                <i class="fas fa-chart-bar"></i> Handbook of Biological Statistics
+            </a>
+        </div>
+    </div>
 </body>
-
 {% endblock %}

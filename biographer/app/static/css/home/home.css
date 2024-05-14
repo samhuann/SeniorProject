@@ -11,9 +11,10 @@
   width: 1440px;
   height: 3723px;
   top: 0;
-  left: 0;
+  left: 50;
   background-color: #fbfcff;
   overflow: hidden;
+  
 }
 
 .frame .ellipse {

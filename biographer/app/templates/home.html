@@ -86,15 +86,15 @@
           </div>
           <header class="header">
             <div class="nav-bar">
-              <div class="logo">
+              <a class="logo" href="{{ url_for('main.upload_form') }}">
                 <div class="text-wrapper-6">Biographer</div>
                 <img class="image" src="https://c.animaapp.com/59yezuUt/img/image-11-1@2x.png" />
-              </div>
+              </a>
               <div class="nav-links">
-                <div class="component"><div class="text-wrapper-7">Upload File</div></div>
-                <div class="component-2"><div class="text-wrapper-7">Documentation</div></div>
-                <div class="learn-wrapper"><div class="text-wrapper-7">About the Project</div></div>
-                <div class="component-3"><div class="text-wrapper-7">Contact</div></div>
+                <a class="component" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-7">Upload File</div></a>
+                <a class="component-2" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-7">Documentation</div></a>
+                <a class="learn-wrapper" href="{{ url_for('main.about') }}"><div class="text-wrapper-7">About the Project</div></a>
+                <a class="component-3" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-7">Contact</div></a>
               </div>
               <div class="component-4"><div class="text-wrapper-8">Login</div></div>
             </div>

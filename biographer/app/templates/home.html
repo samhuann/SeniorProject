@@ -10,9 +10,9 @@
     <title>Biographer - biostatistics made easy</title>
   </head>
   <body>
-    <div class="design">
+    <div class="frame">
       <div class="div">
-        
+        <div class="ellipse"></div>
         <div class="overlap">
           <div class="lines">
             <div class="group">
@@ -31,12 +31,12 @@
             <div class="overlap-group">
               <div class="ellipse-2"></div>
               <div class="ellipse-3"></div>
-              <img class="img" src="https://c.animaapp.com/YnardM1l/img/rectangle-3741.svg" />
+              <img class="img" src="https://c.animaapp.com/59yezuUt/img/rectangle-3741.svg" />
             </div>
           </div>
           <div class="services">
-            <div class="text-wrapper-2">What Biographer Offers</div>
             <p class="text-wrapper">You do the biology, Biographer does the rest.</p>
+            <div class="text-wrapper-2">What Biographer Offers</div>
             <div class="cards">
               <div class="div-wrapper">
                 <div class="overlap-group-2">
@@ -88,19 +88,15 @@
             <div class="nav-bar">
               <div class="logo">
                 <div class="text-wrapper-6">Biographer</div>
-                <img class="image" src="https://c.animaapp.com/YnardM1l/img/image-11-1@2x.png" />
+                <img class="image" src="https://c.animaapp.com/59yezuUt/img/image-11-1@2x.png" />
               </div>
               <div class="nav-links">
-                <a href="{{ url_for('main.upload_file') }}" class="component"><div class="text-wrapper-7">Upload File</div></a>
-                <a class="component-2" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-7">Documentation</div></a>
-                <a class="component-3" href="{{ url_for('main.about') }}"><div class="text-wrapper-7">About the Project</div></a>
-                <a href="mailto:biographerhelp@gmail.com" class = "component-4"><div class="text-wrapper-7">Contact</div></a>
+                <div class="component"><div class="text-wrapper-7">Upload File</div></div>
+                <div class="component-2"><div class="text-wrapper-7">Documentation</div></div>
+                <div class="learn-wrapper"><div class="text-wrapper-7">About the Project</div></div>
+                <div class="component-3"><div class="text-wrapper-7">Contact</div></div>
               </div>
-              {% if not current_user.is_authenticated %}
-              <a href="{{ url_for('auth.login') }}" class="component-5"><div class="text-wrapper-8">Login</div></a>
-              {% else %}
-              <a href="{{ url_for('auth.logout')}}" class="logout"><div class="text-wrapper-23">Logout</div></a>
-              {% endif %}
+              <div class="component-4"><div class="text-wrapper-8">Login</div></div>
             </div>
             <div class="hero-content">
               <p class="upload-transform-and">
@@ -108,44 +104,44 @@
               </p>
               <div class="text-wrapper-9">Biostatistics, made easy.</div>
               <div class="overlap-group-3">
-                <img class="image-2" src="https://c.animaapp.com/YnardM1l/img/image-5@2x.png" />
+                <img class="image-2" src="https://c.animaapp.com/59yezuUt/img/image-5@2x.png" />
                 <div class="profile">
-                  <img class="ellipse-4" src="https://c.animaapp.com/YnardM1l/img/ellipse-605@2x.png" />
+                  <img class="ellipse-4" src="https://c.animaapp.com/59yezuUt/img/ellipse-605@2x.png" />
                 </div>
               </div>
             </div>
-            <img class="abstract" src="https://c.animaapp.com/YnardM1l/img/abstract-1@2x.png" />
+            <img class="abstract" src="https://c.animaapp.com/59yezuUt/img/abstract-1@2x.png" />
           </header>
           <img
             class="file-delete"
-            src="https://c.animaapp.com/YnardM1l/img/file-delete-alternate--file-common-delete-cross.svg"
+            src="https://c.animaapp.com/59yezuUt/img/file-delete-alternate--file-common-delete-cross.svg"
           />
           <img
             class="graph-analytics"
-            src="https://c.animaapp.com/YnardM1l/img/graph--analytics-business-product-graph-data-chart-analysis.svg"
+            src="https://c.animaapp.com/59yezuUt/img/graph--analytics-business-product-graph-data-chart-analysis.svg"
           />
           <img
             class="user-check-validate"
-            src="https://c.animaapp.com/YnardM1l/img/user-check-validate--actions-close-checkmark-check-geometric-hum.svg"
+            src="https://c.animaapp.com/59yezuUt/img/user-check-validate--actions-close-checkmark-check-geometric-hum.svg"
           />
           <img
             class="bacteria-virus-cells"
-            src="https://c.animaapp.com/YnardM1l/img/bacteria-virus-cells-biology.svg"
+            src="https://c.animaapp.com/59yezuUt/img/bacteria-virus-cells-biology.svg"
           />
           <img
             class="shuffle-multimedia"
-            src="https://c.animaapp.com/YnardM1l/img/shuffle--multimedia-shuffle-multi-button-controls-media.svg"
+            src="https://c.animaapp.com/59yezuUt/img/shuffle--multimedia-shuffle-multi-button-controls-media.svg"
           />
           <img
             class="book-reading-book"
-            src="https://c.animaapp.com/YnardM1l/img/book-reading--book-reading-learning.svg"
+            src="https://c.animaapp.com/59yezuUt/img/book-reading--book-reading-learning.svg"
           />
-          <img class="image-3" src="https://c.animaapp.com/YnardM1l/img/image-3@2x.png" />
-          <img class="image-4" src="https://c.animaapp.com/YnardM1l/img/image-4@2x.png" />
-          <img class="image-5" src="https://c.animaapp.com/YnardM1l/img/image-6@2x.png" />
-          <img class="image-6" src="https://c.animaapp.com/YnardM1l/img/image-7@2x.png" />
-          <a href="mailto:biographerhelp@gmail.com" class = "component-6"><div class="text-wrapper-10">Contact</div></a>
-          <a href="{{ url_for('main.upload_file') }}" class="component-7"><div class="text-wrapper-11">Get Started</div></a>
+          <img class="image-3" src="https://c.animaapp.com/59yezuUt/img/image-3@2x.png" />
+          <img class="image-4" src="https://c.animaapp.com/59yezuUt/img/image-4@2x.png" />
+          <img class="image-5" src="https://c.animaapp.com/59yezuUt/img/image-6@2x.png" />
+          <img class="image-6" src="https://c.animaapp.com/59yezuUt/img/image-7@2x.png" />
+          <div class="component-5"><div class="text-wrapper-10">Contact</div></div>
+          <div class="component-6"><div class="text-wrapper-11">Get Started</div></div>
         </div>
         <div class="overlap-2">
           <div class="group-5">
@@ -153,19 +149,19 @@
               <div class="ellipse-5"></div>
               <div class="ellipse-6"></div>
             </div>
-            <img class="rectangle-10" src="https://c.animaapp.com/YnardM1l/img/rectangle-3741-1.svg" />
-            <img class="rectangle-11" src="https://c.animaapp.com/YnardM1l/img/rectangle-3742.svg" />
+            <img class="rectangle-10" src="https://c.animaapp.com/59yezuUt/img/rectangle-3741-1.svg" />
+            <img class="rectangle-11" src="https://c.animaapp.com/59yezuUt/img/rectangle-3742.svg" />
           </div>
           <div class="how-it-works">
             <div class="card">
               <div class="overlap-group-4">
-                <img class="shape" src="https://c.animaapp.com/YnardM1l/img/shape@2x.png" />
+                <img class="shape" src="https://c.animaapp.com/59yezuUt/img/shape@2x.png" />
                 <div class="card-2">
                   <div class="text-wrapper-12">Pandas</div>
                   <p class="text-wrapper-13">Library for data manipulation and analysis via dataframes.</p>
                 </div>
-                <img class="image-7" src="https://c.animaapp.com/YnardM1l/img/image-10@2x.png" />
-                <img class="card-3" src="https://c.animaapp.com/YnardM1l/img/card@2x.png" />
+                <img class="image-7" src="https://c.animaapp.com/59yezuUt/img/image-10@2x.png" />
+                <img class="card-3" src="https://c.animaapp.com/59yezuUt/img/card@2x.png" />
               </div>
             </div>
             <div class="card-4">
@@ -179,7 +175,7 @@
             <div class="card-5">
               <div class="overlap-5">
                 <div class="BG"></div>
-                <img class="shape-2" src="https://c.animaapp.com/YnardM1l/img/shape-2.png" />
+                <img class="shape-2" src="https://c.animaapp.com/59yezuUt/img/shape-2.png" />
                 <p class="text-wrapper-16">
                   Library for scientific computing and technical computing. Contains modules for optimization,
                   statistics, inetrpolation, etc.
@@ -194,28 +190,28 @@
             <div class="text-wrapper-18">How it Works</div>
           </div>
           <div class="pricing"><p class="text-wrapper-19">Best of all... Biographer is free!</p></div>
-          <img class="abstract-2" src="https://c.animaapp.com/YnardM1l/img/abstract@2x.png" />
+          <img class="abstract-2" src="https://c.animaapp.com/59yezuUt/img/abstract@2x.png" />
           <div class="text-wrapper-20">stats.chisquare(observed_data,expected_data)</div>
-          <img class="image-8" src="https://c.animaapp.com/YnardM1l/img/image-1@2x.png" />
-          <img class="image-9" src="https://c.animaapp.com/YnardM1l/img/image-8@2x.png" />
-          <img class="image-10" src="https://c.animaapp.com/YnardM1l/img/image-9@2x.png" />
-          <img class="image-11" src="https://c.animaapp.com/YnardM1l/img/image-2@2x.png" />
+          <img class="image-8" src="https://c.animaapp.com/59yezuUt/img/image-1@2x.png" />
+          <img class="image-9" src="https://c.animaapp.com/59yezuUt/img/image-8@2x.png" />
+          <img class="image-10" src="https://c.animaapp.com/59yezuUt/img/image-9@2x.png" />
+          <img class="image-11" src="https://c.animaapp.com/59yezuUt/img/image-2@2x.png" />
         </div>
         <div class="newsletter-footer">
           <div class="footer-wrapper">
             <footer class="footer">
               <div class="text-wrapper-21">Copyright © Biographer</div>
-              <img class="line" src="https://c.animaapp.com/YnardM1l/img/line-1.svg" />
-              <img class="social-icon" src="https://c.animaapp.com/YnardM1l/img/social-icon@2x.png" />
+              <img class="line" src="https://c.animaapp.com/59yezuUt/img/line-1.svg" />
+              <img class="social-icon" src="https://c.animaapp.com/59yezuUt/img/social-icon@2x.png" />
               <div class="logo-2">
                 <div class="text-wrapper-22">Biographer</div>
-                <img class="image" src="https://c.animaapp.com/YnardM1l/img/image-11-1@2x.png" />
+                <img class="image" src="https://c.animaapp.com/59yezuUt/img/image-11-1@2x.png" />
               </div>
               <div class="nav-links-2">
-                <a href="{{ url_for('main.upload_file') }}" class="component"><div class="text-wrapper-7">Upload File</div></a>
-                <a class="component-2" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-7">Documentation</div></a>
-                <a class="component-3" href="{{ url_for('main.about') }}"><div class="text-wrapper-7">About the Project</div></a>
-                <a href="mailto:biographerhelp@gmail.com" class = "component-4"><div class="text-wrapper-7">Contact</div></a>
+                <div class="component"><div class="text-wrapper-7">Upload File</div></div>
+                <div class="component-2"><div class="text-wrapper-7">Documentation</div></div>
+                <div class="component-7"><div class="text-wrapper-7">About the Project</div></div>
+                <div class="component-3"><div class="text-wrapper-7">Contact</div></div>
               </div>
             </footer>
           </div>

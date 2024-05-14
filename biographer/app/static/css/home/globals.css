@@ -1,5 +1,5 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
-@import url("https://fonts.googleapis.com/css?family=Rosario:700|Actor:400|Inter:600,500,400,700|Poppins:500|Be+Vietnam+Pro:400");
+@import url("https://fonts.googleapis.com/css?family=Rosario:700|Actor:400|Inter:500,400,700|Poppins:500|Be+Vietnam+Pro:400");
 * {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
@@ -17,4 +17,3 @@ button:focus-visible {
 a {
   text-decoration: none;
 }
-

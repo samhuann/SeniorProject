@@ -655,3 +655,33 @@
     line-height: 20px;
   }
   
+  .component:hover .text-wrapper-2 {
+    text-decoration: underline;
+  }
+  .component-2:hover .text-wrapper-2 {
+    text-decoration: underline;
+  }
+  .div-wrapper:hover .text-wrapper-2 {
+    text-decoration: underline;
+  }
+  .learn-wrapper:hover .text-wrapper-2 {
+    text-decoration: underline;
+  }
+  .upload-file-wrapper:hover .text-wrapper-2 {
+    text-decoration: underline;
+  }
+  .documentation-wrapper:hover .text-wrapper-2 {
+    text-decoration: underline;
+  }
+  .component-3:hover .text-wrapper-2 {
+    text-decoration: underline;
+  }
+  .navigation-pages:hover .text-wrapper-7 {
+    color: #373738a5;
+  }
+  .navigation-pages-2:hover .text-wrapper-8 {
+    color: #373738a5;
+  }
+  .navigation-pages-3:hover .text-wrapper-9 {
+    color: #373738a5;
+  }

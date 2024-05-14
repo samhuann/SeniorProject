@@ -17,20 +17,4 @@ button:focus-visible {
 a {
   text-decoration: none;
 }
-@font-face {
-  font-family: "Gilroy-Medium-Regular";
-  src: url("https://anima-uploads.s3.amazonaws.com/projects/635131b13f27792e46569104/fonts/gilroy-medium.ttf")
-    format("truetype");
-}
 
-@font-face {
-  font-family: "Gilroy-Bold-☞";
-  src: url("https://anima-uploads.s3.amazonaws.com/projects/6083d9d6f8ecf383cb5d0870/fonts/gilroy-bold.ttf")
-    format("truetype");
-}
-
-@font-face {
-  font-family: "Gilroy-Medium-☞";
-  src: url("https://anima-uploads.s3.amazonaws.com/projects/609ba63c8be9f9a21fc21698/fonts/gilroy-medium.ttf")
-    format("truetype");
-}

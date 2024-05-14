@@ -707,3 +707,7 @@ def documentation_hemo():
 @bp.route('/documentation-notebook', methods=['GET','POST'])
 def documentation_notebook():
     return render_template('documentation/notebook.html')
+
+@bp.route('/about', methods=['GET','POST'])
+def about():
+    return render_template('about.html')

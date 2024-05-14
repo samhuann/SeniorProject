@@ -8,10 +8,10 @@
   
   .design .div {
     background-color: #fbfcff;
-    overflow: visible;
+    overflow: hidden;
     width: 1440px;
     height: 3723px;
-    position: absolute;
+    position: relative;
   }
   
   .design .ellipse {

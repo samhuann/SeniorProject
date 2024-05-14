@@ -8,7 +8,7 @@
   
   .design .div {
     background-color: #fbfcff;
-    overflow: hidden;
+    overflow: visible;
     width: 1440px;
     height: 3723px;
     position: absolute;

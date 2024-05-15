@@ -7,8 +7,8 @@
 }
 
 .frame .div {
-  position: relative;
-  width: 1440px;
+  position:absolute;
+  width: 1698px;
   height: 3723px;
   top: 0;
   left: 0;

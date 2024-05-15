@@ -96,7 +96,11 @@
                 <a class="learn-wrapper" href="{{ url_for('main.about') }}"><div class="text-wrapper-7">About the Project</div></a>
                 <a class="component-3" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-7">Contact</div></a>
               </div>
-              <div class="component-4"><div class="text-wrapper-8">Login</div></div>
+              {% if not current_user.is_authenticated %}
+              <a href="{{ url_for('auth.login') }}" class="component-4"><div class="text-wrapper-8">Login</div></a>
+              {% else %}
+              <a href="{{ url_for('auth.logout')}}" class="logout"><div class="text-wrapper-23">Logout</div></a>
+              {% endif %}
             </div>
             <div class="hero-content">
               <p class="upload-transform-and">
@@ -140,8 +144,8 @@
           <img class="image-4" src="https://c.animaapp.com/59yezuUt/img/image-4@2x.png" />
           <img class="image-5" src="https://c.animaapp.com/59yezuUt/img/image-6@2x.png" />
           <img class="image-6" src="https://c.animaapp.com/59yezuUt/img/image-7@2x.png" />
-          <div class="component-5"><div class="text-wrapper-10">Contact</div></div>
-          <div class="component-6"><div class="text-wrapper-11">Get Started</div></div>
+          <a class="component-5" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-10">Contact</div></a>
+          <a class="component-6" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-11">Get Started</div></a>
         </div>
         <div class="overlap-2">
           <div class="group-5">
@@ -203,15 +207,15 @@
               <div class="text-wrapper-21">Copyright © Biographer</div>
               <img class="line" src="https://c.animaapp.com/59yezuUt/img/line-1.svg" />
               <img class="social-icon" src="https://c.animaapp.com/59yezuUt/img/social-icon@2x.png" />
-              <div class="logo-2">
+              <a class="logo-2" href="{{ url_for('main.upload_form') }}">
                 <div class="text-wrapper-22">Biographer</div>
                 <img class="image" src="https://c.animaapp.com/59yezuUt/img/image-11-1@2x.png" />
-              </div>
+              </a>
               <div class="nav-links-2">
-                <div class="component"><div class="text-wrapper-7">Upload File</div></div>
-                <div class="component-2"><div class="text-wrapper-7">Documentation</div></div>
-                <div class="component-7"><div class="text-wrapper-7">About the Project</div></div>
-                <div class="component-3"><div class="text-wrapper-7">Contact</div></div>
+                <a class="component" href="{{ url_for('main.upload_file') }}"><div class="text-wrapper-7">Upload File</div></a>
+                <a class="component-2" href="{{ url_for('main.documentation_intro') }}"><div class="text-wrapper-7">Documentation</div></a>
+                <a class="component-7" href="{{ url_for('main.about') }}"><div class="text-wrapper-7">About the Project</div></a>
+                <a class="component-3" href="mailto:biographerhelp@gmail.com"><div class="text-wrapper-7">Contact</div></a >
               </div>
             </footer>
           </div>

@@ -1,5 +1,5 @@
 .frame {
-  background-color: #fbfcff;
+  background-color: #F8F8FF;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -12,8 +12,7 @@
   height: 3723px;
   top: 0;
   left: 50;
-  background-color: #fbfcff;
-  overflow: hidden;
+  background-color: #F8F8FF;
   
 }
 
@@ -103,6 +102,21 @@
   background: linear-gradient(180deg, rgb(184.58, 171.81, 209.31) 0%, rgba(110, 94, 141, 0) 100%);
   position: absolute;
   top: 0;
+}
+
+.frame .text-wrapper-23 {
+  position: absolute;
+  height: 14px;
+  top: 16px;
+  left: 26px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 14px;
+  white-space: nowrap;
 }
 
 .frame .rectangle-7 {
@@ -1167,8 +1181,57 @@
   left: 255px;
 }
 
+.frame .logout {
+  position: absolute;
+  width: 100px;
+  height: 48px;
+  top: 0;
+  left: 1082px;
+  background-color: #3e4580;
+  border-radius: 5px;
+}
 .frame .component-7 {
   position: relative;
   width: 112px;
   height: 14px;
 }
+
+
+.component-6:hover {
+  background-color:#8689a9a5;
+}
+
+.component:hover .text-wrapper-7 {
+  text-decoration: underline;
+}
+.component-2:hover .text-wrapper-7 {
+  text-decoration: underline;
+}
+.component-3:hover .text-wrapper-7 {
+  text-decoration: underline;
+}
+.component-7:hover .text-wrapper-7 {
+  text-decoration: underline;
+}
+.learn-wrapper:hover .text-wrapper-7{
+  text-decoration: underline;
+}
+.component-4:hover {
+  background-color:#8689a9a5;
+}
+.logout:hover {
+  background-color:#8689a9a5;
+}
+.component-5:hover .text-wrapper-10 {
+  color: #8689a9a5;
+}
+.component-5:hover{
+  border-color:#8689a9a5;
+}
+
+.component-7:hover .text-wrapper-7 {
+  text-decoration: underline;
+}
+
+
+

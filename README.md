@@ -1,4 +1,4 @@
-A platform for quick and easy biostatistics analysis.
+Biographer: A platform for quick and easy biostatistics analysis.
 
 Installation:
 ```
